@@ -16,11 +16,6 @@
     "http://localhost:31337/hooks/*"
   ],
   "httpHookAllowedEnvVars": [],
-  "statusLine": {
-    "type": "command",
-    "command": "$HOME/.codex/PAI/statusline-command.sh",
-    "refreshInterval": 2
-  },
   "enabledPlugins": {
     "code-review@codex-plugins-official": true,
     "pr-review-toolkit@codex-plugins-official": true
@@ -697,7 +692,8 @@
       "settings.json is the single source of truth for all PAI configuration.",
       "daidentity in settings.json controls {DA_IDENTITY.NAME}'s name, color, voice, and personality.",
       "principal in settings.json stores {PRINCIPAL.NAME}'s name, timezone, and voice clone.",
-      "The statusline command runs from PAI/statusline-command.sh.",
+      "Codex's persistent footer is configured in config.toml [tui].status_line.",
+      "PAI/statusline-command.sh is a standalone diagnostics renderer, not a live Codex TUI footer.",
       "Personality traits (0-100) shape how emotions are expressed vocally.",
       "Never hardcode paths. Use ${PAI_DIR}, ${PROJECTS_DIR}, {PRINCIPAL.NAME}.",
       "Browser-first: if you haven't SEEN it with Browser skill, you can't claim it works.",
@@ -945,8 +941,7 @@
       "env": "Environment variables available to all hooks and tools via process.env",
       "permissions": "Tool permission configuration (allow, deny, ask lists)",
       "hooks": "Hook configuration for all lifecycle events",
-      "notifications": "Multi-channel notification routing (ntfy, Discord, Twilio)",
-      "statusLine": "Status line command configuration"
+      "notifications": "Multi-channel notification routing (ntfy, Discord, Twilio)"
     },
     "_httpHooks": "Pulse HTTP routes on pai:31337 (managed by Pulse process). SecurityPipeline: command hook on Bash/Write/Edit/Read (exit(2) hard-block). SkillGuard + AgentGuard: HTTP hooks via Pulse routes (fail-open).",
     "_env": {

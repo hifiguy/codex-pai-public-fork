@@ -7,6 +7,23 @@
 model = "gpt-5.4"
 model_reasoning_effort = "high"
 
+[tui]
+# Codex currently supports a native, single-line persistent footer assembled
+# from built-in item IDs. It does not support Claude-style command-backed or
+# multiline status output in the live TUI, so PAI/statusline-command.sh is not
+# wired here.
+status_line = [
+  "model-with-reasoning",
+  "current-dir",
+  "git-branch",
+  "context-remaining",
+  "five-hour-limit",
+  "weekly-limit",
+  "task-progress",
+  "fast-mode",
+]
+status_line_use_colors = true
+
 # Codex-native hook wiring. Keep lifecycle events in config.toml, not
 # settings.json; Codex validates these event keys with --strict-config.
 [[hooks.pre_tool_use]]
