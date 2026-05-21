@@ -22,20 +22,19 @@
 
 ---
 
-## One-Line Install
+> [!IMPORTANT]
+> This release bundle is the Codex-native PAI v5 port. Do **not** install it with upstream hosted installers or upstream upgrade paths; they target the upstream distribution and may overwrite Codex-specific configuration, hooks, and launcher behavior.
+
+## Install This Codex Port
 
 ```bash
-curl -sSL https://ourpai.ai/install.sh | bash
-```
-
-That's it. The installer wizard handles Bun, Git, ChatGPT Codex verification, ElevenLabs key (optional), DA identity setup, voice picker, Pulse launchd registration, Codex `config.toml` generation, and validation. Existing `~/.codex/` is auto-backed-up to `~/.codex.backup-{TIMESTAMP}` before anything is overwritten.
-
-**Prefer to inspect first?** [Read the script](https://ourpai.ai/install.sh) before piping it. Or clone manually:
-
-```bash
-git clone https://github.com/danielmiessler/PAI.git ~/.codex
+git clone https://github.com/hifiguy/codex-pai-public-fork.git
+cd codex-pai-public-fork/Releases/v5.0.0
+cp -R .codex ~/
 cd ~/.codex && ./install.sh
 ```
+
+The installer wizard handles Bun, Git, ChatGPT Codex verification, ElevenLabs key (optional), DA identity setup, voice picker, Pulse launchd registration, Codex `config.toml` generation, and validation. Existing `~/.codex/` is auto-backed-up to `~/.codex.backup-{TIMESTAMP}` before anything is overwritten.
 
 After install:
 
@@ -283,20 +282,13 @@ cp -R ~/.codex ~/.codex.backup-$(date +%Y%m%d)
 
 If you have personal content in `~/.codex/` from v4.x — custom skills, MEMORY, USER files, hooks — back it up first. v5.0.0 lays a fresh installation over `~/.codex/`.
 
-### Step 2: Install v5.0.0
-
-The fast path:
+### Step 2: Install this Codex port
 
 ```bash
-curl -sSL https://ourpai.ai/install.sh | bash
-```
-
-Or clone and run locally:
-
-```bash
-git clone https://github.com/danielmiessler/PAI.git ~/.codex
-cd ~/.codex
-./install.sh
+git clone https://github.com/hifiguy/codex-pai-public-fork.git
+cd codex-pai-public-fork/Releases/v5.0.0
+cp -R .codex ~/
+cd ~/.codex && ./install.sh
 ```
 
 The installer will:

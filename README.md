@@ -67,9 +67,11 @@
 > [!IMPORTANT]
 > **PAI v5.0.0 — Life Operating System** — the biggest release in PAI history. PAI is no longer "AI scaffolding" — it's a **Life Operating System** with the unified **Pulse** daemon (Life Dashboard at `localhost:31337`), a **DA** (Digital Assistant) identity layer, **Algorithm v6.3.0** (Current State → Ideal State, seven phases, classifier-driven mode + tier), the **ISA** primitive (universal "ideal state" articulation), 45 skills, 171 workflows, 37 hooks, and structural privacy via containment zones.
 >
+> **Codex port notice:** This fork is the Codex-native PAI v5 port. Do **not** use upstream one-line installers, upstream upgrade commands, or installer URLs from `ourpai.ai`; those target the upstream distribution and can overwrite this fork's Codex adapter or reintroduce non-Codex runtime assumptions.
+>
 > **[v5.0.0 release notes →](Releases/v5.0.0/README.md)** | **[All releases →](Releases/)**
 >
-> **One-line install:** `curl -sSL https://ourpai.ai/install.sh | bash`
+> **Install this fork:** clone this repository and run the local installer from `Releases/v5.0.0`.
 >
 > Upgrading from v4.x? This is a different system, not a patch. Read the [migration guide](Releases/v5.0.0/README.md#migration-guide-from-v4x) first.
 
@@ -171,24 +173,16 @@ A meaningful library of custom thinking skills — first principles, council deb
 
 We very much believe in AI-based installation and modification of PAI. Once you have a working install, point your AI at the system itself — upgrade versions, add skills, modify hooks, change settings, repair anything that breaks. The most important thing your AI can do for you up front is bring all of your existing custom context — notes, project state, preferences, identity, history — into the `PAI/USER/` directory so PAI knows who you are from day one. Tell your DA: *"Help me migrate my context into PAI/USER/."* The system was designed to be operated by AI; lean on it.
 
-### One-line install (recommended)
+### Install this Codex port
 
 ```bash
-curl -sSL https://ourpai.ai/install.sh | bash
-```
-
-That's it. The installer wizard handles Bun, Git, ChatGPT Codex verification, provider-neutral inference defaults, ElevenLabs key (optional), DA identity setup, voice picker, Pulse launchd registration, and validation. An existing `~/.codex/` is auto-backed-up to `~/.codex.backup-{TIMESTAMP}` before anything is overwritten.
-
-**Prefer to inspect first?** [Read the script](https://ourpai.ai/install.sh) before piping it.
-
-### Manual install (clone + run)
-
-```bash
-git clone https://github.com/danielmiessler/Personal_AI_Infrastructure.git
-cd Personal_AI_Infrastructure/Releases/v5.0.0
+git clone https://github.com/hifiguy/codex-pai-public-fork.git
+cd codex-pai-public-fork/Releases/v5.0.0
 cp -R .codex ~/
 cd ~/.codex && ./install.sh
 ```
+
+Do not use the upstream hosted installer for this fork. The local installer in this repository is the Codex-port installer and is the only supported install path until this fork publishes its own validated release endpoint.
 
 **The installer will:**
 - Verify Bun, Git, and ChatGPT Codex are installed
@@ -224,8 +218,10 @@ Quick path:
 # 1. Back up your existing installation
 cp -R ~/.codex ~/.codex.backup-$(date +%Y%m%d)
 
-# 2. Install v5.0.0 (one-liner above) or via manual clone
-curl -sSL https://ourpai.ai/install.sh | bash
+# 2. Install this Codex port from the local clone
+cd codex-pai-public-fork/Releases/v5.0.0
+cp -R .codex ~/
+cd ~/.codex && ./install.sh
 
 # 3. Open the Life Dashboard and run the interview
 open http://localhost:31337
@@ -398,7 +394,7 @@ MIT License - see [LICENSE](LICENSE) for details.
 - **Containment + release tooling** — privacy is structural. `containment-zones.ts` declares every directory's privacy zone; `ContainmentGuard` PreToolUse hook blocks cross-zone leaks; 12 security gates run on every public release; two-stage release (stage → publish) never auto-chains.
 - **Memory v7.6** — structured by purpose: WORK (active task ISAs), KNOWLEDGE (typed graph: People, Companies, Ideas, Research, Blogs), LEARNING (meta-patterns), RELATIONSHIP (DA-Principal notes), OBSERVABILITY (every tool call + hook firing + satisfaction signal), STATE (session registry).
 - **45 public skills, 171 workflows, 37 hooks** — skills are self-activating composable domain units; hooks fire across SessionStart, UserPromptSubmit, PreToolUse, PostToolUse, Stop, SubagentStop, PreCompact, SessionEnd.
-- **One-line installer** — `curl -sSL https://ourpai.ai/install.sh | bash`. Auto-backs-up existing `~/.codex/`, runs the DA identity wizard, registers Pulse as a launchd service, validates.
+- **Local Codex-port installer** — clone this fork and run `Releases/v5.0.0/.codex/install.sh`. Auto-backs-up existing `~/.codex/`, runs the DA identity wizard, registers Pulse as a launchd service, validates.
 - [Full release notes + migration guide](Releases/v5.0.0/README.md)
 
 **v4.0.3 (2026-03-01) — Community PR Patch**
