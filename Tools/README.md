@@ -40,4 +40,4 @@ bun BackupRestore.ts restore <backup-name>     # Restore
 
 ---
 
-*Part of the [PAI (Personal AI Infrastructure)](https://github.com/danielmiessler/PAI) project.*
+*Part of the [Codex-native PAI fork](https://github.com/hifiguy/codex-pai-public-fork).*

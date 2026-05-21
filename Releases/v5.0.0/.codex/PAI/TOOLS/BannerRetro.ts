@@ -525,7 +525,7 @@ function createRetroBanner(): string {
   // ─────────────────────────────────────────────────────────────────────────
   lines.push("");
   lines.push(`  ${gd}${BOX.sh.repeat(40)}${RESET}`);
-  lines.push(`  ${g}>${RESET} ${h}github.com/danielmiessler/PAI${RESET}${BLINK}_${RESET}`);
+  lines.push(`  ${g}>${RESET} ${h}github.com/hifiguy/codex-pai-public-fork${RESET}${BLINK}_${RESET}`);
   lines.push(`  ${gd}${BOX.sh.repeat(40)}${RESET}`);
 
   return lines.join("\n");
@@ -633,7 +633,7 @@ function createPureASCIIBanner(): string {
 
   lines.push("");
   lines.push(`  ${gd}----------------------------------------${RESET}`);
-  lines.push(`  ${g}>${RESET} ${h}github.com/danielmiessler/PAI${RESET}${g}_${RESET}`);
+  lines.push(`  ${g}>${RESET} ${h}github.com/hifiguy/codex-pai-public-fork${RESET}${g}_${RESET}`);
   lines.push(`  ${gd}----------------------------------------${RESET}`);
 
   return lines.join("\n");
@@ -681,7 +681,7 @@ function createCompactRetroBanner(): string {
 
   lines.push("");
   lines.push(`${g}PAI${RESET} ${gd}|${RESET} ${h}Personal AI Infrastructure${RESET}`);
-  lines.push(`${gd}> github.com/danielmiessler/PAI${RESET}`);
+  lines.push(`${gd}> github.com/hifiguy/codex-pai-public-fork${RESET}`);
 
   return lines.join("\n");
 }

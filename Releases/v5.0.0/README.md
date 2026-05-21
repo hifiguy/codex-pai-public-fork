@@ -24,6 +24,7 @@
 
 > [!IMPORTANT]
 > This release bundle is the Codex-native PAI v5 port. Do **not** install it with upstream hosted installers or upstream upgrade paths; they target the upstream distribution and may overwrite Codex-specific configuration, hooks, and launcher behavior.
+> If upstream docs at `ourpai.ai` mention install or upgrade commands, treat those commands as upstream-only and use the local instructions below for this fork.
 
 ## Install This Codex Port
 

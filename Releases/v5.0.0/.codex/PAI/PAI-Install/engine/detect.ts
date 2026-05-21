@@ -289,31 +289,21 @@ export function detectExistingUserContent(paiUserDir: string): ExistingUserConte
 }
 
 /**
- * Detect the principal's likely name + email from the local machine.
- * Order of preference: git config (most explicit) → macOS RealName → $USER.
+ * Detect optional principal metadata from explicit opt-in sources only.
+ * Public-fork installs must not read host account display names by default.
  */
 function detectPrincipal(): DetectionResult["principal"] {
   const username = process.env.USER || process.env.LOGNAME || "user";
 
-  const gitName = tryExec("git config --global user.name");
-  const gitEmail = tryExec("git config --global user.email");
-
-  let realName: string | null = null;
-  if (process.platform === "darwin") {
-    // dscl returns "RealName:\n First Last" — strip header + leading space
-    const dscl = tryExec(`dscl . -read /Users/${username} RealName 2>/dev/null`);
-    if (dscl) {
-      const m = dscl.match(/RealName:\s*\n?\s*(.+)/);
-      if (m) realName = m[1].trim();
-    }
-    if (!realName) realName = tryExec("id -F 2>/dev/null");
-  }
+  const detectHostIdentity = process.env.PAI_INSTALL_DETECT_HOST_IDENTITY === "1";
+  const gitName = detectHostIdentity ? tryExec("git config --global user.name") : null;
+  const gitEmail = detectHostIdentity ? tryExec("git config --global user.email") : null;
 
   // Reject obvious placeholders that show up on fresh installs
   const looksReal = (s: string | null | undefined): s is string =>
     !!s && s !== username && s !== "Apple" && s.length > 1;
 
-  const name = looksReal(gitName) ? gitName : looksReal(realName) ? realName : undefined;
+  const name = looksReal(gitName) ? gitName : undefined;
 
   return {
     name,

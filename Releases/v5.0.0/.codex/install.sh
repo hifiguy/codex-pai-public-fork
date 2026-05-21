@@ -69,7 +69,7 @@ echo -e "           ${NAVY}████${RESET}        ${BLUE}████${RESE
 echo -e "           ${NAVY}████${RESET}        ${BLUE}████${RESET}${LIGHT_BLUE}████${RESET}   ${SEP}"
 echo ""
 echo ""
-echo -e "                       ${STEEL}→${RESET} ${BLUE}github.com/danielmiessler/PAI${RESET}"
+echo -e "                       ${STEEL}→${RESET} ${BLUE}github.com/hifiguy/codex-pai-public-fork${RESET}"
 echo ""
 echo -e "${STEEL}┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛${RESET}"
 echo ""

@@ -403,7 +403,7 @@ Try it now: 'scrape [any URL]'"
 3. Verify bun is installed for Apify: curl -fsSL https://bun.sh/install | bash
 4. Run the verification commands in VERIFY.md
 
-Need help? Open an issue at https://github.com/danielmiessler/Personal_AI_Infrastructure/issues"
+Need help? Open an issue at https://github.com/hifiguy/codex-pai-public-fork/issues"
 ```
 
 ---

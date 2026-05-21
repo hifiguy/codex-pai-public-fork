@@ -633,7 +633,7 @@ function createNormalBanner(stats: SystemStats): string {
   lines.push(`${dripCentered}${dripLine}`);
 
   // GitHub URL as terminal command
-  const urlLine = `${d}$ git clone ${RESET}${g}https://github.com/danielmiessler/PAI${RESET}`;
+  const urlLine = `${d}$ git clone ${RESET}${g}https://github.com/hifiguy/codex-pai-public-fork${RESET}`;
   const urlCentered = " ".repeat(Math.floor((width - 50) / 2));
   lines.push(rainOverlay(`${urlCentered}${urlLine}`.padEnd(width), 0.1));
 

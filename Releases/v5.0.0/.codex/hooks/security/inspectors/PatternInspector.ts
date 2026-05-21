@@ -1,7 +1,6 @@
 import { readFileSync, existsSync } from 'fs';
 import { resolve } from 'path';
 import { homedir } from 'os';
-import { parse as parseYaml } from 'yaml';
 import type { Inspector, InspectionContext, InspectionResult } from '../types';
 import { ALLOW, deny, requireApproval, alert } from '../types';
 import { paiPath } from '../../lib/paths';
@@ -42,6 +41,80 @@ const SYSTEM_PATTERNS_PATH = paiPath('DOCUMENTATION', 'Security', 'Patterns.exam
 
 let patternsCache: PatternsConfig | null = null;
 
+function cleanYamlScalar(value: string): string {
+  const trimmed = value.trim();
+  if ((trimmed.startsWith('"') && trimmed.endsWith('"')) || (trimmed.startsWith("'") && trimmed.endsWith("'"))) {
+    return trimmed.slice(1, -1);
+  }
+  return trimmed;
+}
+
+function parseSecurityPatterns(content: string): PatternsConfig {
+  const config: PatternsConfig = {
+    version: '',
+    philosophy: { mode: '', principle: '' },
+    bash: { trusted: [], blocked: [], confirm: [], alert: [] },
+    paths: { zeroAccess: [], alertAccess: [], confirmAccess: [], readOnly: [], confirmWrite: [], noDelete: [] },
+    projects: {},
+  };
+
+  let section: 'philosophy' | 'bash' | 'paths' | null = null;
+  let listName: string | null = null;
+  let pendingPattern: PatternEntry | null = null;
+
+  for (const rawLine of content.split(/\r?\n/)) {
+    const withoutComment = rawLine.replace(/\s+#.*$/, '');
+    if (!withoutComment.trim() || withoutComment.trim() === '---') continue;
+
+    const indent = rawLine.match(/^\s*/)?.[0].length ?? 0;
+    const line = withoutComment.trim();
+    const keyValue = line.match(/^([A-Za-z][A-Za-z0-9_-]*):\s*(.*)$/);
+
+    if (indent === 0 && keyValue) {
+      section = null;
+      listName = null;
+      const [, key, value] = keyValue;
+      if (key === 'version') config.version = cleanYamlScalar(value);
+      else if (key === 'philosophy') section = 'philosophy';
+      else if (key === 'bash') section = 'bash';
+      else if (key === 'paths') section = 'paths';
+      continue;
+    }
+
+    if (section === 'philosophy' && keyValue) {
+      const [, key, value] = keyValue;
+      if (key === 'mode') config.philosophy.mode = cleanYamlScalar(value);
+      if (key === 'principle') config.philosophy.principle = cleanYamlScalar(value);
+      continue;
+    }
+
+    if ((section === 'bash' || section === 'paths') && indent === 2 && keyValue) {
+      listName = keyValue[1];
+      pendingPattern = null;
+      continue;
+    }
+
+    if (section === 'bash' && listName && line.startsWith('- pattern:')) {
+      pendingPattern = { pattern: cleanYamlScalar(line.slice('- pattern:'.length)), reason: '' };
+      const target = config.bash[listName as keyof PatternsConfig['bash']];
+      if (target) target.push(pendingPattern);
+      continue;
+    }
+
+    if (section === 'bash' && listName && pendingPattern && line.startsWith('reason:')) {
+      pendingPattern.reason = cleanYamlScalar(line.slice('reason:'.length));
+      continue;
+    }
+
+    if (section === 'paths' && listName && line.startsWith('- ')) {
+      const target = config.paths[listName as keyof PatternsConfig['paths']];
+      if (target) target.push(cleanYamlScalar(line.slice(2)));
+    }
+  }
+
+  return config;
+}
+
 function loadPatterns(): PatternsConfig | null {
   if (patternsCache) return patternsCache;
 
@@ -56,7 +129,7 @@ function loadPatterns(): PatternsConfig | null {
 
   try {
     const content = readFileSync(patternsPath, 'utf-8');
-    patternsCache = parseYaml(content) as PatternsConfig;
+    patternsCache = parseSecurityPatterns(content);
     return patternsCache;
   } catch {
     return null;

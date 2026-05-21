@@ -109,7 +109,7 @@ Tell the user what you found:
 [If personal TELOS not found]: Note: Personal TELOS files (beliefs, goals, books, etc.)
 are created during PAI setup, not by this skill pack. The Telos skill will work for
 project analysis without them. For personal life context features, set up PAI first:
-https://github.com/danielmiessler/Personal_AI_Infrastructure
+https://github.com/hifiguy/codex-pai-public-fork
 
 [If bun not found]: Note: The Dashboard and Report templates are Next.js applications
 that require bun or npm to build. The core Telos skill works without them."
@@ -314,7 +314,7 @@ The skill is ready for project analysis, narrative generation, and report buildi
 
 Personal TELOS features (beliefs, goals, books, etc.) require the TELOS files
 at ~/.codex/PAI/USER/TELOS/. These are created during PAI setup:
-https://github.com/danielmiessler/Personal_AI_Infrastructure
+https://github.com/hifiguy/codex-pai-public-fork
 
 Try it now: 'analyze [any project directory] with TELOS'"
 ```
@@ -328,7 +328,7 @@ Try it now: 'analyze [any project directory] with TELOS'"
 2. Check write permissions on ~/.codex/skills/
 3. Run the verification commands in VERIFY.md
 
-Need help? Open an issue at https://github.com/danielmiessler/Personal_AI_Infrastructure/issues"
+Need help? Open an issue at https://github.com/hifiguy/codex-pai-public-fork/issues"
 ```
 
 ---

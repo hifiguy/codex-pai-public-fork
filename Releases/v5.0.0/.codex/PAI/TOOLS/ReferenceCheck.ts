@@ -180,7 +180,7 @@ function isExcludedDir(absPath: string): boolean {
   // before release — their internal references are not a public-release
   // concern. ShadowRelease.ts's G1 + skill-deletion sweep guarantees they
   // never ship, so a broken ref inside _SOMESKILL/Tools/foo.ts does not
-  // affect the bundle that hits github.com/danielmiessler/PAI. Skipping
+  // affect the bundle that hits github.com/hifiguy/codex-pai-public-fork. Skipping
   // them here keeps a half-built private skill from gating release.
   if (rel.startsWith(`skills${sep}_`)) return true;
   return false;

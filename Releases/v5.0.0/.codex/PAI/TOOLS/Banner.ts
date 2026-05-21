@@ -116,7 +116,7 @@ function getStats(): SystemStats {
   let paiVersion = "3.0";
   let algorithmVersion = "0.2";
   let catchphrase = "{name} here, ready to go";
-  let repoUrl = "github.com/danielmiessler/PAI";
+  let repoUrl = "github.com/hifiguy/codex-pai-public-fork";
   try {
     const settings = JSON.parse(readFileSync(join(ENGINE_DIR, "settings.json"), "utf-8"));
     name = settings.daidentity?.displayName || settings.daidentity?.name || "PAI";

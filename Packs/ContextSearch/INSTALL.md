@@ -107,7 +107,7 @@ Tell the user what you found:
 [If MEMORY not found]: Note: Context Search searches PAI's MEMORY directories
 for prior work sessions. Without PAI installed, the command will still work but
 will only search git history. For full functionality, consider installing PAI:
-https://github.com/danielmiessler/Personal_AI_Infrastructure"
+https://github.com/hifiguy/codex-pai-public-fork"
 ```
 
 ---
@@ -351,7 +351,7 @@ The commands are ready, but PAI's MEMORY system isn't installed yet.
 Right now, the commands will search git history only.
 
 For full functionality (PRD search, session registry, work directories), install PAI:
-https://github.com/danielmiessler/Personal_AI_Infrastructure
+https://github.com/hifiguy/codex-pai-public-fork
 
 Try it now: /cs [any topic]"
 ```
@@ -365,7 +365,7 @@ Try it now: /cs [any topic]"
 2. Check write permissions on ~/.codex/commands/
 3. Run the verification commands in VERIFY.md
 
-Need help? Open an issue at https://github.com/danielmiessler/Personal_AI_Infrastructure/issues"
+Need help? Open an issue at https://github.com/hifiguy/codex-pai-public-fork/issues"
 ```
 
 ---
@@ -379,7 +379,7 @@ Restart ChatGPT Codex. Custom commands from `~/.codex/commands/` are loaded at s
 ### "No prior work found" for everything
 
 This is expected if PAI's MEMORY system isn't installed. The command searches PAI-specific directories. Options:
-1. Install PAI for full work tracking: https://github.com/danielmiessler/Personal_AI_Infrastructure
+1. Install PAI for full work tracking: https://github.com/hifiguy/codex-pai-public-fork
 2. The command will still search git history if `~/.codex/` is a git repo
 
 ### Command works but results are sparse

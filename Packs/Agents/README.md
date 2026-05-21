@@ -50,7 +50,7 @@ The Agents skill is a complete agent composition and management system. It dynam
 
 This pack is designed for AI-assisted installation. Give this directory to your AI and ask it to install using `INSTALL.md`.
 
-**What is PAI?** See the [PAI Project Overview](https://github.com/danielmiessler/Personal_AI_Infrastructure#what-is-pai).
+**What is PAI?** See the [PAI Project Overview](https://github.com/hifiguy/codex-pai-public-fork#what-is-pai).
 
 ---
 
@@ -208,7 +208,7 @@ Add your own voices and prosody settings in the user customization directory. Th
 
 ## Credits
 
-- **Original concept:** Daniel Miessler -- developed as part of the [PAI](https://github.com/danielmiessler/Personal_AI_Infrastructure) system
+- **Original concept:** Daniel Miessler -- developed as part of the [PAI](https://github.com/hifiguy/codex-pai-public-fork) system
 - **Inspired by:** The need for genuinely distinct AI perspectives, not interchangeable role labels
 
 ---

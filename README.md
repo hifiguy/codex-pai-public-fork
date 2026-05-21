@@ -11,33 +11,33 @@
 
 # Personal AI Infrastructure
 
-[![Typing SVG](https://readme-typing-svg.demolab.com?font=Fira+Code&weight=500&size=24&pause=1000&color=60A5FA&center=true&vCenter=true&width=600&lines=Everyone+needs+access+to+the+best+AI.;AI+should+magnify+everyone.;Your+Life+Operating+System.)](https://github.com/danielmiessler/Personal_AI_Infrastructure)
+[![Typing SVG](https://readme-typing-svg.demolab.com?font=Fira+Code&weight=500&size=24&pause=1000&color=60A5FA&center=true&vCenter=true&width=600&lines=Everyone+needs+access+to+the+best+AI.;AI+should+magnify+everyone.;Your+Life+Operating+System.)](https://github.com/hifiguy/codex-pai-public-fork)
 
 <br/>
 
 <!-- Social Proof -->
-![Stars](https://img.shields.io/github/stars/danielmiessler/Personal_AI_Infrastructure?style=social)
-![Forks](https://img.shields.io/github/forks/danielmiessler/Personal_AI_Infrastructure?style=social)
-![Watchers](https://img.shields.io/github/watchers/danielmiessler/Personal_AI_Infrastructure?style=social)
+![Stars](https://img.shields.io/github/stars/hifiguy/codex-pai-public-fork?style=social)
+![Forks](https://img.shields.io/github/forks/hifiguy/codex-pai-public-fork?style=social)
+![Watchers](https://img.shields.io/github/watchers/hifiguy/codex-pai-public-fork?style=social)
 
 <!-- Project Health -->
-![Release](https://img.shields.io/github/v/release/danielmiessler/Personal_AI_Infrastructure?style=flat&logo=github&color=8B5CF6)
-![Last Commit](https://img.shields.io/github/last-commit/danielmiessler/Personal_AI_Infrastructure?style=flat&logo=git&color=22C55E)
-![Open Issues](https://img.shields.io/github/issues/danielmiessler/Personal_AI_Infrastructure?style=flat&logo=github&color=F97316)
-![Open PRs](https://img.shields.io/github/issues-pr/danielmiessler/Personal_AI_Infrastructure?style=flat&logo=github&color=EC4899)
-![License](https://img.shields.io/github/license/danielmiessler/Personal_AI_Infrastructure?style=flat&color=60A5FA)
+![Release](https://img.shields.io/github/v/release/hifiguy/codex-pai-public-fork?style=flat&logo=github&color=8B5CF6)
+![Last Commit](https://img.shields.io/github/last-commit/hifiguy/codex-pai-public-fork?style=flat&logo=git&color=22C55E)
+![Open Issues](https://img.shields.io/github/issues/hifiguy/codex-pai-public-fork?style=flat&logo=github&color=F97316)
+![Open PRs](https://img.shields.io/github/issues-pr/hifiguy/codex-pai-public-fork?style=flat&logo=github&color=EC4899)
+![License](https://img.shields.io/github/license/hifiguy/codex-pai-public-fork?style=flat&color=60A5FA)
 
 <!-- Metrics -->
-![Discussions](https://img.shields.io/github/discussions/danielmiessler/Personal_AI_Infrastructure?style=flat&logo=github&label=Discussions&color=EAB308)
-![Commit Activity](https://img.shields.io/github/commit-activity/m/danielmiessler/Personal_AI_Infrastructure?style=flat&logo=git&label=Commits%2Fmo&color=F59E0B)
-![Repo Size](https://img.shields.io/github/repo-size/danielmiessler/Personal_AI_Infrastructure?style=flat&logo=database&label=Repo%20Size&color=D97706)
+![Discussions](https://img.shields.io/github/discussions/hifiguy/codex-pai-public-fork?style=flat&logo=github&label=Discussions&color=EAB308)
+![Commit Activity](https://img.shields.io/github/commit-activity/m/hifiguy/codex-pai-public-fork?style=flat&logo=git&label=Commits%2Fmo&color=F59E0B)
+![Repo Size](https://img.shields.io/github/repo-size/hifiguy/codex-pai-public-fork?style=flat&logo=database&label=Repo%20Size&color=D97706)
 
 <!-- Content -->
 [![Get Started](https://img.shields.io/badge/🚀_Get_Started-Install-22C55E?style=flat)](#-installation)
 [![Release v5.0.0](https://img.shields.io/badge/📦_Release-v5.0.0-8B5CF6?style=flat)](Releases/v5.0.0/)
 [![Algorithm v6.3.0](https://img.shields.io/badge/Algorithm-v6.3.0-D97706?style=flat)](Releases/v5.0.0/.codex/PAI/ALGORITHM/v6.3.0.md)
 [![Pulse](https://img.shields.io/badge/Pulse-included-3B82F6?style=flat)](Releases/v5.0.0/.codex/PAI/PULSE/)
-[![Contributors](https://img.shields.io/github/contributors/danielmiessler/Personal_AI_Infrastructure?style=flat&logo=githubsponsors&logoColor=white&label=Contributors&color=EC4899)](https://github.com/danielmiessler/Personal_AI_Infrastructure/graphs/contributors)
+[![Contributors](https://img.shields.io/github/contributors/hifiguy/codex-pai-public-fork?style=flat&logo=githubsponsors&logoColor=white&label=Contributors&color=EC4899)](https://github.com/hifiguy/codex-pai-public-fork/graphs/contributors)
 
 <!-- Tech Stack -->
 [![Runs on Codex](https://img.shields.io/badge/Runs_on-Codex-111827?style=flat&logo=openai&logoColor=white)](https://developers.openai.com/codex/)
@@ -65,7 +65,7 @@
 </div>
 
 > [!IMPORTANT]
-> **Codex port notice:** This fork is the Codex-native PAI v5 port. Do **not** use upstream one-line installers, upstream upgrade commands, or installer URLs from `ourpai.ai`; those target the upstream distribution and can overwrite this fork's Codex adapter or reintroduce non-Codex runtime assumptions.
+> **Codex port notice:** This fork is the Codex-native PAI v5 port. Do **not** use upstream one-line installers, upstream upgrade commands, or installer URLs from `ourpai.ai`; those target the upstream distribution and can overwrite this fork's Codex adapter or reintroduce non-Codex runtime assumptions. If upstream docs mention install or upgrade commands, treat them as documentation context only for this fork.
 >
 > **PAI v5.0.0 — Life Operating System** — the biggest release in PAI history. PAI is no longer "AI scaffolding" — it's a **Life Operating System** with the unified **Pulse** daemon (Life Dashboard at `localhost:31337`), a **DA** (Digital Assistant) identity layer, **Algorithm v6.3.0** (Current State → Ideal State, seven phases, classifier-driven mode + tier), the **ISA** primitive (universal "ideal state" articulation), 45 skills, 171 workflows, 37 hooks, and structural privacy via containment zones.
 >
@@ -308,7 +308,7 @@ Recovery is straightforward:
 
 ## 🌐 Community
 
-**GitHub Discussions:** [Join the conversation](https://github.com/danielmiessler/Personal_AI_Infrastructure/discussions)
+**GitHub Discussions:** [Join the conversation](https://github.com/hifiguy/codex-pai-public-fork/discussions)
 
 **Community Discord:** PAI is discussed in the [community Discord](https://danielmiessler.com/upgrade) along with other AI projects
 
@@ -320,19 +320,19 @@ Recovery is straightforward:
 
 ### Star History
 
-<a href="https://star-history.com/#danielmiessler/Personal_AI_Infrastructure&Date">
- <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=danielmiessler/Personal_AI_Infrastructure&type=Date&theme=dark" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=danielmiessler/Personal_AI_Infrastructure&type=Date" />
-   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=danielmiessler/Personal_AI_Infrastructure&type=Date" />
- </picture>
+<a href="https://star-history.com/#hifiguy/codex-pai-public-fork&Date">
+  <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=hifiguy/codex-pai-public-fork&type=Date&theme=dark" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=hifiguy/codex-pai-public-fork&type=Date" />
+   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=hifiguy/codex-pai-public-fork&type=Date" />
+  </picture>
 </a>
 
 ---
 
 ## 🤝 Contributing
 
-We welcome contributions! See our [GitHub Issues](https://github.com/danielmiessler/Personal_AI_Infrastructure/issues) for open tasks.
+We welcome contributions! See our [GitHub Issues](https://github.com/hifiguy/codex-pai-public-fork/issues) for open tasks.
 
 1. **Fork the repository**
 2. **Make your changes** — Bug fixes, new skills, documentation improvements

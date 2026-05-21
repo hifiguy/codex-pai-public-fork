@@ -1,6 +1,6 @@
 # PAI Installer v5.0
 
-> Install [PAI (Personal AI Infrastructure)](https://github.com/danielmiessler/PAI) with a single command.
+> Install [PAI (Personal AI Infrastructure)](https://github.com/hifiguy/codex-pai-public-fork) with a single command.
 
 ## Quick Start
 
@@ -346,4 +346,4 @@ bun run PAI-Install/main.ts --mode gui
 
 ## License
 
-Part of [PAI — Personal AI Infrastructure](https://github.com/danielmiessler/PAI).
+Part of [PAI — Personal AI Infrastructure](https://github.com/hifiguy/codex-pai-public-fork).

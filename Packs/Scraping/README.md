@@ -57,7 +57,7 @@ The BrightData subsystem auto-escalates: it starts with the fastest, cheapest me
 
 This pack is designed for AI-assisted installation. Give this directory to your AI and ask it to install using `INSTALL.md`.
 
-**What is PAI?** See the [PAI Project Overview](https://github.com/danielmiessler/Personal_AI_Infrastructure#what-is-pai).
+**What is PAI?** See the [PAI Project Overview](https://github.com/hifiguy/codex-pai-public-fork#what-is-pai).
 
 ---
 
@@ -220,7 +220,7 @@ No customization needed -- the skill works as-is with auto-escalation.
 
 ## Credits
 
-- **Original concept:** Daniel Miessler -- developed as part of the [PAI](https://github.com/danielmiessler/Personal_AI_Infrastructure) system
+- **Original concept:** Daniel Miessler -- developed as part of the [PAI](https://github.com/hifiguy/codex-pai-public-fork) system
 - **Inspired by:** The frustration of scraping failures and the cost of unfiltered MCP data in model context
 
 ---

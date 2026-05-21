@@ -920,7 +920,7 @@
   "pai": {
     "version": "5.0.0",
     "algorithmVersion": "3.28.0",
-    "repoUrl": "github.com/danielmiessler/PAI"
+    "repoUrl": "github.com/hifiguy/codex-pai-public-fork"
   },
   "preferences": {
     "temperatureUnit": "celsius"

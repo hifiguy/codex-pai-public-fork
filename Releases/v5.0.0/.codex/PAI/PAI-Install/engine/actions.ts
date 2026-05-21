@@ -76,6 +76,8 @@ const USER_MIGRATION_FULL_ENTRIES = [
   "BELIEFS.md",
 ] as const;
 
+const CODEX_FORK_REPO_URL = "https://github.com/hifiguy/codex-pai-public-fork.git";
+
 function isPlaceholderValue(value: string): boolean {
   return /^\{.+\}$/.test(value) || /^e\.g\./i.test(value.trim()) || PLACEHOLDER_LITERALS.has(value.trim());
 }
@@ -150,7 +152,7 @@ function summariseExistingUserContent(content: ExistingUserContentDetection): st
  * Remove duplicate bun PATH entries from shell config.
  * The bun.sh installer appends entries on every run — if install is
  * interrupted and retried, the config file accumulates duplicates.
- * Fixes: https://github.com/danielmiessler/Personal_AI_Infrastructure/issues/954
+ * Fixes: https://github.com/hifiguy/codex-pai-public-fork/issues/954
  */
 function deduplicateBunShellEntries(): void {
   const home = homedir();
@@ -863,7 +865,7 @@ export async function runPrerequisites(
   }
 
   // Check for unzip — required by bun installer but missing on minimal Linux installs
-  // Fixes: https://github.com/danielmiessler/Personal_AI_Infrastructure/issues/856
+  // Fixes: https://github.com/hifiguy/codex-pai-public-fork/issues/856
   if (!det.tools.bun.installed && det.os.platform === "linux") {
     const hasUnzip = tryExec("which unzip", 5000);
     if (hasUnzip === null) {
@@ -1210,21 +1212,21 @@ export async function runRepository(
       const msg = err instanceof Error ? err.message : String(err);
       await emit({
         event: "message",
-        content: `Local bundle install failed: ${msg}. Falling back to git clone.`,
+        content: `Local bundle install failed: ${msg}. Falling back to Codex fork git clone.`,
       });
     }
   } else if (process.env.PAI_BUNDLE_DIR) {
     await emit({
       event: "message",
-      content: `PAI_BUNDLE_DIR set but bundle is incomplete (missing marker files). Falling back to git clone.`,
+      content: `PAI_BUNDLE_DIR set but bundle is incomplete (missing marker files). Falling back to Codex fork git clone.`,
     });
   }
 
   if (!bundleInstalled) {
-    await emit({ event: "progress", step: "repository", percent: 20, detail: "Cloning PAI repository..." });
+    await emit({ event: "progress", step: "repository", percent: 20, detail: "Cloning Codex fork repository..." });
 
     const cloneResult = tryExec(
-      `git clone https://github.com/danielmiessler/PAI.git "${paiDir}" 2>&1`,
+      `git clone ${CODEX_FORK_REPO_URL} "${paiDir}" 2>&1`,
       120000
     );
 
@@ -1233,13 +1235,13 @@ export async function runRepository(
     } else {
       await emit({ event: "progress", step: "repository", percent: 50, detail: "Directory exists, trying alternative approach..." });
 
-      const initResult = tryExec(`cd "${paiDir}" && git init && git remote add origin https://github.com/danielmiessler/PAI.git && git fetch origin && git checkout -b main origin/main 2>&1`, 120000);
+      const initResult = tryExec(`cd "${paiDir}" && git init && git remote add origin ${CODEX_FORK_REPO_URL} && git fetch origin && git checkout -b main origin/main 2>&1`, 120000);
       if (initResult !== null) {
         await emit({ event: "message", content: "PAI repository initialized and synced." });
       } else {
         await emit({
           event: "message",
-          content: "Could not clone PAI repo automatically. You can clone it manually later: git clone https://github.com/danielmiessler/PAI.git ~/.codex",
+          content: `Could not clone the Codex fork automatically. You can clone it manually later: git clone ${CODEX_FORK_REPO_URL} ~/.codex`,
         });
       }
     }
@@ -1253,6 +1255,7 @@ export async function runRepository(
     "MEMORY/WORK",
     "MEMORY/RELATIONSHIP",
     "MEMORY/VOICE",
+    "PAI/MEMORY/STATE",
     "Plans",
     "hooks",
     "skills",
@@ -1265,6 +1268,10 @@ export async function runRepository(
       mkdirSync(fullPath, { recursive: true });
     }
   }
+
+  const modelCachePath = join(paiDir, "PAI", "MEMORY", "STATE", "model-cache.txt");
+  mkdirSync(dirname(modelCachePath), { recursive: true });
+  if (!existsSync(modelCachePath)) writeFileSync(modelCachePath, "unknown\n");
 
   if (state.collected.scanConsent !== "no" && state.backupPath) {
     await emitSectionHeader(

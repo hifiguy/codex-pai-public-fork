@@ -299,7 +299,7 @@ of thinking you need and the right mode activates."
 2. Check write permissions on ~/.codex/skills/
 3. Run the verification commands in VERIFY.md
 
-Need help? Open an issue at https://github.com/danielmiessler/Personal_AI_Infrastructure/issues"
+Need help? Open an issue at https://github.com/hifiguy/codex-pai-public-fork/issues"
 ```
 
 ---

@@ -99,7 +99,7 @@ Tell the user what you found:
 [If PAI not found]: Note: The Security skill works standalone but integrates
 more deeply with PAI infrastructure for voice notifications, skill customizations,
 and cross-skill coordination. For full functionality, consider installing PAI:
-https://github.com/danielmiessler/Personal_AI_Infrastructure"
+https://github.com/hifiguy/codex-pai-public-fork"
 ```
 
 ---
@@ -308,7 +308,7 @@ and the Security skill handles the rest."
 2. Check write permissions on ~/.codex/skills/
 3. Run the verification commands in VERIFY.md
 
-Need help? Open an issue at https://github.com/danielmiessler/Personal_AI_Infrastructure/issues"
+Need help? Open an issue at https://github.com/hifiguy/codex-pai-public-fork/issues"
 ```
 
 ---

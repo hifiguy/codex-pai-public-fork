@@ -96,7 +96,7 @@ PAI ships as an open-source, template-able Personal AI Infrastructure where the 
 ### Public release surface
 
 - [x] ISC-23: `<your-release-skill>` skill `CreateShadowRelease` workflow is the only sanctioned path from `~/.codex` to public visibility.
-- [ ] ISC-24: Public PAI repo (`danielmiessler/PAI`) reflects the v6.2.0 frame after the next shadow release runs.
+- [ ] ISC-24: Public PAI fork (`hifiguy/codex-pai-public-fork`) reflects the v6.2.0 frame after the next shadow release runs.
 
 ### Anti-criteria
 

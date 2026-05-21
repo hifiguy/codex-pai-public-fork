@@ -44,11 +44,11 @@ export interface DetectionResult {
     };
   };
   existingUserContent?: ExistingUserContentDetection;
-  /** Principal identity scanned from the local machine (git config, macOS dscl, $USER). */
+  /** Principal identity scanned from explicit opt-in sources, plus $USER for fallback username. */
   principal: {
-    /** Full name: prefers `git config user.name`, falls back to macOS RealName, then $USER. */
+    /** Full name: only prefilled when PAI_INSTALL_DETECT_HOST_IDENTITY=1. */
     name?: string;
-    /** Email from `git config user.email`. */
+    /** Email from `git config user.email` when host identity detection is explicitly enabled. */
     email?: string;
     /** OS login name; always populated. */
     username: string;

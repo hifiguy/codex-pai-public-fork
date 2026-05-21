@@ -50,7 +50,7 @@ ContentAnalysis detects what wisdom domains actually exist in the content and bu
 
 This pack is designed for AI-assisted installation. Give this directory to your AI and ask it to install using `INSTALL.md`.
 
-**What is PAI?** See the [PAI Project Overview](https://github.com/danielmiessler/Personal_AI_Infrastructure#what-is-pai).
+**What is PAI?** See the [PAI Project Overview](https://github.com/hifiguy/codex-pai-public-fork#what-is-pai).
 
 ---
 
@@ -209,7 +209,7 @@ Create the customization directory at:
 
 ## Credits
 
-- **Original concept:** Daniel Miessler -- developed as the next generation of [extract_wisdom](https://github.com/danielmiessler/fabric) within the [PAI](https://github.com/danielmiessler/Personal_AI_Infrastructure) system
+- **Original concept:** Daniel Miessler -- developed as the next generation of [extract_wisdom](https://github.com/danielmiessler/fabric) within the [PAI](https://github.com/hifiguy/codex-pai-public-fork) system
 - **Inspired by:** The limitations of static content extraction templates
 
 ---

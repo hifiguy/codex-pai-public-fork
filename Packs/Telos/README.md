@@ -62,7 +62,7 @@ Four dedicated workflows handle structured operations:
 
 This pack is designed for AI-assisted installation. Give this directory to your AI and ask it to install using `INSTALL.md`.
 
-**What is PAI?** See the [PAI Project Overview](https://github.com/danielmiessler/Personal_AI_Infrastructure#what-is-pai).
+**What is PAI?** See the [PAI Project Overview](https://github.com/hifiguy/codex-pai-public-fork#what-is-pai).
 
 ---
 
@@ -231,7 +231,7 @@ No customization needed -- the skill works as-is for both personal and project a
 
 ## Credits
 
-- **Original concept:** Daniel Miessler -- developed as part of the [PAI](https://github.com/danielmiessler/Personal_AI_Infrastructure) system
+- **Original concept:** Daniel Miessler -- developed as part of the [PAI](https://github.com/hifiguy/codex-pai-public-fork) system
 - **Inspired by:** The desire to give AI persistent understanding of a person's life context and to bring structured analysis to organizational data
 
 ---

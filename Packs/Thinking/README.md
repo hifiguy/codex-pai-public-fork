@@ -57,7 +57,7 @@ The top-level SKILL.md routes requests to the right thinking mode based on keywo
 
 This pack is designed for AI-assisted installation. Give this directory to your AI and ask it to install using `INSTALL.md`.
 
-**What is PAI?** See the [PAI Project Overview](https://github.com/danielmiessler/Personal_AI_Infrastructure#what-is-pai).
+**What is PAI?** See the [PAI Project Overview](https://github.com/hifiguy/codex-pai-public-fork#what-is-pai).
 
 ---
 
@@ -236,7 +236,7 @@ No customization needed -- all seven thinking modes work as-is with sensible def
 
 ## Credits
 
-- **Original concept:** Daniel Miessler -- developed as part of the [PAI](https://github.com/danielmiessler/Personal_AI_Infrastructure) system
+- **Original concept:** Daniel Miessler -- developed as part of the [PAI](https://github.com/hifiguy/codex-pai-public-fork) system
 - **Inspired by:** The recognition that thinking is not one skill but many distinct cognitive modes, each deserving its own structured methodology
 
 ---
