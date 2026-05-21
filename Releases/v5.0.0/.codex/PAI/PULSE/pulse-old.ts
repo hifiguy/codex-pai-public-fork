@@ -64,7 +64,7 @@ const hookStats = {
 
 const BLOCKED_SKILLS = ["keybindings-help"]
 const FAST_AGENT_TYPES = ["Explore"]
-const FAST_MODELS = ["haiku"]
+const FAST_MODELS = ["fast", "haiku"]
 
 function handleSkillGuard(body: { tool_input?: { skill?: string } }): Response {
   hookStats.requests++
@@ -240,7 +240,7 @@ async function main() {
         let output: string
 
         if (job.type === "codex") {
-          output = await spawnInference(job.prompt!, { model: job.model ?? "sonnet" })
+          output = await spawnInference(job.prompt!, { model: job.model ?? "standard" })
         } else {
           output = await spawnScript(job.command!)
         }

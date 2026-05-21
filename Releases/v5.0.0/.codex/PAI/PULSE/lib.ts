@@ -59,7 +59,7 @@ export async function loadConfig(daemonDir: string): Promise<DaemonConfig> {
     type: (j.type as "script" | "codex") ?? "script",
     command: j.command ? resolveEnvVars(j.command as string) : undefined,
     prompt: j.prompt as string | undefined,
-    model: (j.model as string) ?? "sonnet",
+    model: (j.model as string) ?? "standard",
     output: (j.output ?? "log") as OutputTarget | OutputTarget[],
     enabled: (j.enabled as boolean) ?? true,
   }))
@@ -266,14 +266,20 @@ export async function spawnScript(command: string, timeoutMs = 60_000): Promise<
 
 export async function spawnInference(prompt: string, opts: { model?: string; timeoutMs?: number }): Promise<string> {
   const timeoutMs = opts.timeoutMs ?? 300_000
-  const legacyLevel = opts.model === "haiku" ? "fast" : opts.model === "opus" ? "smart" : "standard"
-  const model = opts.model === "haiku" || opts.model === "sonnet" || opts.model === "opus" ? undefined : opts.model
+  const level = opts.model === "haiku" || opts.model === "fast"
+    ? "fast"
+    : opts.model === "opus" || opts.model === "smart"
+      ? "smart"
+      : "standard"
+  const model = ["fast", "standard", "smart", "haiku", "sonnet", "opus"].includes(opts.model ?? "")
+    ? undefined
+    : opts.model
   let timeout: ReturnType<typeof setTimeout> | undefined
   const result = await Promise.race([
     inference({
       systemPrompt: "",
       userPrompt: prompt,
-      level: legacyLevel,
+      level,
       model,
     }),
     new Promise<never>((_, reject) => {

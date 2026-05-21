@@ -207,7 +207,7 @@ name = "morning-report"
 schedule = "0 7 * * *"
 type = "codex"
 prompt = "You are ${opts.name}, a PAI Worker (${opts.description}). Summarize your completed work from the last 24 hours. Check recent git log and closed issues. Be concise."
-model = "sonnet"
+model = "standard"
 output = "telegram"
 enabled = true
 `

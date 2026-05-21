@@ -49,7 +49,7 @@ port = 5514
 enabled = true
 primary = "kai"
 heartbeat_schedule = "*/30 * * * *"
-heartbeat_model = "haiku"
+heartbeat_model = "fast"
 heartbeat_cost_ceiling = 0.01
 diary_schedule = "0 23 * * *"
 growth_schedule = "0 4 * * 0"
@@ -83,10 +83,10 @@ command = "bun run checks/airgradient-poll.ts"
 output = "log"
 enabled = true
 
-# Anthropic cost observability — appends JSONL ledger every hour, voice-alerts
+# AI cost observability — appends JSONL ledger every hour, voice-alerts
 # on leak regressions (new API-billing call sites, API spend > $5/mo, sub >95%).
-# Added 2026-04-22 after the April invoice incident ($498.45 Sonnet 4.5 +
-# Web Search). Zero AI cost — pure static scan + OAuth cache read.
+# Added 2026-04-22 after an unexpected billing incident. Zero AI cost —
+# pure static scan + OAuth cache read.
 [[job]]
 name = "cost-tracker"
 schedule = "0 * * * *"
@@ -100,7 +100,7 @@ name = "memory-consolidation"
 schedule = "0 3 * * *"
 type = "codex"
 prompt = "Run learning consolidation: execute `bun run ~/.codex/PAI/TOOLS/SessionHarvester.ts --recent 20` then `bun run ~/.codex/PAI/TOOLS/LearningPatternSynthesis.ts --week`. Summarize what was learned and any patterns found."
-model = "sonnet"
+model = "standard"
 output = "log"
 enabled = true
 

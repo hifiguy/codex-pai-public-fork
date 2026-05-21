@@ -44,7 +44,7 @@ const start = Date.now()
 
 let output: string
 if (job.type === "codex") {
-  output = await spawnInference(job.prompt!, { model: job.model ?? "sonnet" })
+  output = await spawnInference(job.prompt!, { model: job.model ?? "standard" })
 } else {
   output = await spawnScript(job.command!)
 }
