@@ -1,10 +1,14 @@
 import { NextResponse } from "next/server"
-import { getTelosFileCount, getTelosFileList } from "@/lib/telos-data"
+import { getTelosFileCount, getTelosFileList } from "@/Lib/telos-data"
+import { requireDashboardRequest } from "@/Lib/dashboard-security"
 
 export const dynamic = 'force-dynamic'
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
+    const authError = requireDashboardRequest(request)
+    if (authError) return authError
+
     const count = getTelosFileCount()
     const files = getTelosFileList()
 

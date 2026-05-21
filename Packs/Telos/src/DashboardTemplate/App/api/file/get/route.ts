@@ -1,10 +1,14 @@
 import { NextResponse } from "next/server"
-import { getAllTelosData } from "@/lib/telos-data"
+import { getAllTelosData } from "@/Lib/telos-data"
+import { requireDashboardRequest } from "@/Lib/dashboard-security"
 
 export const dynamic = 'force-dynamic'
 
 export async function GET(request: Request) {
   try {
+    const authError = requireDashboardRequest(request)
+    if (authError) return authError
+
     const { searchParams } = new URL(request.url)
     const filename = searchParams.get('filename')
 

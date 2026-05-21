@@ -15,7 +15,7 @@
  * @version 1.0.0
  */
 
-import { execSync } from 'child_process';
+import { execFileSync } from 'child_process';
 import { writeFileSync } from 'fs';
 
 const HELP = `
@@ -47,8 +47,35 @@ if (args.includes('--help') || args.length === 0) {
   process.exit(0);
 }
 
-// Find URL (first arg that looks like a URL)
-const url = args.find(arg => arg.includes('youtube.com') || arg.includes('youtu.be'));
+const YOUTUBE_HOSTS = new Set([
+  'youtube.com',
+  'www.youtube.com',
+  'm.youtube.com',
+  'music.youtube.com',
+  'youtu.be',
+]);
+
+function normalizeYouTubeUrl(value: string): string | null {
+  try {
+    const parsed = new URL(value);
+    const host = parsed.hostname.toLowerCase();
+
+    if (!YOUTUBE_HOSTS.has(host)) {
+      return null;
+    }
+
+    if (parsed.protocol !== 'https:' && parsed.protocol !== 'http:') {
+      return null;
+    }
+
+    return parsed.toString();
+  } catch {
+    return null;
+  }
+}
+
+// Find and validate the YouTube URL before passing it to fabric.
+const url = args.map(normalizeYouTubeUrl).find((value): value is string => value !== null);
 
 if (!url) {
   console.error('❌ Error: No YouTube URL provided');
@@ -64,7 +91,7 @@ const outputFile = saveIndex !== -1 ? args[saveIndex + 1] : null;
 console.log(`📺 Extracting transcript from: ${url}`);
 
 try {
-  const transcript = execSync(`fabric -y "${url}"`, {
+  const transcript = execFileSync('fabric', ['-y', url], {
     encoding: 'utf-8',
     timeout: 120000, // 2 minute timeout
     maxBuffer: 10 * 1024 * 1024 // 10MB buffer for long transcripts

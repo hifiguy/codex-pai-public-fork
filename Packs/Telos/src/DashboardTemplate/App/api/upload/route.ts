@@ -2,30 +2,32 @@ import { NextResponse } from "next/server"
 import fs from 'fs'
 import path from 'path'
 import os from 'os'
+import { requireDashboardRequest, resolveTelosFilePath } from "@/Lib/dashboard-security"
 
 const TELOS_DIR = path.join(os.homedir(), '.codex/skills/Telos')
 
 export async function POST(request: Request) {
   try {
-    const formData = await request.formData()
-    const file = formData.get('file') as File
+    const authError = requireDashboardRequest(request)
+    if (authError) return authError
 
-    if (!file) {
+    const formData = await request.formData()
+    const fileEntry = formData.get('file')
+
+    if (!(fileEntry instanceof File)) {
       return NextResponse.json(
         { error: "No file provided" },
         { status: 400 }
       )
     }
 
-    // Validate file type
-    const fileName = file.name
-    const isMarkdown = fileName.endsWith('.md')
-    const isCSV = fileName.endsWith('.csv')
+    const file = fileEntry
 
-    if (!isMarkdown && !isCSV) {
+    const target = resolveTelosFilePath(TELOS_DIR, file.name)
+    if ("error" in target) {
       return NextResponse.json(
-        { error: "Only .md and .csv files are allowed" },
-        { status: 400 }
+        { error: target.error },
+        { status: target.status }
       )
     }
 
@@ -39,33 +41,28 @@ export async function POST(request: Request) {
     }
 
     // Determine save path
-    let savePath: string
-    if (isCSV) {
+    if (target.isCSV) {
       // CSV files go in data subdirectory
       const csvDir = path.join(TELOS_DIR, 'data')
       if (!fs.existsSync(csvDir)) {
         fs.mkdirSync(csvDir, { recursive: true })
       }
-      savePath = path.join(csvDir, fileName)
-    } else {
-      // MD files go in root TELOS directory
-      savePath = path.join(TELOS_DIR, fileName)
     }
 
     // Check if file already exists
-    if (fs.existsSync(savePath)) {
+    if (fs.existsSync(target.filePath)) {
       return NextResponse.json(
-        { error: `File ${fileName} already exists. Please delete the existing file first or rename your file.` },
+        { error: `File ${target.filename} already exists. Please delete the existing file first or rename your file.` },
         { status: 409 }
       )
     }
 
     // Save file
-    fs.writeFileSync(savePath, buffer)
+    fs.writeFileSync(target.filePath, buffer)
 
     // Log the upload
     const timestamp = new Date().toISOString()
-    const logMessage = `\n## ${timestamp}\n\n- **Action:** File uploaded via dashboard\n- **File:** ${fileName}\n- **Type:** ${isCSV ? 'CSV' : 'Markdown'}\n- **Path:** ${savePath}\n`
+    const logMessage = `\n## ${timestamp}\n\n- **Action:** File uploaded via dashboard\n- **File:** ${target.filename}\n- **Type:** ${target.isCSV ? 'CSV' : 'Markdown'}\n- **Path:** ${target.filePath}\n`
 
     const updatesPath = path.join(TELOS_DIR, 'updates.md')
     if (fs.existsSync(updatesPath)) {
@@ -74,8 +71,8 @@ export async function POST(request: Request) {
 
     return NextResponse.json({
       success: true,
-      message: `${fileName} uploaded successfully to ${isCSV ? 'data/' : ''}`,
-      path: savePath,
+      message: `${target.filename} uploaded successfully to ${target.isCSV ? 'data/' : ''}`,
+      path: target.filePath,
     })
   } catch (error) {
     console.error("Error in upload API:", error)

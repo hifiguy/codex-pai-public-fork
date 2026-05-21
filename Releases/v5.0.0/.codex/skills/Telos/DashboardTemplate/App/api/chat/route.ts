@@ -1,12 +1,16 @@
 import { NextResponse } from "next/server"
-import { getTelosContext } from "@/lib/telos-data"
+import { getTelosContext } from "@/Lib/telos-data"
+import { requireDashboardRequest } from "@/Lib/dashboard-security"
 import { spawn } from "child_process"
 
 export async function POST(request: Request) {
   try {
-    const { message } = await request.json()
+    const authError = requireDashboardRequest(request)
+    if (authError) return authError
 
-    if (!message) {
+    const { message } = await request.json() as { message?: unknown }
+
+    if (typeof message !== "string" || message.length === 0) {
       return NextResponse.json(
         { error: "Message is required" },
         { status: 400 }
