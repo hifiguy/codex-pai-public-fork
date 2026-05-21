@@ -1,0 +1,75 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.Spotlight-V100
+.Trashes
+Library
+
+# Environment files
+.env
+.env.local
+.env.*.local
+*.env
+
+# API keys and secrets
+*.pem
+*.key
+*.cert
+*.p12
+*.pfx
+*_rsa
+*_rsa.pub
+*.crt
+*.cer
+
+# Logs
+*.log
+logs/
+Library/Logs/
+
+# Node/Bun
+node_modules/
+.npm
+.yarn
+.pnp.*
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Build outputs
+dist/
+build/
+out/
+
+# Re-include Pulse Observability built dashboard — must ship in public releases
+# so fresh installs get a working dashboard immediately. The `out/` rule above
+# is correct for repo-root build artifacts; this re-include scopes only to the
+# release directories.
+!Releases/*/.codex/PAI/PULSE/Observability/out/
+!Releases/*/.codex/PAI/PULSE/Observability/out/**
+
+# Cache
+.cache/
+*.cache
+
+# Personal/Private data
+private/
+secrets/
+credentials/
+
+# PAI Update System (sideloading)
+.codex/pai_updates/
+.codex/pai_backups/
+.codex/.pai-sync-history

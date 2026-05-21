@@ -1,0 +1,10 @@
+{
+  "typescript-language-server": {
+    "languages": ["typescript", "typescriptreact", "javascript", "javascriptreact"],
+    "initializationOptions": {
+      "preferences": {
+        "importModuleSpecifierPreference": "relative"
+      }
+    }
+  }
+}
