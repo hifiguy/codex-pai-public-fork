@@ -33,6 +33,20 @@ does not quietly imply completion where only the engine path has been proven.
   while using a patched Codex binary for the native footer. The persistent PAI
   status belongs in the native reserved footer; the startup banner remains a
   normal pre-TUI terminal banner and may scroll off.
+- Gemini TTS fallback behavior is documented for the Codex port. Public-safe
+  implementations should treat empty-audio responses and transient 5xx
+  responses as retryable per-model failures, cool down the failing model, and
+  continue to the next configured TTS model instead of silently stopping
+  fallback.
+- Gemini TTS request accounting should use both an aggregate daily guard and
+  per-model daily guards. The observed quota shape is one 50-call model and two
+  100-call models, so the public implementation should default to a 250-call
+  aggregate cap plus explicit `50 / 100 / 100` model caps unless Google changes
+  the published limits.
+- Gemini TTS request accounting must be persisted to a local runtime ledger so
+  restarting the daemon cannot reset the local guard and accidentally allow a
+  second round of daily API calls. Health output should expose aggregate count,
+  per-model counts, per-model limits, and currently cooled-down models.
 
 ## Open Migration Work
 
@@ -44,6 +58,11 @@ does not quietly imply completion where only the engine path has been proven.
   context-window usage, and rate-limit snapshots are sufficient. Do not place
   private identity, vault paths, credentials, transcript text, or personal
   catchphrases in public docs, default config, or example payloads.
+- Voice docs and examples should stay generic. Do not include private assistant
+  names, personal catchphrases, user-specific voice prompts, local machine
+  names, absolute home-directory paths, transcript excerpts, API keys, or
+  provider account details. Public examples should use placeholder voice IDs,
+  placeholder runtime paths, and generic notification text.
 
 ## Resolved
 
