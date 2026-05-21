@@ -15,7 +15,16 @@ observability = true
 
 [voice]
 enabled = false
-# voice_id = "YOUR_ELEVENLABS_VOICE_ID"
+# tts_backend = "gemini"
+# gemini_voice = "Leda"
+# gemini_daily_request_limit = 250
+# gemini_state_path = "/path/to/runtime/gemini-tts-state.json"
+# gemini_style_instructions = "Speak naturally and clearly."
+# Set GOOGLE_API_KEY, GEMINI_API_KEY, or GOOGLE_GENAI_API_KEY in your environment.
+#
+# ElevenLabs remains supported as an optional fallback/backend:
+# tts_backend = "elevenlabs"
+# default_voice_id = "YOUR_ELEVENLABS_VOICE_ID"
 # api_key_env = "ELEVENLABS_API_KEY"
 
 [notifications]

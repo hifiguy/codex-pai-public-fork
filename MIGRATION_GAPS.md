@@ -33,27 +33,34 @@ does not quietly imply completion where only the engine path has been proven.
   while using a patched Codex binary for the native footer. The persistent PAI
   status belongs in the native reserved footer; the startup banner remains a
   normal pre-TUI terminal banner and may scroll off.
-- Gemini TTS fallback behavior is documented for the Codex port. Public-safe
-  implementations should treat empty-audio responses and transient 5xx
-  responses as retryable per-model failures, cool down the failing model, and
-  continue to the next configured TTS model instead of silently stopping
-  fallback.
-- Gemini TTS request accounting should use both an aggregate daily guard and
-  per-model daily guards. The observed quota shape is one 50-call model and two
-  100-call models, so the public implementation should default to a 250-call
-  aggregate cap plus explicit `50 / 100 / 100` model caps unless Google changes
-  the published limits.
-- Gemini TTS request accounting must be persisted to a local runtime ledger so
+- Gemini TTS fallback behavior is implemented in the release voice module.
+  Empty-audio responses and transient 5xx responses are treated as retryable
+  per-model failures, the failing model is cooled down, and fallback continues
+  to the next configured TTS model.
+- Gemini TTS request accounting uses both an aggregate daily guard and
+  per-model daily guards. The default public guard is a 250-call aggregate cap
+  plus explicit `50 / 100 / 100` model caps unless Google changes the published
+  limits.
+- Gemini TTS request accounting is persisted to a local runtime ledger so
   restarting the daemon cannot reset the local guard and accidentally allow a
-  second round of daily API calls. Health output should expose aggregate count,
+  second round of daily API calls. Health output exposes aggregate count,
   per-model counts, per-model limits, and currently cooled-down models.
 
 ## Open Migration Work
+
+Current technical gap:
 
 - Upstream Codex does not currently ship native support for the multiline PAI
   footer described above. Until that support is upstreamed or packaged, the
   public fork should document the footer as a patched-binary capability rather
   than a guaranteed stock Codex feature.
+
+No other Claude-to-Codex migration gaps are currently documented in this file.
+New gaps should be added here only after reproducing the behavior against this
+public fork.
+
+## Public Release Safeguards
+
 - The Codex footer payload should stay generic: workspace path, model/version,
   context-window usage, and rate-limit snapshots are sufficient. Do not place
   private identity, vault paths, credentials, transcript text, or personal

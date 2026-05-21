@@ -14,8 +14,8 @@
  */
 
 import { spawn } from "child_process"
-import { join } from "path"
-import { existsSync, readFileSync } from "fs"
+import { dirname, join } from "path"
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs"
 import { log } from "../lib"
 
 // ── Public Config Interface ──
@@ -29,6 +29,8 @@ export interface VoiceConfig {
   gemini_voice?: string
   gemini_models?: string[]
   gemini_style_instructions?: string
+  gemini_daily_request_limit?: number
+  gemini_state_path?: string
   fallback_to_elevenlabs?: boolean
   pronunciations_path?: string
 }
@@ -97,6 +99,26 @@ const DEFAULT_GEMINI_MODELS = [
   "gemini-3.1-flash-tts-preview",
   "gemini-2.5-pro-preview-tts",
 ]
+const DEFAULT_GEMINI_DAILY_REQUEST_LIMIT = 250
+const GEMINI_MODEL_DAILY_LIMITS: Record<string, number> = {
+  "gemini-2.5-pro-preview-tts": 50,
+  "gemini-3.1-flash-tts-preview": 100,
+  "gemini-2.5-flash-preview-tts": 100,
+}
+const GEMINI_TRANSIENT_COOLDOWN_MS = 5 * 60 * 1000
+const GEMINI_RATE_LIMIT_COOLDOWN_MS = 60 * 60 * 1000
+
+interface GeminiTtsState {
+  date: string
+  total: number
+  byModel: Record<string, number>
+  blockedUntil: Record<string, number>
+}
+
+let geminiRequestDate = new Date().toISOString().slice(0, 10)
+let geminiRequestsToday = 0
+const geminiModelRequestsToday = new Map<string, number>()
+const geminiModelBlockedUntil = new Map<string, number>()
 
 const CORS_HEADERS = {
   "Access-Control-Allow-Origin": "http://localhost",
@@ -334,6 +356,136 @@ function normalizeVoiceBackend(): "gemini" | "elevenlabs" | null {
   return null
 }
 
+function todayKey(): string {
+  return new Date().toISOString().slice(0, 10)
+}
+
+function geminiStatePath(): string {
+  if (moduleConfig.gemini_state_path) return moduleConfig.gemini_state_path
+  const paiDir = process.env.PAI_DIR || join(process.env.HOME || ".", ".codex", "PAI")
+  return join(paiDir, "MEMORY", "VOICE", "gemini-tts-state.json")
+}
+
+function persistGeminiState(): void {
+  try {
+    const statePath = geminiStatePath()
+    mkdirSync(dirname(statePath), { recursive: true })
+    const state: GeminiTtsState = {
+      date: geminiRequestDate,
+      total: geminiRequestsToday,
+      byModel: Object.fromEntries(geminiModelRequestsToday.entries()),
+      blockedUntil: Object.fromEntries(geminiModelBlockedUntil.entries()),
+    }
+    writeFileSync(statePath, JSON.stringify(state, null, 2), "utf-8")
+  } catch (error) {
+    log("error", "Gemini TTS failed to persist local request ledger", { error: String(error) })
+  }
+}
+
+function loadGeminiState(): void {
+  const today = todayKey()
+  geminiRequestDate = today
+  geminiRequestsToday = 0
+  geminiModelRequestsToday.clear()
+  geminiModelBlockedUntil.clear()
+
+  try {
+    const statePath = geminiStatePath()
+    if (!existsSync(statePath)) {
+      persistGeminiState()
+      return
+    }
+
+    const state = JSON.parse(readFileSync(statePath, "utf-8")) as Partial<GeminiTtsState>
+    if (state.date !== today) {
+      persistGeminiState()
+      return
+    }
+
+    geminiRequestsToday = Number(state.total) || 0
+    for (const [model, count] of Object.entries(state.byModel ?? {})) {
+      geminiModelRequestsToday.set(model, Number(count) || 0)
+    }
+
+    const now = Date.now()
+    for (const [model, until] of Object.entries(state.blockedUntil ?? {})) {
+      const timestamp = Number(until) || 0
+      if (timestamp > now) geminiModelBlockedUntil.set(model, timestamp)
+    }
+  } catch (error) {
+    log("error", "Gemini TTS failed to load local request ledger", { error: String(error) })
+    persistGeminiState()
+  }
+}
+
+function resetGeminiBudgetIfNeeded(): void {
+  const today = todayKey()
+  if (today === geminiRequestDate) return
+  geminiRequestDate = today
+  geminiRequestsToday = 0
+  geminiModelRequestsToday.clear()
+  geminiModelBlockedUntil.clear()
+  persistGeminiState()
+}
+
+function geminiAggregateLimit(): number {
+  return moduleConfig.gemini_daily_request_limit ?? DEFAULT_GEMINI_DAILY_REQUEST_LIMIT
+}
+
+function assertGeminiModelAvailable(model: string): void {
+  resetGeminiBudgetIfNeeded()
+
+  const aggregateLimit = geminiAggregateLimit()
+  if (aggregateLimit > 0 && geminiRequestsToday >= aggregateLimit) {
+    throw new Error(`Gemini TTS local daily request guard reached (${geminiRequestsToday}/${aggregateLimit})`)
+  }
+
+  const unavailable = geminiModelUnavailableReason(model)
+  if (unavailable) throw new Error(unavailable)
+}
+
+function geminiModelUnavailableReason(model: string): string | null {
+  resetGeminiBudgetIfNeeded()
+
+  const blockedUntil = geminiModelBlockedUntil.get(model) ?? 0
+  if (blockedUntil > Date.now()) {
+    return `Gemini TTS model ${model} is cooling down until ${new Date(blockedUntil).toISOString()}`
+  }
+
+  const aggregateLimit = geminiAggregateLimit()
+  const modelLimit = GEMINI_MODEL_DAILY_LIMITS[model] ?? aggregateLimit
+  const modelCount = geminiModelRequestsToday.get(model) ?? 0
+  if (modelLimit > 0 && modelCount >= modelLimit) {
+    return `Gemini TTS local model daily request guard reached for ${model} (${modelCount}/${modelLimit})`
+  }
+
+  return null
+}
+
+function claimGeminiRequest(model: string): void {
+  assertGeminiModelAvailable(model)
+  geminiRequestsToday += 1
+  geminiModelRequestsToday.set(model, (geminiModelRequestsToday.get(model) ?? 0) + 1)
+  persistGeminiState()
+}
+
+function coolDownGeminiModel(model: string, durationMs: number): void {
+  geminiModelBlockedUntil.set(model, Date.now() + durationMs)
+  persistGeminiState()
+}
+
+function isGeminiRateLimit(error: Error): boolean {
+  return error.message.includes("429") || error.message.includes("RESOURCE_EXHAUSTED")
+}
+
+function isGeminiRetryable(error: Error): boolean {
+  return (
+    isGeminiRateLimit(error) ||
+    error.message.includes("Gemini TTS returned no audio data") ||
+    /\b5\d\d\b/.test(error.message)
+  )
+}
+
 function wavFromPcm16Le(pcm: Uint8Array, sampleRate = 24000, channels = 1): ArrayBuffer {
   const bytesPerSample = 2
   const header = new ArrayBuffer(44 + pcm.byteLength)
@@ -419,7 +571,15 @@ async function generateGeminiSpeech(text: string, voiceOverride?: string | null)
 
   let lastError: Error | null = null
   for (const model of models) {
+    const unavailable = geminiModelUnavailableReason(model)
+    if (unavailable) {
+      lastError = new Error(unavailable)
+      log("warn", unavailable)
+      continue
+    }
+
     try {
+      claimGeminiRequest(model)
       const response = await fetch(
         `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${encodeURIComponent(apiKey)}`,
         {
@@ -453,6 +613,7 @@ async function generateGeminiSpeech(text: string, voiceOverride?: string | null)
       if (!inlineData?.data) throw new Error(`Gemini TTS returned no audio data from ${model}`)
 
       const audioBytes = Buffer.from(inlineData.data, "base64")
+      if (audioBytes.byteLength === 0) throw new Error(`Gemini TTS returned empty audio data from ${model}`)
       const mimeType = inlineData.mimeType ?? ""
       if (mimeType.includes("wav")) return { buffer: audioBytes.buffer.slice(audioBytes.byteOffset, audioBytes.byteOffset + audioBytes.byteLength), extension: "wav" }
 
@@ -460,8 +621,10 @@ async function generateGeminiSpeech(text: string, voiceOverride?: string | null)
       return { buffer: wav, extension: "wav" }
     } catch (error) {
       lastError = error instanceof Error ? error : new Error(String(error))
-      if (lastError.message.includes("429") || lastError.message.includes("RESOURCE_EXHAUSTED")) {
-        log("warn", `Gemini TTS quota/rate limit on ${model}; trying next model`)
+      if (isGeminiRetryable(lastError)) {
+        const cooldownMs = isGeminiRateLimit(lastError) ? GEMINI_RATE_LIMIT_COOLDOWN_MS : GEMINI_TRANSIENT_COOLDOWN_MS
+        coolDownGeminiModel(model, cooldownMs)
+        log("warn", `Gemini TTS retryable failure on ${model}; trying next model`, { error: lastError.message })
         continue
       }
       throw lastError
@@ -678,6 +841,10 @@ export function startVoice(config: VoiceConfig): void {
   // Resolve default voice ID: config override → settings.json → hardcoded fallback
   defaultVoiceId = config.default_voice_id || voiceConfig.defaultVoiceId || "s3TPKV1kjDlVtZbl4Ksh"
 
+  if (backend === "gemini") {
+    loadGeminiState()
+  }
+
   initialized = true
   log("info", "Voice module: initialized", {
     backend,
@@ -700,6 +867,13 @@ export function voiceHealth(): Record<string, unknown> {
     voice_system: normalizeVoiceBackend() ?? "none",
     default_voice_id: defaultVoiceId,
     gemini_voice: moduleConfig.gemini_voice || DEFAULT_GEMINI_VOICE,
+    gemini_requests_today: geminiRequestsToday,
+    gemini_daily_request_limit: geminiAggregateLimit(),
+    gemini_model_request_limits: GEMINI_MODEL_DAILY_LIMITS,
+    gemini_model_requests_today: Object.fromEntries(geminiModelRequestsToday.entries()),
+    gemini_blocked_models: Object.fromEntries(
+      Array.from(geminiModelBlockedUntil.entries()).filter(([, until]) => until > Date.now()),
+    ),
     google_api_key_configured: !!moduleConfig.google_api_key,
     elevenlabs_api_key_configured: !!moduleConfig.elevenlabs_api_key,
     api_key_configured: !!(moduleConfig.google_api_key || moduleConfig.elevenlabs_api_key),
