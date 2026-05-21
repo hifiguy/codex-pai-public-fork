@@ -131,6 +131,17 @@ function commandExists(command: string): boolean {
   return spawnSync(["/usr/bin/env", "which", command], { stdout: "ignore", stderr: "ignore" }).exitCode === 0;
 }
 
+function canAttemptPersistentStatus(): boolean {
+  const term = process.env.TERM ?? "";
+  return process.env.PAI_PERSISTENT_STATUS !== "0" &&
+    process.stdin.isTTY &&
+    process.stdout.isTTY &&
+    process.stderr.isTTY &&
+    term !== "" &&
+    term !== "dumb" &&
+    commandExists("expect");
+}
+
 function getTerminalSize(): { rows: number; cols: number } | null {
   const result = spawnSync(["/bin/sh", "-lc", "stty size < /dev/tty"], { stdout: "pipe", stderr: "ignore" });
   if (result.exitCode !== 0) return null;
@@ -196,16 +207,7 @@ async function spawnCodex(args: string[], env: Record<string, string | undefined
 }
 
 async function spawnCodexWithPersistentStatus(args: string[], env: Record<string, string | undefined>, cwd: string) {
-  const term = process.env.TERM ?? "";
-  if (
-    process.env.PAI_PERSISTENT_STATUS === "0" ||
-    !process.stdin.isTTY ||
-    !process.stdout.isTTY ||
-    !process.stderr.isTTY ||
-    term === "" ||
-    term === "dumb" ||
-    !commandExists("expect")
-  ) {
+  if (!canAttemptPersistentStatus()) {
     return await spawnCodex(args, env, cwd);
   }
 
@@ -242,12 +244,11 @@ async function spawnCodexWithPersistentStatus(args: string[], env: Record<string
     paintStatusBlock(lines.length ? lines : initialLines, topRows, reservedRows);
   };
 
-  process.stdout.write("\x1b[?25l");
+  process.stdout.write("\x1b[2J\x1b[H\x1b[?25l");
   repaint();
   const timer = setInterval(repaint, 2000);
 
-  const wrappedArgs = ["codex", "-c", "tui.status_line=[]", ...args.slice(1)];
-  const proc = spawn(["expect", expectPath, String(topRows), String(size.cols), "--", ...wrappedArgs], {
+  const proc = spawn(["expect", expectPath, String(topRows), String(size.cols), "--", ...args], {
     stdio: ["inherit", "inherit", "inherit"],
     env: {
       ...env,
@@ -550,7 +551,9 @@ async function cmdLaunch(options: { mcp?: string; resume?: boolean; skipPerms?: 
   // Algorithm spec is loaded on-demand when Algorithm mode triggers.
   // (InstantiatePAI.ts is retired — kept for reference only)
 
-  displayBanner();
+  if (!canAttemptPersistentStatus()) {
+    displayBanner();
+  }
   const args = ["codex"];
 
   // PAI operating instructions are sent as the initial prompt. Current Codex
