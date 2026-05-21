@@ -9,8 +9,8 @@
 ### Check SKILL.md exists
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
-[ -f "$CLAUDE_DIR/skills/Investigation/SKILL.md" ] && echo "OK SKILL.md" || echo "MISSING SKILL.md"
+ENGINE_DIR="$HOME/.codex"
+[ -f "$ENGINE_DIR/skills/Investigation/SKILL.md" ] && echo "OK SKILL.md" || echo "MISSING SKILL.md"
 ```
 
 **Expected:** SKILL.md present at `~/.codex/skills/Investigation/SKILL.md`.
@@ -18,9 +18,9 @@ CLAUDE_DIR="$HOME/.codex"
 ### Check OSINT sub-skill directories
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
-[ -d "$CLAUDE_DIR/skills/Investigation/OSINT" ] && echo "OK OSINT/" || echo "MISSING OSINT/"
-[ -d "$CLAUDE_DIR/skills/Investigation/OSINT/Workflows" ] && echo "OK OSINT/Workflows/" || echo "MISSING OSINT/Workflows/"
+ENGINE_DIR="$HOME/.codex"
+[ -d "$ENGINE_DIR/skills/Investigation/OSINT" ] && echo "OK OSINT/" || echo "MISSING OSINT/"
+[ -d "$ENGINE_DIR/skills/Investigation/OSINT/Workflows" ] && echo "OK OSINT/Workflows/" || echo "MISSING OSINT/Workflows/"
 ```
 
 **Expected:** Both directories present (if OSINT was selected for installation).
@@ -28,9 +28,9 @@ CLAUDE_DIR="$HOME/.codex"
 ### Check PrivateInvestigator sub-skill directories
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
-[ -d "$CLAUDE_DIR/skills/Investigation/PrivateInvestigator" ] && echo "OK PrivateInvestigator/" || echo "MISSING PrivateInvestigator/"
-[ -d "$CLAUDE_DIR/skills/Investigation/PrivateInvestigator/Workflows" ] && echo "OK PrivateInvestigator/Workflows/" || echo "MISSING PrivateInvestigator/Workflows/"
+ENGINE_DIR="$HOME/.codex"
+[ -d "$ENGINE_DIR/skills/Investigation/PrivateInvestigator" ] && echo "OK PrivateInvestigator/" || echo "MISSING PrivateInvestigator/"
+[ -d "$ENGINE_DIR/skills/Investigation/PrivateInvestigator/Workflows" ] && echo "OK PrivateInvestigator/Workflows/" || echo "MISSING PrivateInvestigator/Workflows/"
 ```
 
 **Expected:** Both directories present (if PrivateInvestigator was selected for installation).
@@ -38,26 +38,26 @@ CLAUDE_DIR="$HOME/.codex"
 ### Check OSINT files exist
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
+ENGINE_DIR="$HOME/.codex"
 
 echo "OSINT core files..."
-[ -f "$CLAUDE_DIR/skills/Investigation/OSINT/SKILL.md" ] && echo "OK OSINT/SKILL.md" || echo "MISSING OSINT/SKILL.md"
-[ -f "$CLAUDE_DIR/skills/Investigation/OSINT/SOURCES.JSON" ] && echo "OK SOURCES.JSON" || echo "MISSING SOURCES.JSON"
-[ -f "$CLAUDE_DIR/skills/Investigation/OSINT/SOURCES.md" ] && echo "OK SOURCES.md" || echo "MISSING SOURCES.md"
-[ -f "$CLAUDE_DIR/skills/Investigation/OSINT/EthicalFramework.md" ] && echo "OK EthicalFramework.md" || echo "MISSING EthicalFramework.md"
-[ -f "$CLAUDE_DIR/skills/Investigation/OSINT/Methodology.md" ] && echo "OK Methodology.md" || echo "MISSING Methodology.md"
-[ -f "$CLAUDE_DIR/skills/Investigation/OSINT/PeopleTools.md" ] && echo "OK PeopleTools.md" || echo "MISSING PeopleTools.md"
-[ -f "$CLAUDE_DIR/skills/Investigation/OSINT/CompanyTools.md" ] && echo "OK CompanyTools.md" || echo "MISSING CompanyTools.md"
-[ -f "$CLAUDE_DIR/skills/Investigation/OSINT/EntityTools.md" ] && echo "OK EntityTools.md" || echo "MISSING EntityTools.md"
+[ -f "$ENGINE_DIR/skills/Investigation/OSINT/SKILL.md" ] && echo "OK OSINT/SKILL.md" || echo "MISSING OSINT/SKILL.md"
+[ -f "$ENGINE_DIR/skills/Investigation/OSINT/SOURCES.JSON" ] && echo "OK SOURCES.JSON" || echo "MISSING SOURCES.JSON"
+[ -f "$ENGINE_DIR/skills/Investigation/OSINT/SOURCES.md" ] && echo "OK SOURCES.md" || echo "MISSING SOURCES.md"
+[ -f "$ENGINE_DIR/skills/Investigation/OSINT/EthicalFramework.md" ] && echo "OK EthicalFramework.md" || echo "MISSING EthicalFramework.md"
+[ -f "$ENGINE_DIR/skills/Investigation/OSINT/Methodology.md" ] && echo "OK Methodology.md" || echo "MISSING Methodology.md"
+[ -f "$ENGINE_DIR/skills/Investigation/OSINT/PeopleTools.md" ] && echo "OK PeopleTools.md" || echo "MISSING PeopleTools.md"
+[ -f "$ENGINE_DIR/skills/Investigation/OSINT/CompanyTools.md" ] && echo "OK CompanyTools.md" || echo "MISSING CompanyTools.md"
+[ -f "$ENGINE_DIR/skills/Investigation/OSINT/EntityTools.md" ] && echo "OK EntityTools.md" || echo "MISSING EntityTools.md"
 
 echo "OSINT workflows..."
-[ -f "$CLAUDE_DIR/skills/Investigation/OSINT/Workflows/PeopleLookup.md" ] && echo "OK PeopleLookup.md" || echo "MISSING PeopleLookup.md"
-[ -f "$CLAUDE_DIR/skills/Investigation/OSINT/Workflows/CompanyLookup.md" ] && echo "OK CompanyLookup.md" || echo "MISSING CompanyLookup.md"
-[ -f "$CLAUDE_DIR/skills/Investigation/OSINT/Workflows/CompanyDueDiligence.md" ] && echo "OK CompanyDueDiligence.md" || echo "MISSING CompanyDueDiligence.md"
-[ -f "$CLAUDE_DIR/skills/Investigation/OSINT/Workflows/EntityLookup.md" ] && echo "OK EntityLookup.md" || echo "MISSING EntityLookup.md"
-[ -f "$CLAUDE_DIR/skills/Investigation/OSINT/Workflows/DomainLookup.md" ] && echo "OK DomainLookup.md" || echo "MISSING DomainLookup.md"
-[ -f "$CLAUDE_DIR/skills/Investigation/OSINT/Workflows/OrganizationLookup.md" ] && echo "OK OrganizationLookup.md" || echo "MISSING OrganizationLookup.md"
-[ -f "$CLAUDE_DIR/skills/Investigation/OSINT/Workflows/DiscoverOSINTSources.md" ] && echo "OK DiscoverOSINTSources.md" || echo "MISSING DiscoverOSINTSources.md"
+[ -f "$ENGINE_DIR/skills/Investigation/OSINT/Workflows/PeopleLookup.md" ] && echo "OK PeopleLookup.md" || echo "MISSING PeopleLookup.md"
+[ -f "$ENGINE_DIR/skills/Investigation/OSINT/Workflows/CompanyLookup.md" ] && echo "OK CompanyLookup.md" || echo "MISSING CompanyLookup.md"
+[ -f "$ENGINE_DIR/skills/Investigation/OSINT/Workflows/CompanyDueDiligence.md" ] && echo "OK CompanyDueDiligence.md" || echo "MISSING CompanyDueDiligence.md"
+[ -f "$ENGINE_DIR/skills/Investigation/OSINT/Workflows/EntityLookup.md" ] && echo "OK EntityLookup.md" || echo "MISSING EntityLookup.md"
+[ -f "$ENGINE_DIR/skills/Investigation/OSINT/Workflows/DomainLookup.md" ] && echo "OK DomainLookup.md" || echo "MISSING DomainLookup.md"
+[ -f "$ENGINE_DIR/skills/Investigation/OSINT/Workflows/OrganizationLookup.md" ] && echo "OK OrganizationLookup.md" || echo "MISSING OrganizationLookup.md"
+[ -f "$ENGINE_DIR/skills/Investigation/OSINT/Workflows/DiscoverOSINTSources.md" ] && echo "OK DiscoverOSINTSources.md" || echo "MISSING DiscoverOSINTSources.md"
 ```
 
 **Expected:** All 15 OSINT files present (if OSINT was selected).
@@ -65,17 +65,17 @@ echo "OSINT workflows..."
 ### Check PrivateInvestigator files exist
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
+ENGINE_DIR="$HOME/.codex"
 
 echo "PrivateInvestigator core files..."
-[ -f "$CLAUDE_DIR/skills/Investigation/PrivateInvestigator/SKILL.md" ] && echo "OK PI/SKILL.md" || echo "MISSING PI/SKILL.md"
+[ -f "$ENGINE_DIR/skills/Investigation/PrivateInvestigator/SKILL.md" ] && echo "OK PI/SKILL.md" || echo "MISSING PI/SKILL.md"
 
 echo "PrivateInvestigator workflows..."
-[ -f "$CLAUDE_DIR/skills/Investigation/PrivateInvestigator/Workflows/FindPerson.md" ] && echo "OK FindPerson.md" || echo "MISSING FindPerson.md"
-[ -f "$CLAUDE_DIR/skills/Investigation/PrivateInvestigator/Workflows/SocialMediaSearch.md" ] && echo "OK SocialMediaSearch.md" || echo "MISSING SocialMediaSearch.md"
-[ -f "$CLAUDE_DIR/skills/Investigation/PrivateInvestigator/Workflows/PublicRecordsSearch.md" ] && echo "OK PublicRecordsSearch.md" || echo "MISSING PublicRecordsSearch.md"
-[ -f "$CLAUDE_DIR/skills/Investigation/PrivateInvestigator/Workflows/ReverseLookup.md" ] && echo "OK ReverseLookup.md" || echo "MISSING ReverseLookup.md"
-[ -f "$CLAUDE_DIR/skills/Investigation/PrivateInvestigator/Workflows/VerifyIdentity.md" ] && echo "OK VerifyIdentity.md" || echo "MISSING VerifyIdentity.md"
+[ -f "$ENGINE_DIR/skills/Investigation/PrivateInvestigator/Workflows/FindPerson.md" ] && echo "OK FindPerson.md" || echo "MISSING FindPerson.md"
+[ -f "$ENGINE_DIR/skills/Investigation/PrivateInvestigator/Workflows/SocialMediaSearch.md" ] && echo "OK SocialMediaSearch.md" || echo "MISSING SocialMediaSearch.md"
+[ -f "$ENGINE_DIR/skills/Investigation/PrivateInvestigator/Workflows/PublicRecordsSearch.md" ] && echo "OK PublicRecordsSearch.md" || echo "MISSING PublicRecordsSearch.md"
+[ -f "$ENGINE_DIR/skills/Investigation/PrivateInvestigator/Workflows/ReverseLookup.md" ] && echo "OK ReverseLookup.md" || echo "MISSING ReverseLookup.md"
+[ -f "$ENGINE_DIR/skills/Investigation/PrivateInvestigator/Workflows/VerifyIdentity.md" ] && echo "OK VerifyIdentity.md" || echo "MISSING VerifyIdentity.md"
 ```
 
 **Expected:** All 6 PrivateInvestigator files present (if PrivateInvestigator was selected).
@@ -83,25 +83,25 @@ echo "PrivateInvestigator workflows..."
 ### Check frontmatter is valid
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
+ENGINE_DIR="$HOME/.codex"
 
 echo "Checking top-level SKILL.md..."
-if [ -f "$CLAUDE_DIR/skills/Investigation/SKILL.md" ]; then
-  head -1 "$CLAUDE_DIR/skills/Investigation/SKILL.md" | grep -q "^---" && echo "OK Has frontmatter opener" || echo "ERROR Missing frontmatter"
-  grep -q "^name:" "$CLAUDE_DIR/skills/Investigation/SKILL.md" && echo "OK Has name field" || echo "ERROR Missing name field"
-  grep -q "^description:" "$CLAUDE_DIR/skills/Investigation/SKILL.md" && echo "OK Has description field" || echo "ERROR Missing description"
+if [ -f "$ENGINE_DIR/skills/Investigation/SKILL.md" ]; then
+  head -1 "$ENGINE_DIR/skills/Investigation/SKILL.md" | grep -q "^---" && echo "OK Has frontmatter opener" || echo "ERROR Missing frontmatter"
+  grep -q "^name:" "$ENGINE_DIR/skills/Investigation/SKILL.md" && echo "OK Has name field" || echo "ERROR Missing name field"
+  grep -q "^description:" "$ENGINE_DIR/skills/Investigation/SKILL.md" && echo "OK Has description field" || echo "ERROR Missing description"
 fi
 
 echo "Checking OSINT SKILL.md..."
-if [ -f "$CLAUDE_DIR/skills/Investigation/OSINT/SKILL.md" ]; then
-  head -1 "$CLAUDE_DIR/skills/Investigation/OSINT/SKILL.md" | grep -q "^---" && echo "OK Has frontmatter opener" || echo "ERROR Missing frontmatter"
-  grep -q "^name:" "$CLAUDE_DIR/skills/Investigation/OSINT/SKILL.md" && echo "OK Has name field" || echo "ERROR Missing name field"
+if [ -f "$ENGINE_DIR/skills/Investigation/OSINT/SKILL.md" ]; then
+  head -1 "$ENGINE_DIR/skills/Investigation/OSINT/SKILL.md" | grep -q "^---" && echo "OK Has frontmatter opener" || echo "ERROR Missing frontmatter"
+  grep -q "^name:" "$ENGINE_DIR/skills/Investigation/OSINT/SKILL.md" && echo "OK Has name field" || echo "ERROR Missing name field"
 fi
 
 echo "Checking PrivateInvestigator SKILL.md..."
-if [ -f "$CLAUDE_DIR/skills/Investigation/PrivateInvestigator/SKILL.md" ]; then
-  head -1 "$CLAUDE_DIR/skills/Investigation/PrivateInvestigator/SKILL.md" | grep -q "^---" && echo "OK Has frontmatter opener" || echo "ERROR Missing frontmatter"
-  grep -q "^name:" "$CLAUDE_DIR/skills/Investigation/PrivateInvestigator/SKILL.md" && echo "OK Has name field" || echo "ERROR Missing name field"
+if [ -f "$ENGINE_DIR/skills/Investigation/PrivateInvestigator/SKILL.md" ]; then
+  head -1 "$ENGINE_DIR/skills/Investigation/PrivateInvestigator/SKILL.md" | grep -q "^---" && echo "OK Has frontmatter opener" || echo "ERROR Missing frontmatter"
+  grep -q "^name:" "$ENGINE_DIR/skills/Investigation/PrivateInvestigator/SKILL.md" && echo "OK Has name field" || echo "ERROR Missing name field"
 fi
 ```
 
@@ -110,28 +110,28 @@ fi
 ### Check skill content is complete
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
+ENGINE_DIR="$HOME/.codex"
 
 echo "Checking top-level routing..."
-if [ -f "$CLAUDE_DIR/skills/Investigation/SKILL.md" ]; then
-  grep -q "Workflow Routing" "$CLAUDE_DIR/skills/Investigation/SKILL.md" && echo "  OK Has workflow routing" || echo "  ERROR Missing workflow routing"
-  grep -q "OSINT" "$CLAUDE_DIR/skills/Investigation/SKILL.md" && echo "  OK References OSINT" || echo "  ERROR Missing OSINT reference"
-  grep -q "PrivateInvestigator" "$CLAUDE_DIR/skills/Investigation/SKILL.md" && echo "  OK References PrivateInvestigator" || echo "  ERROR Missing PrivateInvestigator reference"
+if [ -f "$ENGINE_DIR/skills/Investigation/SKILL.md" ]; then
+  grep -q "Workflow Routing" "$ENGINE_DIR/skills/Investigation/SKILL.md" && echo "  OK Has workflow routing" || echo "  ERROR Missing workflow routing"
+  grep -q "OSINT" "$ENGINE_DIR/skills/Investigation/SKILL.md" && echo "  OK References OSINT" || echo "  ERROR Missing OSINT reference"
+  grep -q "PrivateInvestigator" "$ENGINE_DIR/skills/Investigation/SKILL.md" && echo "  OK References PrivateInvestigator" || echo "  ERROR Missing PrivateInvestigator reference"
 fi
 
 echo "Checking OSINT content..."
-if [ -f "$CLAUDE_DIR/skills/Investigation/OSINT/SKILL.md" ]; then
-  grep -q "Workflow Routing" "$CLAUDE_DIR/skills/Investigation/OSINT/SKILL.md" && echo "  OK Has workflow routing" || echo "  ERROR Missing workflow routing"
-  grep -q "SOURCES.JSON" "$CLAUDE_DIR/skills/Investigation/OSINT/SKILL.md" && echo "  OK References SOURCES.JSON" || echo "  ERROR Missing SOURCES.JSON reference"
-  grep -q "Authorization" "$CLAUDE_DIR/skills/Investigation/OSINT/SKILL.md" && echo "  OK Has authorization requirements" || echo "  ERROR Missing authorization"
-  grep -q "EthicalFramework" "$CLAUDE_DIR/skills/Investigation/OSINT/SKILL.md" && echo "  OK References EthicalFramework" || echo "  ERROR Missing EthicalFramework reference"
+if [ -f "$ENGINE_DIR/skills/Investigation/OSINT/SKILL.md" ]; then
+  grep -q "Workflow Routing" "$ENGINE_DIR/skills/Investigation/OSINT/SKILL.md" && echo "  OK Has workflow routing" || echo "  ERROR Missing workflow routing"
+  grep -q "SOURCES.JSON" "$ENGINE_DIR/skills/Investigation/OSINT/SKILL.md" && echo "  OK References SOURCES.JSON" || echo "  ERROR Missing SOURCES.JSON reference"
+  grep -q "Authorization" "$ENGINE_DIR/skills/Investigation/OSINT/SKILL.md" && echo "  OK Has authorization requirements" || echo "  ERROR Missing authorization"
+  grep -q "EthicalFramework" "$ENGINE_DIR/skills/Investigation/OSINT/SKILL.md" && echo "  OK References EthicalFramework" || echo "  ERROR Missing EthicalFramework reference"
 fi
 
 echo "Checking PrivateInvestigator content..."
-if [ -f "$CLAUDE_DIR/skills/Investigation/PrivateInvestigator/SKILL.md" ]; then
-  grep -q "PUBLIC DATA ONLY" "$CLAUDE_DIR/skills/Investigation/PrivateInvestigator/SKILL.md" && echo "  OK Has public data requirement" || echo "  ERROR Missing public data requirement"
-  grep -q "FindPerson" "$CLAUDE_DIR/skills/Investigation/PrivateInvestigator/SKILL.md" && echo "  OK References FindPerson workflow" || echo "  ERROR Missing workflow reference"
-  grep -q "Confidence Scoring" "$CLAUDE_DIR/skills/Investigation/PrivateInvestigator/SKILL.md" && echo "  OK Has confidence scoring" || echo "  ERROR Missing confidence scoring"
+if [ -f "$ENGINE_DIR/skills/Investigation/PrivateInvestigator/SKILL.md" ]; then
+  grep -q "PUBLIC DATA ONLY" "$ENGINE_DIR/skills/Investigation/PrivateInvestigator/SKILL.md" && echo "  OK Has public data requirement" || echo "  ERROR Missing public data requirement"
+  grep -q "FindPerson" "$ENGINE_DIR/skills/Investigation/PrivateInvestigator/SKILL.md" && echo "  OK References FindPerson workflow" || echo "  ERROR Missing workflow reference"
+  grep -q "Confidence Scoring" "$ENGINE_DIR/skills/Investigation/PrivateInvestigator/SKILL.md" && echo "  OK Has confidence scoring" || echo "  ERROR Missing confidence scoring"
 fi
 ```
 
@@ -144,13 +144,13 @@ fi
 These checks are NOT blocking -- the skill works without these, but investigation capability improves with them.
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
+ENGINE_DIR="$HOME/.codex"
 
 echo "Enhancements:"
-[ -d "$CLAUDE_DIR/skills/Research" ] && echo "  AVAILABLE Research skill (parallel agent deployment)" || echo "  UNAVAILABLE Research skill (investigations still work, fewer parallel threads)"
-[ -d "$CLAUDE_DIR/skills/Agents" ] && echo "  AVAILABLE Agents skill (custom agent composition)" || echo "  UNAVAILABLE Agents skill (uses default agent types)"
-[ -d "$CLAUDE_DIR/PAI/USER/SKILLCUSTOMIZATIONS/OSINT" ] && echo "  AVAILABLE OSINT user customizations" || echo "  INFO No OSINT customizations (optional)"
-[ -d "$CLAUDE_DIR/PAI/USER/SKILLCUSTOMIZATIONS/PrivateInvestigator" ] && echo "  AVAILABLE PI user customizations" || echo "  INFO No PI customizations (optional)"
+[ -d "$ENGINE_DIR/skills/Research" ] && echo "  AVAILABLE Research skill (parallel agent deployment)" || echo "  UNAVAILABLE Research skill (investigations still work, fewer parallel threads)"
+[ -d "$ENGINE_DIR/skills/Agents" ] && echo "  AVAILABLE Agents skill (custom agent composition)" || echo "  UNAVAILABLE Agents skill (uses default agent types)"
+[ -d "$ENGINE_DIR/PAI/USER/SKILLCUSTOMIZATIONS/OSINT" ] && echo "  AVAILABLE OSINT user customizations" || echo "  INFO No OSINT customizations (optional)"
+[ -d "$ENGINE_DIR/PAI/USER/SKILLCUSTOMIZATIONS/PrivateInvestigator" ] && echo "  AVAILABLE PI user customizations" || echo "  INFO No PI customizations (optional)"
 ```
 
 ---

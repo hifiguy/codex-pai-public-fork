@@ -38,34 +38,34 @@ Let me analyze your system and guide you through installation."
 
 ```bash
 # Check for ChatGPT Codex skills directory
-CLAUDE_DIR="$HOME/.codex"
-echo "Claude directory: $CLAUDE_DIR"
+ENGINE_DIR="$HOME/.codex"
+echo "Engine directory: $ENGINE_DIR"
 
 # Check if skills directory exists
-if [ -d "$CLAUDE_DIR/skills" ]; then
-  echo "OK Skills directory exists at: $CLAUDE_DIR/skills"
+if [ -d "$ENGINE_DIR/skills" ]; then
+  echo "OK Skills directory exists at: $ENGINE_DIR/skills"
 else
   echo "INFO Skills directory does not exist (will be created)"
 fi
 
 # Check for existing Research skill
-if [ -d "$CLAUDE_DIR/skills/Research" ]; then
-  echo "WARNING Existing Research skill found at: $CLAUDE_DIR/skills/Research"
-  ls -la "$CLAUDE_DIR/skills/Research/" 2>/dev/null
+if [ -d "$ENGINE_DIR/skills/Research" ]; then
+  echo "WARNING Existing Research skill found at: $ENGINE_DIR/skills/Research"
+  ls -la "$ENGINE_DIR/skills/Research/" 2>/dev/null
 else
   echo "OK No existing Research skill (clean install)"
 fi
 
 # Check for Workflows subdirectory
-if [ -d "$CLAUDE_DIR/skills/Research/Workflows" ]; then
+if [ -d "$ENGINE_DIR/skills/Research/Workflows" ]; then
   echo "WARNING Existing Workflows directory found"
-  ls -1 "$CLAUDE_DIR/skills/Research/Workflows/"*.md 2>/dev/null | wc -l | tr -d ' '
+  ls -1 "$ENGINE_DIR/skills/Research/Workflows/"*.md 2>/dev/null | wc -l | tr -d ' '
 else
   echo "OK No existing Workflows directory"
 fi
 
 # Check for Templates subdirectory
-if [ -d "$CLAUDE_DIR/skills/Research/Templates" ]; then
+if [ -d "$ENGINE_DIR/skills/Research/Templates" ]; then
   echo "WARNING Existing Templates directory found"
 else
   echo "OK No existing Templates directory"
@@ -88,14 +88,14 @@ else
 fi
 
 # Check for PAI MEMORY structure
-if [ -d "$CLAUDE_DIR/MEMORY" ]; then
+if [ -d "$ENGINE_DIR/MEMORY" ]; then
   echo "OK PAI MEMORY directory exists (research artifacts will be stored)"
 else
   echo "INFO PAI MEMORY not found (research output will use working directory)"
 fi
 
 # Check for user customizations
-if [ -d "$CLAUDE_DIR/PAI/USER/SKILLCUSTOMIZATIONS/Research" ]; then
+if [ -d "$ENGINE_DIR/PAI/USER/SKILLCUSTOMIZATIONS/Research" ]; then
   echo "OK Research customizations found"
 else
   echo "INFO No Research customizations (skill will use defaults)"
@@ -185,13 +185,13 @@ Then re-ask the final confirmation question.
 **Only execute if user chose "Backup and Replace":**
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
-BACKUP_DIR="$CLAUDE_DIR/Backups/research-skill-$(date +%Y%m%d-%H%M%S)"
+ENGINE_DIR="$HOME/.codex"
+BACKUP_DIR="$ENGINE_DIR/Backups/research-skill-$(date +%Y%m%d-%H%M%S)"
 mkdir -p "$BACKUP_DIR"
 
 # Backup existing Research skill
-if [ -d "$CLAUDE_DIR/skills/Research" ]; then
-  cp -R "$CLAUDE_DIR/skills/Research" "$BACKUP_DIR/Research"
+if [ -d "$ENGINE_DIR/skills/Research" ]; then
+  cp -R "$ENGINE_DIR/skills/Research" "$BACKUP_DIR/Research"
   echo "Backed up Research skill to: $BACKUP_DIR/Research"
 fi
 
@@ -219,10 +219,10 @@ echo "Backup created at: $BACKUP_DIR"
 **Mark todo "Create skill directory structure" as in_progress.**
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
-mkdir -p "$CLAUDE_DIR/skills/Research"
-mkdir -p "$CLAUDE_DIR/skills/Research/Workflows"
-mkdir -p "$CLAUDE_DIR/skills/Research/Templates"
+ENGINE_DIR="$HOME/.codex"
+mkdir -p "$ENGINE_DIR/skills/Research"
+mkdir -p "$ENGINE_DIR/skills/Research/Workflows"
+mkdir -p "$ENGINE_DIR/skills/Research/Templates"
 echo "Directory structure created"
 ```
 
@@ -234,19 +234,19 @@ echo "Directory structure created"
 
 ```bash
 PACK_DIR="$(pwd)"
-CLAUDE_DIR="$HOME/.codex"
+ENGINE_DIR="$HOME/.codex"
 
 # Copy top-level files
-cp "$PACK_DIR/src/SKILL.md" "$CLAUDE_DIR/skills/Research/SKILL.md"
-cp "$PACK_DIR/src/QuickReference.md" "$CLAUDE_DIR/skills/Research/QuickReference.md"
-cp "$PACK_DIR/src/UrlVerificationProtocol.md" "$CLAUDE_DIR/skills/Research/UrlVerificationProtocol.md"
-cp "$PACK_DIR/src/MigrationNotes.md" "$CLAUDE_DIR/skills/Research/MigrationNotes.md"
+cp "$PACK_DIR/src/SKILL.md" "$ENGINE_DIR/skills/Research/SKILL.md"
+cp "$PACK_DIR/src/QuickReference.md" "$ENGINE_DIR/skills/Research/QuickReference.md"
+cp "$PACK_DIR/src/UrlVerificationProtocol.md" "$ENGINE_DIR/skills/Research/UrlVerificationProtocol.md"
+cp "$PACK_DIR/src/MigrationNotes.md" "$ENGINE_DIR/skills/Research/MigrationNotes.md"
 
 # Copy all workflows
-cp "$PACK_DIR/src/Workflows/"*.md "$CLAUDE_DIR/skills/Research/Workflows/"
+cp "$PACK_DIR/src/Workflows/"*.md "$ENGINE_DIR/skills/Research/Workflows/"
 
 # Copy all templates
-cp "$PACK_DIR/src/Templates/"*.md "$CLAUDE_DIR/skills/Research/Templates/"
+cp "$PACK_DIR/src/Templates/"*.md "$ENGINE_DIR/skills/Research/Templates/"
 
 echo "All skill files copied"
 ```
@@ -262,37 +262,37 @@ echo "All skill files copied"
 **Execute all checks from VERIFY.md:**
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
+ENGINE_DIR="$HOME/.codex"
 
 echo "=== Research Skill Verification ==="
 
 # Check SKILL.md exists
 echo "Checking skill files..."
-[ -f "$CLAUDE_DIR/skills/Research/SKILL.md" ] && echo "OK Research SKILL.md installed" || echo "ERROR Research SKILL.md missing"
-[ -f "$CLAUDE_DIR/skills/Research/QuickReference.md" ] && echo "OK QuickReference.md installed" || echo "ERROR QuickReference.md missing"
-[ -f "$CLAUDE_DIR/skills/Research/UrlVerificationProtocol.md" ] && echo "OK UrlVerificationProtocol.md installed" || echo "ERROR UrlVerificationProtocol.md missing"
+[ -f "$ENGINE_DIR/skills/Research/SKILL.md" ] && echo "OK Research SKILL.md installed" || echo "ERROR Research SKILL.md missing"
+[ -f "$ENGINE_DIR/skills/Research/QuickReference.md" ] && echo "OK QuickReference.md installed" || echo "ERROR QuickReference.md missing"
+[ -f "$ENGINE_DIR/skills/Research/UrlVerificationProtocol.md" ] && echo "OK UrlVerificationProtocol.md installed" || echo "ERROR UrlVerificationProtocol.md missing"
 
 # Check subdirectories
 echo "Checking directories..."
-[ -d "$CLAUDE_DIR/skills/Research/Workflows" ] && echo "OK Workflows/ exists" || echo "ERROR Workflows/ missing"
-[ -d "$CLAUDE_DIR/skills/Research/Templates" ] && echo "OK Templates/ exists" || echo "ERROR Templates/ missing"
+[ -d "$ENGINE_DIR/skills/Research/Workflows" ] && echo "OK Workflows/ exists" || echo "ERROR Workflows/ missing"
+[ -d "$ENGINE_DIR/skills/Research/Templates" ] && echo "OK Templates/ exists" || echo "ERROR Templates/ missing"
 
 # Count workflows
-WORKFLOW_COUNT=$(ls -1 "$CLAUDE_DIR/skills/Research/Workflows/"*.md 2>/dev/null | wc -l | tr -d ' ')
+WORKFLOW_COUNT=$(ls -1 "$ENGINE_DIR/skills/Research/Workflows/"*.md 2>/dev/null | wc -l | tr -d ' ')
 echo "OK Workflows installed: $WORKFLOW_COUNT (expected: 14)"
 
 # Count templates
-TEMPLATE_COUNT=$(ls -1 "$CLAUDE_DIR/skills/Research/Templates/"*.md 2>/dev/null | wc -l | tr -d ' ')
+TEMPLATE_COUNT=$(ls -1 "$ENGINE_DIR/skills/Research/Templates/"*.md 2>/dev/null | wc -l | tr -d ' ')
 echo "OK Templates installed: $TEMPLATE_COUNT (expected: 2)"
 
 # Check frontmatter
 echo "Checking frontmatter..."
-head -1 "$CLAUDE_DIR/skills/Research/SKILL.md" | grep -q "^---" && echo "OK SKILL.md has valid frontmatter" || echo "ERROR SKILL.md missing frontmatter"
+head -1 "$ENGINE_DIR/skills/Research/SKILL.md" | grep -q "^---" && echo "OK SKILL.md has valid frontmatter" || echo "ERROR SKILL.md missing frontmatter"
 
 # Check key workflows exist
 echo "Checking key workflows..."
 for wf in QuickResearch.md StandardResearch.md ExtensiveResearch.md DeepInvestigation.md ExtractAlpha.md Fabric.md; do
-  [ -f "$CLAUDE_DIR/skills/Research/Workflows/$wf" ] && echo "  OK $wf" || echo "  MISSING $wf"
+  [ -f "$ENGINE_DIR/skills/Research/Workflows/$wf" ] && echo "  OK $wf" || echo "  MISSING $wf"
 done
 
 echo ""

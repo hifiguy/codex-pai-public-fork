@@ -61,7 +61,7 @@ Ask for and confirm:
 
 3. **Smoke-test the scenario** with a single trial:
    ```bash
-   bun run ${CLAUDE_SKILL_DIR}/Tools/ScenarioRunner.ts --scenario ${CLAUDE_SKILL_DIR}/Scenarios/<name>.scenario.ts
+   bun run ${ENGINE_SKILL_DIR}/Tools/ScenarioRunner.ts --scenario ${ENGINE_SKILL_DIR}/Scenarios/<name>.scenario.ts
    ```
 
 4. **Iterate on the criteria** until the judge's pass/fail decisions align with expert human judgment. Vague criteria cause judge flakiness; prefer specific, testable statements.

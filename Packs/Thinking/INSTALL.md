@@ -41,41 +41,41 @@ Let me analyze your system and guide you through installation."
 
 ```bash
 # Check for ChatGPT Codex skills directory
-CLAUDE_DIR="$HOME/.codex"
-echo "Claude directory: $CLAUDE_DIR"
+ENGINE_DIR="$HOME/.codex"
+echo "Engine directory: $ENGINE_DIR"
 
 # Check if skills directory exists
-if [ -d "$CLAUDE_DIR/skills" ]; then
-  echo "OK Skills directory exists at: $CLAUDE_DIR/skills"
+if [ -d "$ENGINE_DIR/skills" ]; then
+  echo "OK Skills directory exists at: $ENGINE_DIR/skills"
 else
   echo "INFO Skills directory does not exist (will be created)"
 fi
 
 # Check for existing Thinking skill
-if [ -d "$CLAUDE_DIR/skills/Thinking" ]; then
-  echo "WARNING Existing Thinking skill found at: $CLAUDE_DIR/skills/Thinking"
+if [ -d "$ENGINE_DIR/skills/Thinking" ]; then
+  echo "WARNING Existing Thinking skill found at: $ENGINE_DIR/skills/Thinking"
   echo "Contents:"
-  ls -la "$CLAUDE_DIR/skills/Thinking/" 2>/dev/null
+  ls -la "$ENGINE_DIR/skills/Thinking/" 2>/dev/null
 else
   echo "OK No existing Thinking skill (clean install)"
 fi
 
 # Check for existing sub-domain directories
 for subdir in FirstPrinciples IterativeDepth BeCreative Council RedTeam WorldThreatModelHarness Science; do
-  if [ -d "$CLAUDE_DIR/skills/Thinking/$subdir" ]; then
+  if [ -d "$ENGINE_DIR/skills/Thinking/$subdir" ]; then
     echo "WARNING Existing sub-domain found: Thinking/$subdir"
   fi
 done
 
 # Check for PAI infrastructure (optional)
-if [ -d "$CLAUDE_DIR/PAI" ]; then
+if [ -d "$ENGINE_DIR/PAI" ]; then
   echo "OK PAI directory exists (full integration available)"
 else
   echo "INFO PAI directory not found (skill will work standalone)"
 fi
 
 # Check for skill customizations directory
-if [ -d "$CLAUDE_DIR/PAI/USER/SKILLCUSTOMIZATIONS" ]; then
+if [ -d "$ENGINE_DIR/PAI/USER/SKILLCUSTOMIZATIONS" ]; then
   echo "OK Skill customizations directory exists"
 else
   echo "INFO No skill customizations directory (skill will use defaults)"
@@ -162,13 +162,13 @@ Then re-ask the final confirmation question.
 **Only execute if user chose "Backup and Replace":**
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
-BACKUP_DIR="$CLAUDE_DIR/Backups/thinking-skill-$(date +%Y%m%d-%H%M%S)"
+ENGINE_DIR="$HOME/.codex"
+BACKUP_DIR="$ENGINE_DIR/Backups/thinking-skill-$(date +%Y%m%d-%H%M%S)"
 mkdir -p "$BACKUP_DIR"
 
 # Backup existing Thinking skill
-if [ -d "$CLAUDE_DIR/skills/Thinking" ]; then
-  cp -r "$CLAUDE_DIR/skills/Thinking" "$BACKUP_DIR/Thinking"
+if [ -d "$ENGINE_DIR/skills/Thinking" ]; then
+  cp -r "$ENGINE_DIR/skills/Thinking" "$BACKUP_DIR/Thinking"
   echo "Backed up Thinking skill directory"
 fi
 
@@ -196,16 +196,16 @@ echo "Backup created at: $BACKUP_DIR"
 **Mark todo "Create skill directory structure" as in_progress.**
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
-mkdir -p "$CLAUDE_DIR/skills/Thinking"
-mkdir -p "$CLAUDE_DIR/skills/Thinking/FirstPrinciples/Workflows"
-mkdir -p "$CLAUDE_DIR/skills/Thinking/IterativeDepth/Workflows"
-mkdir -p "$CLAUDE_DIR/skills/Thinking/BeCreative/Assets"
-mkdir -p "$CLAUDE_DIR/skills/Thinking/BeCreative/Workflows"
-mkdir -p "$CLAUDE_DIR/skills/Thinking/Council/Workflows"
-mkdir -p "$CLAUDE_DIR/skills/Thinking/RedTeam/Workflows"
-mkdir -p "$CLAUDE_DIR/skills/Thinking/WorldThreatModelHarness/Workflows"
-mkdir -p "$CLAUDE_DIR/skills/Thinking/Science/Workflows"
+ENGINE_DIR="$HOME/.codex"
+mkdir -p "$ENGINE_DIR/skills/Thinking"
+mkdir -p "$ENGINE_DIR/skills/Thinking/FirstPrinciples/Workflows"
+mkdir -p "$ENGINE_DIR/skills/Thinking/IterativeDepth/Workflows"
+mkdir -p "$ENGINE_DIR/skills/Thinking/BeCreative/Assets"
+mkdir -p "$ENGINE_DIR/skills/Thinking/BeCreative/Workflows"
+mkdir -p "$ENGINE_DIR/skills/Thinking/Council/Workflows"
+mkdir -p "$ENGINE_DIR/skills/Thinking/RedTeam/Workflows"
+mkdir -p "$ENGINE_DIR/skills/Thinking/WorldThreatModelHarness/Workflows"
+mkdir -p "$ENGINE_DIR/skills/Thinking/Science/Workflows"
 echo "Created all skill directories"
 ```
 
@@ -217,14 +217,14 @@ echo "Created all skill directories"
 
 ```bash
 PACK_DIR="$(pwd)"
-CLAUDE_DIR="$HOME/.codex"
+ENGINE_DIR="$HOME/.codex"
 
 # Copy entire src/ contents to target
-cp -r "$PACK_DIR/src/"* "$CLAUDE_DIR/skills/Thinking/"
+cp -r "$PACK_DIR/src/"* "$ENGINE_DIR/skills/Thinking/"
 echo "Copied all Thinking skill files"
 
 # Verify top-level SKILL.md
-[ -f "$CLAUDE_DIR/skills/Thinking/SKILL.md" ] && echo "OK SKILL.md installed" || echo "ERROR SKILL.md missing"
+[ -f "$ENGINE_DIR/skills/Thinking/SKILL.md" ] && echo "OK SKILL.md installed" || echo "ERROR SKILL.md missing"
 ```
 
 **Mark todo as completed.**
@@ -238,29 +238,29 @@ echo "Copied all Thinking skill files"
 **Execute all checks from VERIFY.md:**
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
+ENGINE_DIR="$HOME/.codex"
 
 echo "=== Thinking Skill Verification ==="
 
 # Check top-level SKILL.md
 echo "Checking top-level skill file..."
-[ -f "$CLAUDE_DIR/skills/Thinking/SKILL.md" ] && echo "OK SKILL.md" || echo "MISSING SKILL.md"
+[ -f "$ENGINE_DIR/skills/Thinking/SKILL.md" ] && echo "OK SKILL.md" || echo "MISSING SKILL.md"
 
 # Check sub-domain SKILL.md files
 echo "Checking thinking mode skill files..."
 for subdir in FirstPrinciples IterativeDepth BeCreative Council RedTeam WorldThreatModelHarness Science; do
-  [ -f "$CLAUDE_DIR/skills/Thinking/$subdir/SKILL.md" ] && echo "OK $subdir/SKILL.md" || echo "MISSING $subdir/SKILL.md"
+  [ -f "$ENGINE_DIR/skills/Thinking/$subdir/SKILL.md" ] && echo "OK $subdir/SKILL.md" || echo "MISSING $subdir/SKILL.md"
 done
 
 # Check key workflow directories
 echo "Checking workflow directories..."
 for subdir in FirstPrinciples IterativeDepth BeCreative Council RedTeam WorldThreatModelHarness Science; do
-  [ -d "$CLAUDE_DIR/skills/Thinking/$subdir/Workflows" ] && echo "OK $subdir/Workflows/" || echo "MISSING $subdir/Workflows/"
+  [ -d "$ENGINE_DIR/skills/Thinking/$subdir/Workflows" ] && echo "OK $subdir/Workflows/" || echo "MISSING $subdir/Workflows/"
 done
 
 # Check frontmatter
 echo "Checking frontmatter..."
-head -1 "$CLAUDE_DIR/skills/Thinking/SKILL.md" | grep -q "^---" && echo "OK SKILL.md has valid frontmatter" || echo "ERROR SKILL.md missing frontmatter"
+head -1 "$ENGINE_DIR/skills/Thinking/SKILL.md" | grep -q "^---" && echo "OK SKILL.md has valid frontmatter" || echo "ERROR SKILL.md missing frontmatter"
 
 echo ""
 echo "=== Verification Complete ==="

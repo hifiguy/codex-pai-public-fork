@@ -1,4 +1,4 @@
-# Claude Code internal directories
+# Engine runtime directories
 file-history/
 shell-snapshots/
 session-env/
@@ -11,7 +11,7 @@ node_modules/
 debug/
 todos/
 
-# Statsig analytics (Claude Code creates this)
+# Statsig analytics
 [Ss]tatsig/
 
 # Bun build cache
@@ -124,7 +124,7 @@ PAI/PAIWorker/
 PAI_RELEASES/
 PAI/PAI_RELEASES/
 
-# ── MEMORY (top-level, Claude Code auto-memory) ────
+# ── MEMORY (top-level engine memory) ────
 # Index and memory files are small — track them.
 # Ignore only runtime state.
 MEMORY/STATE/algorithms/

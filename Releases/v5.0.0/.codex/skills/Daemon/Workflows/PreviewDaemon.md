@@ -14,7 +14,7 @@
 ### Step 1: Run Aggregator in Preview Mode
 
 ```bash
-bun ${CLAUDE_SKILL_DIR}/Tools/DaemonAggregator.ts --diff ${PAI_USER_DIR}/Daemon/daemon.md --verbose
+bun ${ENGINE_SKILL_DIR}/Tools/DaemonAggregator.ts --diff ${PAI_USER_DIR}/Daemon/daemon.md --verbose
 ```
 
 ### Step 2: Show Section-by-Section Summary

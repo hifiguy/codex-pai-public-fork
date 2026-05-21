@@ -20,7 +20,7 @@ import { join } from "path";
 import { spawnSync } from "child_process";
 
 const HOME = process.env.HOME!;
-const CLAUDE_DIR = join(HOME, ".codex");
+const ENGINE_DIR = join(HOME, ".codex");
 
 // ═══════════════════════════════════════════════════════════════════════
 // Terminal Width Detection
@@ -327,7 +327,7 @@ interface SystemStats {
 }
 
 function readDAIdentity(): string {
-  const settingsPath = join(CLAUDE_DIR, "settings.json");
+  const settingsPath = join(ENGINE_DIR, "settings.json");
   try {
     const settings = JSON.parse(readFileSync(settingsPath, "utf-8"));
     return settings.daidentity?.displayName || settings.daidentity?.name || settings.env?.DA || "PAI";
@@ -337,7 +337,7 @@ function readDAIdentity(): string {
 }
 
 function countSkills(): number {
-  const skillsDir = join(CLAUDE_DIR, "skills");
+  const skillsDir = join(ENGINE_DIR, "skills");
   if (!existsSync(skillsDir)) return 0;
   let count = 0;
   try {
@@ -349,7 +349,7 @@ function countSkills(): number {
 }
 
 function countHooks(): number {
-  const hooksDir = join(CLAUDE_DIR, "hooks");
+  const hooksDir = join(ENGINE_DIR, "hooks");
   if (!existsSync(hooksDir)) return 0;
   let count = 0;
   try {
@@ -361,7 +361,7 @@ function countHooks(): number {
 }
 
 function countWorkItems(): string {
-  const workDir = join(CLAUDE_DIR, "PAI", "MEMORY", "WORK");
+  const workDir = join(ENGINE_DIR, "PAI", "MEMORY", "WORK");
   if (!existsSync(workDir)) return "0";
   let count = 0;
   try {
@@ -373,7 +373,7 @@ function countWorkItems(): string {
 }
 
 function countLearnings(): number {
-  const learningsDir = join(CLAUDE_DIR, "PAI", "MEMORY", "LEARNING");
+  const learningsDir = join(ENGINE_DIR, "PAI", "MEMORY", "LEARNING");
   if (!existsSync(learningsDir)) return 0;
   let count = 0;
   const countRecursive = (dir: string) => {
@@ -389,7 +389,7 @@ function countLearnings(): number {
 }
 
 function countUserFiles(): number {
-  const userDir = join(CLAUDE_DIR, "PAI/USER");
+  const userDir = join(ENGINE_DIR, "PAI/USER");
   if (!existsSync(userDir)) return 0;
   let count = 0;
   const countRecursive = (dir: string) => {

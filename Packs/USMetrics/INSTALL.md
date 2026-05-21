@@ -36,28 +36,28 @@ Let me analyze your system and guide you through installation."
 
 ```bash
 # Check for ChatGPT Codex skills directory
-CLAUDE_DIR="$HOME/.codex"
-echo "Claude directory: $CLAUDE_DIR"
+ENGINE_DIR="$HOME/.codex"
+echo "Engine directory: $ENGINE_DIR"
 
 # Check if skills directory exists
-if [ -d "$CLAUDE_DIR/skills" ]; then
-  echo "OK Skills directory exists at: $CLAUDE_DIR/skills"
-  ls -la "$CLAUDE_DIR/skills/" 2>/dev/null
+if [ -d "$ENGINE_DIR/skills" ]; then
+  echo "OK Skills directory exists at: $ENGINE_DIR/skills"
+  ls -la "$ENGINE_DIR/skills/" 2>/dev/null
 else
   echo "INFO Skills directory does not exist (will be created)"
 fi
 
 # Check for existing USMetrics skill
-if [ -d "$CLAUDE_DIR/skills/USMetrics" ]; then
-  echo "WARNING Existing USMetrics skill found at: $CLAUDE_DIR/skills/USMetrics"
-  ls -la "$CLAUDE_DIR/skills/USMetrics/" 2>/dev/null
+if [ -d "$ENGINE_DIR/skills/USMetrics" ]; then
+  echo "WARNING Existing USMetrics skill found at: $ENGINE_DIR/skills/USMetrics"
+  ls -la "$ENGINE_DIR/skills/USMetrics/" 2>/dev/null
 else
   echo "OK No existing USMetrics skill (clean install)"
 fi
 
 # Check for USMetrics subdirectories
 for subdir in Tools Workflows; do
-  if [ -d "$CLAUDE_DIR/skills/USMetrics/$subdir" ]; then
+  if [ -d "$ENGINE_DIR/skills/USMetrics/$subdir" ]; then
     echo "WARNING Existing $subdir directory found"
   fi
 done
@@ -83,7 +83,7 @@ else
 fi
 
 # Check for PAI data directory
-if [ -d "$CLAUDE_DIR/skills/PAI" ] || [ -d "$HOME/.codex/PAI" ]; then
+if [ -d "$ENGINE_DIR/skills/PAI" ] || [ -d "$HOME/.codex/PAI" ]; then
   echo "OK PAI infrastructure detected"
 else
   echo "INFO PAI infrastructure not detected (skill will still install)"
@@ -171,13 +171,13 @@ Then re-ask the final confirmation question.
 **Only execute if user chose "Backup and Replace":**
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
-BACKUP_DIR="$CLAUDE_DIR/Backups/USMetrics-$(date +%Y%m%d-%H%M%S)"
+ENGINE_DIR="$HOME/.codex"
+BACKUP_DIR="$ENGINE_DIR/Backups/USMetrics-$(date +%Y%m%d-%H%M%S)"
 mkdir -p "$BACKUP_DIR"
 
 # Backup existing skill directory
-if [ -d "$CLAUDE_DIR/skills/USMetrics" ]; then
-  cp -r "$CLAUDE_DIR/skills/USMetrics" "$BACKUP_DIR/USMetrics"
+if [ -d "$ENGINE_DIR/skills/USMetrics" ]; then
+  cp -r "$ENGINE_DIR/skills/USMetrics" "$BACKUP_DIR/USMetrics"
   echo "Backed up USMetrics skill directory"
 fi
 
@@ -205,10 +205,10 @@ echo "Backup created at: $BACKUP_DIR"
 **Mark todo "Create skill directory structure" as in_progress.**
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
-mkdir -p "$CLAUDE_DIR/skills/USMetrics"
-mkdir -p "$CLAUDE_DIR/skills/USMetrics/Tools"
-mkdir -p "$CLAUDE_DIR/skills/USMetrics/Workflows"
+ENGINE_DIR="$HOME/.codex"
+mkdir -p "$ENGINE_DIR/skills/USMetrics"
+mkdir -p "$ENGINE_DIR/skills/USMetrics/Tools"
+mkdir -p "$ENGINE_DIR/skills/USMetrics/Workflows"
 echo "Created USMetrics skill directory structure"
 ```
 
@@ -220,19 +220,19 @@ echo "Created USMetrics skill directory structure"
 
 ```bash
 PACK_DIR="$(pwd)"
-CLAUDE_DIR="$HOME/.codex"
+ENGINE_DIR="$HOME/.codex"
 
 # Copy SKILL.md
-cp "$PACK_DIR/src/SKILL.md" "$CLAUDE_DIR/skills/USMetrics/SKILL.md"
+cp "$PACK_DIR/src/SKILL.md" "$ENGINE_DIR/skills/USMetrics/SKILL.md"
 
 # Copy Tools
-cp "$PACK_DIR/src/Tools/UpdateSubstrateMetrics.ts" "$CLAUDE_DIR/skills/USMetrics/Tools/UpdateSubstrateMetrics.ts"
-cp "$PACK_DIR/src/Tools/FetchFredSeries.ts" "$CLAUDE_DIR/skills/USMetrics/Tools/FetchFredSeries.ts"
-cp "$PACK_DIR/src/Tools/GenerateAnalysis.ts" "$CLAUDE_DIR/skills/USMetrics/Tools/GenerateAnalysis.ts"
+cp "$PACK_DIR/src/Tools/UpdateSubstrateMetrics.ts" "$ENGINE_DIR/skills/USMetrics/Tools/UpdateSubstrateMetrics.ts"
+cp "$PACK_DIR/src/Tools/FetchFredSeries.ts" "$ENGINE_DIR/skills/USMetrics/Tools/FetchFredSeries.ts"
+cp "$PACK_DIR/src/Tools/GenerateAnalysis.ts" "$ENGINE_DIR/skills/USMetrics/Tools/GenerateAnalysis.ts"
 
 # Copy Workflows
-cp "$PACK_DIR/src/Workflows/UpdateData.md" "$CLAUDE_DIR/skills/USMetrics/Workflows/UpdateData.md"
-cp "$PACK_DIR/src/Workflows/GetCurrentState.md" "$CLAUDE_DIR/skills/USMetrics/Workflows/GetCurrentState.md"
+cp "$PACK_DIR/src/Workflows/UpdateData.md" "$ENGINE_DIR/skills/USMetrics/Workflows/UpdateData.md"
+cp "$PACK_DIR/src/Workflows/GetCurrentState.md" "$ENGINE_DIR/skills/USMetrics/Workflows/GetCurrentState.md"
 
 echo "Installed USMetrics skill files"
 ```
@@ -248,33 +248,33 @@ echo "Installed USMetrics skill files"
 **Execute all checks from VERIFY.md:**
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
+ENGINE_DIR="$HOME/.codex"
 
 echo "=== USMetrics Verification ==="
 
 # Check SKILL.md exists
 echo "Checking skill definition..."
-[ -f "$CLAUDE_DIR/skills/USMetrics/SKILL.md" ] && echo "OK SKILL.md installed" || echo "ERROR SKILL.md missing"
+[ -f "$ENGINE_DIR/skills/USMetrics/SKILL.md" ] && echo "OK SKILL.md installed" || echo "ERROR SKILL.md missing"
 
 # Check directories exist
 echo "Checking directories..."
-[ -d "$CLAUDE_DIR/skills/USMetrics/Tools" ] && echo "OK Tools/ directory exists" || echo "ERROR Tools/ directory missing"
-[ -d "$CLAUDE_DIR/skills/USMetrics/Workflows" ] && echo "OK Workflows/ directory exists" || echo "ERROR Workflows/ directory missing"
+[ -d "$ENGINE_DIR/skills/USMetrics/Tools" ] && echo "OK Tools/ directory exists" || echo "ERROR Tools/ directory missing"
+[ -d "$ENGINE_DIR/skills/USMetrics/Workflows" ] && echo "OK Workflows/ directory exists" || echo "ERROR Workflows/ directory missing"
 
 # Check tool files
 echo "Checking tools..."
-[ -f "$CLAUDE_DIR/skills/USMetrics/Tools/UpdateSubstrateMetrics.ts" ] && echo "OK UpdateSubstrateMetrics.ts" || echo "ERROR UpdateSubstrateMetrics.ts missing"
-[ -f "$CLAUDE_DIR/skills/USMetrics/Tools/FetchFredSeries.ts" ] && echo "OK FetchFredSeries.ts" || echo "ERROR FetchFredSeries.ts missing"
-[ -f "$CLAUDE_DIR/skills/USMetrics/Tools/GenerateAnalysis.ts" ] && echo "OK GenerateAnalysis.ts" || echo "ERROR GenerateAnalysis.ts missing"
+[ -f "$ENGINE_DIR/skills/USMetrics/Tools/UpdateSubstrateMetrics.ts" ] && echo "OK UpdateSubstrateMetrics.ts" || echo "ERROR UpdateSubstrateMetrics.ts missing"
+[ -f "$ENGINE_DIR/skills/USMetrics/Tools/FetchFredSeries.ts" ] && echo "OK FetchFredSeries.ts" || echo "ERROR FetchFredSeries.ts missing"
+[ -f "$ENGINE_DIR/skills/USMetrics/Tools/GenerateAnalysis.ts" ] && echo "OK GenerateAnalysis.ts" || echo "ERROR GenerateAnalysis.ts missing"
 
 # Check workflow files
 echo "Checking workflows..."
-[ -f "$CLAUDE_DIR/skills/USMetrics/Workflows/UpdateData.md" ] && echo "OK UpdateData.md" || echo "ERROR UpdateData.md missing"
-[ -f "$CLAUDE_DIR/skills/USMetrics/Workflows/GetCurrentState.md" ] && echo "OK GetCurrentState.md" || echo "ERROR GetCurrentState.md missing"
+[ -f "$ENGINE_DIR/skills/USMetrics/Workflows/UpdateData.md" ] && echo "OK UpdateData.md" || echo "ERROR UpdateData.md missing"
+[ -f "$ENGINE_DIR/skills/USMetrics/Workflows/GetCurrentState.md" ] && echo "OK GetCurrentState.md" || echo "ERROR GetCurrentState.md missing"
 
 # Check frontmatter
 echo "Checking frontmatter..."
-head -1 "$CLAUDE_DIR/skills/USMetrics/SKILL.md" | grep -q "^---" && echo "OK SKILL.md has valid frontmatter" || echo "ERROR SKILL.md missing frontmatter"
+head -1 "$ENGINE_DIR/skills/USMetrics/SKILL.md" | grep -q "^---" && echo "OK SKILL.md has valid frontmatter" || echo "ERROR SKILL.md missing frontmatter"
 
 # Dependency checks (informational)
 echo ""

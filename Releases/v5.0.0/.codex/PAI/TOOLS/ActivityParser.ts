@@ -21,10 +21,10 @@ import * as path from "path";
 // Configuration
 // ============================================================================
 
-const CLAUDE_DIR = path.join(process.env.HOME!, ".codex");
-const MEMORY_DIR = path.join(CLAUDE_DIR, "PAI", "MEMORY");
+const ENGINE_DIR = path.join(process.env.HOME!, ".codex");
+const MEMORY_DIR = path.join(ENGINE_DIR, "PAI", "MEMORY");
 const USERNAME = process.env.USER || require("os").userInfo().username;
-const PROJECTS_DIR = path.join(CLAUDE_DIR, "projects", `-Users-${USERNAME}--codex`);  // ChatGPT Codex native storage
+const PROJECTS_DIR = path.join(ENGINE_DIR, "projects", `-Users-${USERNAME}--codex`);  // ChatGPT Codex native storage
 const SYSTEM_UPDATES_DIR = path.join(MEMORY_DIR, "PAISYSTEMUPDATES");  // Canonical system change history
 
 // ============================================================================

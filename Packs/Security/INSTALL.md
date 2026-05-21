@@ -39,47 +39,47 @@ Let me analyze your system and guide you through installation."
 
 ```bash
 # Check for ChatGPT Codex skills directory
-CLAUDE_DIR="$HOME/.codex"
-echo "Claude directory: $CLAUDE_DIR"
+ENGINE_DIR="$HOME/.codex"
+echo "Engine directory: $ENGINE_DIR"
 
 # Check if skills directory exists
-if [ -d "$CLAUDE_DIR/skills" ]; then
-  echo "OK Skills directory exists at: $CLAUDE_DIR/skills"
+if [ -d "$ENGINE_DIR/skills" ]; then
+  echo "OK Skills directory exists at: $ENGINE_DIR/skills"
 else
   echo "INFO Skills directory does not exist (will be created)"
 fi
 
 # Check for existing Security skill
-if [ -d "$CLAUDE_DIR/skills/Security" ]; then
-  echo "WARNING Existing Security skill found at: $CLAUDE_DIR/skills/Security"
+if [ -d "$ENGINE_DIR/skills/Security" ]; then
+  echo "WARNING Existing Security skill found at: $ENGINE_DIR/skills/Security"
   echo "Contents:"
-  ls -la "$CLAUDE_DIR/skills/Security/" 2>/dev/null
+  ls -la "$ENGINE_DIR/skills/Security/" 2>/dev/null
 else
   echo "OK No existing Security skill (clean install)"
 fi
 
 # Check for existing sub-domain directories
 for subdir in Recon WebAssessment PromptInjection SECUpdates AnnualReports; do
-  if [ -d "$CLAUDE_DIR/skills/Security/$subdir" ]; then
+  if [ -d "$ENGINE_DIR/skills/Security/$subdir" ]; then
     echo "WARNING Existing sub-domain found: Security/$subdir"
   fi
 done
 
 # Check for PAI infrastructure (optional, enhances integration)
-if [ -f "$CLAUDE_DIR/AGENTS.md" ]; then
+if [ -f "$ENGINE_DIR/AGENTS.md" ]; then
   echo "OK AGENTS.md exists (PAI may be installed)"
 else
   echo "INFO AGENTS.md not found"
 fi
 
-if [ -d "$CLAUDE_DIR/PAI" ]; then
+if [ -d "$ENGINE_DIR/PAI" ]; then
   echo "OK PAI directory exists (full integration available)"
 else
   echo "INFO PAI directory not found (skill will work standalone)"
 fi
 
 # Check for user customizations directory
-if [ -d "$CLAUDE_DIR/PAI/USER/SKILLCUSTOMIZATIONS" ]; then
+if [ -d "$ENGINE_DIR/PAI/USER/SKILLCUSTOMIZATIONS" ]; then
   echo "OK Skill customizations directory exists"
 else
   echo "INFO No skill customizations directory (skill will use defaults)"
@@ -164,13 +164,13 @@ Then re-ask the final confirmation question.
 **Only execute if user chose "Backup and Replace":**
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
-BACKUP_DIR="$CLAUDE_DIR/Backups/security-skill-$(date +%Y%m%d-%H%M%S)"
+ENGINE_DIR="$HOME/.codex"
+BACKUP_DIR="$ENGINE_DIR/Backups/security-skill-$(date +%Y%m%d-%H%M%S)"
 mkdir -p "$BACKUP_DIR"
 
 # Backup existing Security skill
-if [ -d "$CLAUDE_DIR/skills/Security" ]; then
-  cp -r "$CLAUDE_DIR/skills/Security" "$BACKUP_DIR/Security"
+if [ -d "$ENGINE_DIR/skills/Security" ]; then
+  cp -r "$ENGINE_DIR/skills/Security" "$BACKUP_DIR/Security"
   echo "Backed up Security skill directory"
 fi
 
@@ -198,25 +198,25 @@ echo "Backup created at: $BACKUP_DIR"
 **Mark todo "Create skill directory structure" as in_progress.**
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
-mkdir -p "$CLAUDE_DIR/skills/Security"
-mkdir -p "$CLAUDE_DIR/skills/Security/Recon/Tools"
-mkdir -p "$CLAUDE_DIR/skills/Security/Recon/Workflows"
-mkdir -p "$CLAUDE_DIR/skills/Security/Recon/Data"
-mkdir -p "$CLAUDE_DIR/skills/Security/WebAssessment/BugBountyTool/src"
-mkdir -p "$CLAUDE_DIR/skills/Security/WebAssessment/FfufResources"
-mkdir -p "$CLAUDE_DIR/skills/Security/WebAssessment/OsintTools"
-mkdir -p "$CLAUDE_DIR/skills/Security/WebAssessment/WebappExamples"
-mkdir -p "$CLAUDE_DIR/skills/Security/WebAssessment/WebappScripts"
-mkdir -p "$CLAUDE_DIR/skills/Security/WebAssessment/Workflows/bug-bounty"
-mkdir -p "$CLAUDE_DIR/skills/Security/WebAssessment/Workflows/ffuf"
-mkdir -p "$CLAUDE_DIR/skills/Security/WebAssessment/Workflows/osint"
-mkdir -p "$CLAUDE_DIR/skills/Security/WebAssessment/Workflows/pentest"
-mkdir -p "$CLAUDE_DIR/skills/Security/WebAssessment/Workflows/webapp"
-mkdir -p "$CLAUDE_DIR/skills/Security/PromptInjection/Workflows"
-mkdir -p "$CLAUDE_DIR/skills/Security/SECUpdates/Workflows"
-mkdir -p "$CLAUDE_DIR/skills/Security/SECUpdates/State"
-mkdir -p "$CLAUDE_DIR/skills/Security/AnnualReports/Tools"
+ENGINE_DIR="$HOME/.codex"
+mkdir -p "$ENGINE_DIR/skills/Security"
+mkdir -p "$ENGINE_DIR/skills/Security/Recon/Tools"
+mkdir -p "$ENGINE_DIR/skills/Security/Recon/Workflows"
+mkdir -p "$ENGINE_DIR/skills/Security/Recon/Data"
+mkdir -p "$ENGINE_DIR/skills/Security/WebAssessment/BugBountyTool/src"
+mkdir -p "$ENGINE_DIR/skills/Security/WebAssessment/FfufResources"
+mkdir -p "$ENGINE_DIR/skills/Security/WebAssessment/OsintTools"
+mkdir -p "$ENGINE_DIR/skills/Security/WebAssessment/WebappExamples"
+mkdir -p "$ENGINE_DIR/skills/Security/WebAssessment/WebappScripts"
+mkdir -p "$ENGINE_DIR/skills/Security/WebAssessment/Workflows/bug-bounty"
+mkdir -p "$ENGINE_DIR/skills/Security/WebAssessment/Workflows/ffuf"
+mkdir -p "$ENGINE_DIR/skills/Security/WebAssessment/Workflows/osint"
+mkdir -p "$ENGINE_DIR/skills/Security/WebAssessment/Workflows/pentest"
+mkdir -p "$ENGINE_DIR/skills/Security/WebAssessment/Workflows/webapp"
+mkdir -p "$ENGINE_DIR/skills/Security/PromptInjection/Workflows"
+mkdir -p "$ENGINE_DIR/skills/Security/SECUpdates/Workflows"
+mkdir -p "$ENGINE_DIR/skills/Security/SECUpdates/State"
+mkdir -p "$ENGINE_DIR/skills/Security/AnnualReports/Tools"
 echo "Created all skill directories"
 ```
 
@@ -228,14 +228,14 @@ echo "Created all skill directories"
 
 ```bash
 PACK_DIR="$(pwd)"
-CLAUDE_DIR="$HOME/.codex"
+ENGINE_DIR="$HOME/.codex"
 
 # Copy entire src/ contents to target
-cp -r "$PACK_DIR/src/"* "$CLAUDE_DIR/skills/Security/"
+cp -r "$PACK_DIR/src/"* "$ENGINE_DIR/skills/Security/"
 echo "Copied all Security skill files"
 
 # Verify top-level SKILL.md
-[ -f "$CLAUDE_DIR/skills/Security/SKILL.md" ] && echo "OK SKILL.md installed" || echo "ERROR SKILL.md missing"
+[ -f "$ENGINE_DIR/skills/Security/SKILL.md" ] && echo "OK SKILL.md installed" || echo "ERROR SKILL.md missing"
 ```
 
 **Mark todo as completed.**
@@ -249,29 +249,29 @@ echo "Copied all Security skill files"
 **Execute all checks from VERIFY.md:**
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
+ENGINE_DIR="$HOME/.codex"
 
 echo "=== Security Skill Verification ==="
 
 # Check top-level SKILL.md
 echo "Checking top-level skill file..."
-[ -f "$CLAUDE_DIR/skills/Security/SKILL.md" ] && echo "OK SKILL.md" || echo "MISSING SKILL.md"
+[ -f "$ENGINE_DIR/skills/Security/SKILL.md" ] && echo "OK SKILL.md" || echo "MISSING SKILL.md"
 
 # Check sub-domain SKILL.md files
 echo "Checking sub-domain skill files..."
 for subdir in Recon WebAssessment PromptInjection SECUpdates AnnualReports; do
-  [ -f "$CLAUDE_DIR/skills/Security/$subdir/SKILL.md" ] && echo "OK $subdir/SKILL.md" || echo "MISSING $subdir/SKILL.md"
+  [ -f "$ENGINE_DIR/skills/Security/$subdir/SKILL.md" ] && echo "OK $subdir/SKILL.md" || echo "MISSING $subdir/SKILL.md"
 done
 
 # Check key directories
 echo "Checking directories..."
 for dir in Recon/Tools Recon/Workflows Recon/Data WebAssessment/Workflows PromptInjection/Workflows SECUpdates/Workflows AnnualReports/Tools; do
-  [ -d "$CLAUDE_DIR/skills/Security/$dir" ] && echo "OK $dir/" || echo "MISSING $dir/"
+  [ -d "$ENGINE_DIR/skills/Security/$dir" ] && echo "OK $dir/" || echo "MISSING $dir/"
 done
 
 # Check frontmatter
 echo "Checking frontmatter..."
-head -1 "$CLAUDE_DIR/skills/Security/SKILL.md" | grep -q "^---" && echo "OK SKILL.md has valid frontmatter" || echo "ERROR SKILL.md missing frontmatter"
+head -1 "$ENGINE_DIR/skills/Security/SKILL.md" | grep -q "^---" && echo "OK SKILL.md has valid frontmatter" || echo "ERROR SKILL.md missing frontmatter"
 
 echo ""
 echo "=== Verification Complete ==="

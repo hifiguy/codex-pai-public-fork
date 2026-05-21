@@ -109,19 +109,19 @@ Comprehensive agent evaluation system based on Anthropic's "Demystifying Evals f
 
 ```bash
 # Run an eval suite
-bun run ${CLAUDE_SKILL_DIR}/Tools/AlgorithmBridge.ts -s <suite>
+bun run ${ENGINE_SKILL_DIR}/Tools/AlgorithmBridge.ts -s <suite>
 
 # Log a failure for later conversion
-bun run ${CLAUDE_SKILL_DIR}/Tools/FailureToTask.ts log "description" -c category -s severity
+bun run ${ENGINE_SKILL_DIR}/Tools/FailureToTask.ts log "description" -c category -s severity
 
 # Convert failures to test tasks
-bun run ${CLAUDE_SKILL_DIR}/Tools/FailureToTask.ts convert-all
+bun run ${ENGINE_SKILL_DIR}/Tools/FailureToTask.ts convert-all
 
 # Manage suites
-bun run ${CLAUDE_SKILL_DIR}/Tools/SuiteManager.ts create <name> -t capability -d "description"
-bun run ${CLAUDE_SKILL_DIR}/Tools/SuiteManager.ts list
-bun run ${CLAUDE_SKILL_DIR}/Tools/SuiteManager.ts check-saturation <name>
-bun run ${CLAUDE_SKILL_DIR}/Tools/SuiteManager.ts graduate <name>
+bun run ${ENGINE_SKILL_DIR}/Tools/SuiteManager.ts create <name> -t capability -d "description"
+bun run ${ENGINE_SKILL_DIR}/Tools/SuiteManager.ts list
+bun run ${ENGINE_SKILL_DIR}/Tools/SuiteManager.ts check-saturation <name>
+bun run ${ENGINE_SKILL_DIR}/Tools/SuiteManager.ts graduate <name>
 ```
 
 ### ALGORITHM Integration
@@ -130,7 +130,7 @@ Evals is a verification method for THE ALGORITHM ISC rows:
 
 ```bash
 # Run eval and update ISC row
-bun run ${CLAUDE_SKILL_DIR}/Tools/AlgorithmBridge.ts -s regression-core -r 3 -u
+bun run ${ENGINE_SKILL_DIR}/Tools/AlgorithmBridge.ts -s regression-core -r 3 -u
 ```
 
 ISC rows can specify eval verification:

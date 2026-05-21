@@ -9,9 +9,9 @@
 ### Check command files exist
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
-[ -f "$CLAUDE_DIR/commands/context-search.md" ] && echo "OK context-search.md" || echo "MISSING context-search.md"
-[ -f "$CLAUDE_DIR/commands/cs.md" ] && echo "OK cs.md" || echo "MISSING cs.md"
+ENGINE_DIR="$HOME/.codex"
+[ -f "$ENGINE_DIR/commands/context-search.md" ] && echo "OK context-search.md" || echo "MISSING context-search.md"
+[ -f "$ENGINE_DIR/commands/cs.md" ] && echo "OK cs.md" || echo "MISSING cs.md"
 ```
 
 **Expected:** At least one command file present (both if user chose "Both").
@@ -19,13 +19,13 @@ CLAUDE_DIR="$HOME/.codex"
 ### Check frontmatter is valid
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
+ENGINE_DIR="$HOME/.codex"
 for cmd in context-search.md cs.md; do
-  if [ -f "$CLAUDE_DIR/commands/$cmd" ]; then
-    head -1 "$CLAUDE_DIR/commands/$cmd" | grep -q "^---" && echo "OK $cmd frontmatter" || echo "ERROR $cmd missing frontmatter"
-    grep -q "^name:" "$CLAUDE_DIR/commands/$cmd" && echo "OK $cmd has name field" || echo "ERROR $cmd missing name field"
-    grep -q "^description:" "$CLAUDE_DIR/commands/$cmd" && echo "OK $cmd has description" || echo "ERROR $cmd missing description"
-    grep -q "^argument-hint:" "$CLAUDE_DIR/commands/$cmd" && echo "OK $cmd has argument-hint" || echo "ERROR $cmd missing argument-hint"
+  if [ -f "$ENGINE_DIR/commands/$cmd" ]; then
+    head -1 "$ENGINE_DIR/commands/$cmd" | grep -q "^---" && echo "OK $cmd frontmatter" || echo "ERROR $cmd missing frontmatter"
+    grep -q "^name:" "$ENGINE_DIR/commands/$cmd" && echo "OK $cmd has name field" || echo "ERROR $cmd missing name field"
+    grep -q "^description:" "$ENGINE_DIR/commands/$cmd" && echo "OK $cmd has description" || echo "ERROR $cmd missing description"
+    grep -q "^argument-hint:" "$ENGINE_DIR/commands/$cmd" && echo "OK $cmd has argument-hint" || echo "ERROR $cmd missing argument-hint"
   fi
 done
 ```
@@ -35,16 +35,16 @@ done
 ### Check command content is complete
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
+ENGINE_DIR="$HOME/.codex"
 for cmd in context-search.md cs.md; do
-  if [ -f "$CLAUDE_DIR/commands/$cmd" ]; then
+  if [ -f "$ENGINE_DIR/commands/$cmd" ]; then
     echo "Checking $cmd content..."
-    grep -q "CONTEXT SEARCH" "$CLAUDE_DIR/commands/$cmd" && echo "  OK Has context search header" || echo "  ERROR Missing context search header"
-    grep -q "work.json" "$CLAUDE_DIR/commands/$cmd" && echo "  OK References session registry" || echo "  ERROR Missing session registry search"
-    grep -q "MEMORY/WORK" "$CLAUDE_DIR/commands/$cmd" && echo "  OK References work directories" || echo "  ERROR Missing work directory search"
-    grep -q "git.*log" "$CLAUDE_DIR/commands/$cmd" && echo "  OK References git history" || echo "  ERROR Missing git history search"
-    grep -q "session-names" "$CLAUDE_DIR/commands/$cmd" && echo "  OK References session names" || echo "  ERROR Missing session name search"
-    grep -q "PRD.md" "$CLAUDE_DIR/commands/$cmd" && echo "  OK References PRD files" || echo "  ERROR Missing PRD search"
+    grep -q "CONTEXT SEARCH" "$ENGINE_DIR/commands/$cmd" && echo "  OK Has context search header" || echo "  ERROR Missing context search header"
+    grep -q "work.json" "$ENGINE_DIR/commands/$cmd" && echo "  OK References session registry" || echo "  ERROR Missing session registry search"
+    grep -q "MEMORY/WORK" "$ENGINE_DIR/commands/$cmd" && echo "  OK References work directories" || echo "  ERROR Missing work directory search"
+    grep -q "git.*log" "$ENGINE_DIR/commands/$cmd" && echo "  OK References git history" || echo "  ERROR Missing git history search"
+    grep -q "session-names" "$ENGINE_DIR/commands/$cmd" && echo "  OK References session names" || echo "  ERROR Missing session name search"
+    grep -q "PRD.md" "$ENGINE_DIR/commands/$cmd" && echo "  OK References PRD files" || echo "  ERROR Missing PRD search"
     echo "  All search sources present"
   fi
 done
@@ -59,13 +59,13 @@ done
 These checks are NOT blocking — the command works without these, but results improve with them.
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
+ENGINE_DIR="$HOME/.codex"
 
 echo "Data sources:"
-[ -f "$CLAUDE_DIR/MEMORY/STATE/work.json" ] && echo "  AVAILABLE work.json (session registry)" || echo "  UNAVAILABLE work.json (install PAI for this)"
-[ -d "$CLAUDE_DIR/MEMORY/WORK" ] && echo "  AVAILABLE MEMORY/WORK (PRD directory)" || echo "  UNAVAILABLE MEMORY/WORK (install PAI for this)"
-[ -f "$CLAUDE_DIR/MEMORY/STATE/session-names.json" ] && echo "  AVAILABLE session-names.json" || echo "  UNAVAILABLE session-names.json (install PAI for this)"
-[ -d "$CLAUDE_DIR/.git" ] && echo "  AVAILABLE git history" || echo "  UNAVAILABLE git history"
+[ -f "$ENGINE_DIR/MEMORY/STATE/work.json" ] && echo "  AVAILABLE work.json (session registry)" || echo "  UNAVAILABLE work.json (install PAI for this)"
+[ -d "$ENGINE_DIR/MEMORY/WORK" ] && echo "  AVAILABLE MEMORY/WORK (PRD directory)" || echo "  UNAVAILABLE MEMORY/WORK (install PAI for this)"
+[ -f "$ENGINE_DIR/MEMORY/STATE/session-names.json" ] && echo "  AVAILABLE session-names.json" || echo "  UNAVAILABLE session-names.json (install PAI for this)"
+[ -d "$ENGINE_DIR/.git" ] && echo "  AVAILABLE git history" || echo "  UNAVAILABLE git history"
 ```
 
 ---

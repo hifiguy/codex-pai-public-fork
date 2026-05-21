@@ -143,7 +143,7 @@ Agent 2 - YouTube Channels:
 "Check configured YouTube channels for new content and EXTRACT GRANULAR TECHNIQUES:
 
 1. Load channel config:
-   bun ~/.codex/PAI/Tools/LoadSkillConfig.ts ../youtube-channels.json
+   bun ~/.codex/PAI/TOOLS/LoadSkillConfig.ts ../youtube-channels.json
 
 2. For each channel, check recent videos:
    yt-dlp --flat-playlist --dump-json 'https://www.youtube.com/@channelhandle/videos' 2>/dev/null | head -5
@@ -152,7 +152,7 @@ Agent 2 - YouTube Channels:
    cat ../State/youtube-videos.json
 
 4. For NEW videos, extract transcripts:
-   bun ~/.codex/PAI/Tools/GetTranscript.ts '<video-url>'
+   bun ~/.codex/PAI/TOOLS/GetTranscript.ts '<video-url>'
 
 5. CRITICAL - For each transcript, extract SPECIFIC TECHNIQUES:
    - Look for code patterns, configurations, command examples
@@ -586,7 +586,7 @@ Everything interesting we found, ranked by how cool it is.
 | # | Discovery | Source | Why It's Interesting | PAI Relevance |
 |---|-----------|--------|---------------------|---------------|
 | 1 | PreToolUse hooks can inject reasoning context | codex v2.1.16 | Hooks can now return `additionalContext` that Claude reasons about before tool execution — this is a paradigm shift from binary block/allow to intelligent security | SecurityValidator could inject warnings instead of blocking, enabling context-aware security decisions |
-| 2 | Native ${CLAUDE_SESSION_ID} variable | codex v2.1.16 | Session IDs are now first-class environment variables everywhere — no more extraction hacks | Session documentation workflows can drop manual ID extraction code |
+| 2 | Native ${ENGINE_SESSION_ID} variable | codex v2.1.16 | Session IDs are now first-class environment variables everywhere — no more extraction hacks | Session documentation workflows can drop manual ID extraction code |
 | 3 | MCP auto mode enabled by default | codex v2.1.16 | MCP servers now auto-connect without explicit configuration | Already enabled — no action needed |
 
 ---
@@ -603,7 +603,7 @@ Everything interesting we found, ranked by how cool it is.
 
 | # | Recommendation | PAI Relevance | Effort | Files Affected |
 |---|---------------|---------------|--------|----------------|
-| 2 | Replace session ID hacks with native ${CLAUDE_SESSION_ID} | Session documentation workflows have manual extraction workarounds — native variable eliminates fragile code | Low | `skills/_SYSTEM/Workflows/DocumentSession.md` |
+| 2 | Replace session ID hacks with native ${ENGINE_SESSION_ID} | Session documentation workflows have manual extraction workarounds — native variable eliminates fragile code | Low | `skills/_SYSTEM/Workflows/DocumentSession.md` |
 
 ### 🟡 MEDIUM — Integrate when convenient
 
@@ -643,14 +643,14 @@ return { decision: "allow", additionalContext: "WARNING: Protected file." };
 **Priority:** 🟠 HIGH
 
 **What It Is (16-32 words):**
-Native environment variable ${CLAUDE_SESSION_ID} is now available in all hooks and commands, eliminating the need for custom session ID extraction or workaround code.
+Native environment variable ${ENGINE_SESSION_ID} is now available in all hooks and commands, eliminating the need for custom session ID extraction or workaround code.
 
 **How It Helps PAI (16-32 words):**
 Our session documentation workflows had manual session ID extraction hacks. Native substitution means cleaner code and reliable session tracking across all PAI workflows.
 
 **The Technique:**
 ```bash
-echo "Session: ${CLAUDE_SESSION_ID}"
+echo "Session: ${ENGINE_SESSION_ID}"
 ```
 
 **Applies To:** `skills/_SYSTEM/Workflows/DocumentSession.md`

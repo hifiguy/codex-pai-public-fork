@@ -103,7 +103,7 @@ The thumbnails use a **sans-serif font family** with these characteristics:
 | Line | Text | Color | Size | Weight |
 |------|------|-------|------|--------|
 | 1 | "A DEEPDIVE ON MY" | `#FFFFFF` | 28px | Bold |
-| 1b | "CLAUDE CODE" (badge) | `#FFFFFF` on `#D97706` bg | 18px | Bold |
+| 1b | "CODEX" (badge) | `#FFFFFF` on `#D97706` bg | 18px | Bold |
 | 2 | "PERSONAL AI" | `#6B8DD6` | 56px | Extra Bold |
 | 3 | "INFRASTRUCTURE" | `#6B8DD6` | 56px | Extra Bold |
 | 4 | "v2 (December 2025)" | `#C084FC` | 24px | Medium |

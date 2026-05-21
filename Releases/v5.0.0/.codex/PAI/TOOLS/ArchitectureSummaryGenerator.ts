@@ -25,7 +25,7 @@ const ARCH_SOURCE = path.join(PAI_DIR, "DOCUMENTATION", "PAISystemArchitecture.m
 const SUMMARY_OUTPUT = path.join(PAI_DIR, "DOCUMENTATION", "ARCHITECTURE_SUMMARY.md");
 const ALGORITHM_DIR = path.join(PAI_DIR, "ALGORITHM");
 const MEMORY_SYSTEM_DOC = path.join(PAI_DIR, "DOCUMENTATION", "Memory", "MemorySystem.md");
-const CLAUDE_MD = path.join(HOME, ".codex", "AGENTS.md");
+const AGENTS_MD = path.join(HOME, ".codex", "AGENTS.md");
 
 // ============================================================================
 // Version detection (source-of-truth lookups — no hardcoded versions)
@@ -70,8 +70,8 @@ function detectMemoryVersion(): string {
 
 /** Detect PAI version from the first `# PAI X.Y.Z` heading in global AGENTS.md */
 function detectPaiVersion(): string {
-  if (!fs.existsSync(CLAUDE_MD)) return "unknown";
-  const content = fs.readFileSync(CLAUDE_MD, "utf-8");
+  if (!fs.existsSync(AGENTS_MD)) return "unknown";
+  const content = fs.readFileSync(AGENTS_MD, "utf-8");
   const match = content.match(/^#\s*PAI\s+([\d.]+)/m);
   return match?.[1] ?? "unknown";
 }

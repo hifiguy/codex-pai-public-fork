@@ -88,7 +88,7 @@ skills/Daemon/
 | **daemon-data.json** | `~/Projects/daemon-dm/daemon-data.json` |
 | **Deploy script** | `~/Projects/daemon-dm/deploy.sh` |
 | **Public framework repo** | `~/Projects/daemon/` |
-| **Security classification** | `${CLAUDE_SKILL_DIR}/Docs/SecurityClassification.md` |
+| **Security classification** | `${ENGINE_SKILL_DIR}/Docs/SecurityClassification.md` |
 | **Security overrides** | `${PAI_USER_DIR}/SKILLCUSTOMIZATIONS/Daemon/SecurityOverrides.md` |
 
 ## Live Endpoints

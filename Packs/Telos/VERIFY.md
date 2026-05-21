@@ -9,8 +9,8 @@
 ### Check SKILL.md exists
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
-[ -f "$CLAUDE_DIR/skills/Telos/SKILL.md" ] && echo "OK SKILL.md" || echo "MISSING SKILL.md"
+ENGINE_DIR="$HOME/.codex"
+[ -f "$ENGINE_DIR/skills/Telos/SKILL.md" ] && echo "OK SKILL.md" || echo "MISSING SKILL.md"
 ```
 
 **Expected:** SKILL.md present at `~/.codex/skills/Telos/SKILL.md`.
@@ -18,9 +18,9 @@ CLAUDE_DIR="$HOME/.codex"
 ### Check workflow files exist
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
+ENGINE_DIR="$HOME/.codex"
 for wf in Update.md InterviewExtraction.md CreateNarrativePoints.md WriteReport.md; do
-  [ -f "$CLAUDE_DIR/skills/Telos/Workflows/$wf" ] && echo "OK Workflows/$wf" || echo "MISSING Workflows/$wf"
+  [ -f "$ENGINE_DIR/skills/Telos/Workflows/$wf" ] && echo "OK Workflows/$wf" || echo "MISSING Workflows/$wf"
 done
 ```
 
@@ -29,8 +29,8 @@ done
 ### Check tools exist
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
-[ -f "$CLAUDE_DIR/skills/Telos/Tools/UpdateTelos.ts" ] && echo "OK Tools/UpdateTelos.ts" || echo "MISSING Tools/UpdateTelos.ts"
+ENGINE_DIR="$HOME/.codex"
+[ -f "$ENGINE_DIR/skills/Telos/Tools/UpdateTelos.ts" ] && echo "OK Tools/UpdateTelos.ts" || echo "MISSING Tools/UpdateTelos.ts"
 ```
 
 **Expected:** UpdateTelos.ts present.
@@ -38,22 +38,22 @@ CLAUDE_DIR="$HOME/.codex"
 ### Check template directories exist
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
+ENGINE_DIR="$HOME/.codex"
 
 echo "DashboardTemplate:"
-[ -d "$CLAUDE_DIR/skills/Telos/DashboardTemplate" ] && echo "  OK DashboardTemplate/" || echo "  MISSING DashboardTemplate/"
-[ -d "$CLAUDE_DIR/skills/Telos/DashboardTemplate/App" ] && echo "  OK DashboardTemplate/App/" || echo "  MISSING DashboardTemplate/App/"
-[ -d "$CLAUDE_DIR/skills/Telos/DashboardTemplate/Components" ] && echo "  OK DashboardTemplate/Components/" || echo "  MISSING DashboardTemplate/Components/"
-[ -d "$CLAUDE_DIR/skills/Telos/DashboardTemplate/Lib" ] && echo "  OK DashboardTemplate/Lib/" || echo "  MISSING DashboardTemplate/Lib/"
-[ -f "$CLAUDE_DIR/skills/Telos/DashboardTemplate/package.json" ] && echo "  OK DashboardTemplate/package.json" || echo "  MISSING DashboardTemplate/package.json"
+[ -d "$ENGINE_DIR/skills/Telos/DashboardTemplate" ] && echo "  OK DashboardTemplate/" || echo "  MISSING DashboardTemplate/"
+[ -d "$ENGINE_DIR/skills/Telos/DashboardTemplate/App" ] && echo "  OK DashboardTemplate/App/" || echo "  MISSING DashboardTemplate/App/"
+[ -d "$ENGINE_DIR/skills/Telos/DashboardTemplate/Components" ] && echo "  OK DashboardTemplate/Components/" || echo "  MISSING DashboardTemplate/Components/"
+[ -d "$ENGINE_DIR/skills/Telos/DashboardTemplate/Lib" ] && echo "  OK DashboardTemplate/Lib/" || echo "  MISSING DashboardTemplate/Lib/"
+[ -f "$ENGINE_DIR/skills/Telos/DashboardTemplate/package.json" ] && echo "  OK DashboardTemplate/package.json" || echo "  MISSING DashboardTemplate/package.json"
 
 echo "ReportTemplate:"
-[ -d "$CLAUDE_DIR/skills/Telos/ReportTemplate" ] && echo "  OK ReportTemplate/" || echo "  MISSING ReportTemplate/"
-[ -d "$CLAUDE_DIR/skills/Telos/ReportTemplate/App" ] && echo "  OK ReportTemplate/App/" || echo "  MISSING ReportTemplate/App/"
-[ -d "$CLAUDE_DIR/skills/Telos/ReportTemplate/Components" ] && echo "  OK ReportTemplate/Components/" || echo "  MISSING ReportTemplate/Components/"
-[ -d "$CLAUDE_DIR/skills/Telos/ReportTemplate/Lib" ] && echo "  OK ReportTemplate/Lib/" || echo "  MISSING ReportTemplate/Lib/"
-[ -f "$CLAUDE_DIR/skills/Telos/ReportTemplate/package.json" ] && echo "  OK ReportTemplate/package.json" || echo "  MISSING ReportTemplate/package.json"
-[ -d "$CLAUDE_DIR/skills/Telos/ReportTemplate/Public/Fonts" ] && echo "  OK ReportTemplate/Public/Fonts/" || echo "  MISSING ReportTemplate/Public/Fonts/"
+[ -d "$ENGINE_DIR/skills/Telos/ReportTemplate" ] && echo "  OK ReportTemplate/" || echo "  MISSING ReportTemplate/"
+[ -d "$ENGINE_DIR/skills/Telos/ReportTemplate/App" ] && echo "  OK ReportTemplate/App/" || echo "  MISSING ReportTemplate/App/"
+[ -d "$ENGINE_DIR/skills/Telos/ReportTemplate/Components" ] && echo "  OK ReportTemplate/Components/" || echo "  MISSING ReportTemplate/Components/"
+[ -d "$ENGINE_DIR/skills/Telos/ReportTemplate/Lib" ] && echo "  OK ReportTemplate/Lib/" || echo "  MISSING ReportTemplate/Lib/"
+[ -f "$ENGINE_DIR/skills/Telos/ReportTemplate/package.json" ] && echo "  OK ReportTemplate/package.json" || echo "  MISSING ReportTemplate/package.json"
+[ -d "$ENGINE_DIR/skills/Telos/ReportTemplate/Public/Fonts" ] && echo "  OK ReportTemplate/Public/Fonts/" || echo "  MISSING ReportTemplate/Public/Fonts/"
 ```
 
 **Expected:** Both template directories present with their subdirectories and package.json files.
@@ -61,8 +61,8 @@ echo "ReportTemplate:"
 ### Check frontmatter validity
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
-skill_file="$CLAUDE_DIR/skills/Telos/SKILL.md"
+ENGINE_DIR="$HOME/.codex"
+skill_file="$ENGINE_DIR/skills/Telos/SKILL.md"
 
 if [ -f "$skill_file" ]; then
   head -1 "$skill_file" | grep -q "^---" && echo "OK SKILL.md frontmatter" || echo "ERROR SKILL.md missing frontmatter"
@@ -76,17 +76,17 @@ fi
 ### Check key component files
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
+ENGINE_DIR="$HOME/.codex"
 
 echo "Dashboard components:"
-[ -f "$CLAUDE_DIR/skills/Telos/DashboardTemplate/App/page.tsx" ] && echo "  OK App/page.tsx" || echo "  MISSING App/page.tsx"
-[ -f "$CLAUDE_DIR/skills/Telos/DashboardTemplate/App/layout.tsx" ] && echo "  OK App/layout.tsx" || echo "  MISSING App/layout.tsx"
-[ -f "$CLAUDE_DIR/skills/Telos/DashboardTemplate/Components/sidebar.tsx" ] && echo "  OK Components/sidebar.tsx" || echo "  MISSING Components/sidebar.tsx"
+[ -f "$ENGINE_DIR/skills/Telos/DashboardTemplate/App/page.tsx" ] && echo "  OK App/page.tsx" || echo "  MISSING App/page.tsx"
+[ -f "$ENGINE_DIR/skills/Telos/DashboardTemplate/App/layout.tsx" ] && echo "  OK App/layout.tsx" || echo "  MISSING App/layout.tsx"
+[ -f "$ENGINE_DIR/skills/Telos/DashboardTemplate/Components/sidebar.tsx" ] && echo "  OK Components/sidebar.tsx" || echo "  MISSING Components/sidebar.tsx"
 
 echo "Report components:"
-[ -f "$CLAUDE_DIR/skills/Telos/ReportTemplate/App/page.tsx" ] && echo "  OK App/page.tsx" || echo "  MISSING App/page.tsx"
-[ -f "$CLAUDE_DIR/skills/Telos/ReportTemplate/App/layout.tsx" ] && echo "  OK App/layout.tsx" || echo "  MISSING App/layout.tsx"
-[ -f "$CLAUDE_DIR/skills/Telos/ReportTemplate/Components/cover-page.tsx" ] && echo "  OK Components/cover-page.tsx" || echo "  MISSING Components/cover-page.tsx"
+[ -f "$ENGINE_DIR/skills/Telos/ReportTemplate/App/page.tsx" ] && echo "  OK App/page.tsx" || echo "  MISSING App/page.tsx"
+[ -f "$ENGINE_DIR/skills/Telos/ReportTemplate/App/layout.tsx" ] && echo "  OK App/layout.tsx" || echo "  MISSING App/layout.tsx"
+[ -f "$ENGINE_DIR/skills/Telos/ReportTemplate/Components/cover-page.tsx" ] && echo "  OK Components/cover-page.tsx" || echo "  MISSING Components/cover-page.tsx"
 ```
 
 **Expected:** Key component files present in both templates.
@@ -98,12 +98,12 @@ echo "Report components:"
 These checks are NOT blocking -- the skill works without these, but functionality improves with them.
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
+ENGINE_DIR="$HOME/.codex"
 
 echo "Personal TELOS availability (informational):"
-if [ -d "$CLAUDE_DIR/PAI/USER/TELOS" ]; then
+if [ -d "$ENGINE_DIR/PAI/USER/TELOS" ]; then
   echo "  AVAILABLE Personal TELOS directory"
-  ls "$CLAUDE_DIR/PAI/USER/TELOS/"*.md 2>/dev/null | wc -l | xargs echo "  Files found:"
+  ls "$ENGINE_DIR/PAI/USER/TELOS/"*.md 2>/dev/null | wc -l | xargs echo "  Files found:"
 else
   echo "  UNAVAILABLE Personal TELOS (install PAI for personal life context features)"
 fi
@@ -115,8 +115,8 @@ command -v node >/dev/null 2>&1 && echo "  AVAILABLE node" || echo "  UNAVAILABL
 
 echo ""
 echo "PAI integration (informational):"
-[ -d "$CLAUDE_DIR/PAI" ] && echo "  AVAILABLE PAI infrastructure" || echo "  UNAVAILABLE PAI infrastructure (skill works standalone for project analysis)"
-[ -d "$CLAUDE_DIR/PAI/USER/SKILLCUSTOMIZATIONS" ] && echo "  AVAILABLE Skill customizations directory" || echo "  UNAVAILABLE Skill customizations (defaults will be used)"
+[ -d "$ENGINE_DIR/PAI" ] && echo "  AVAILABLE PAI infrastructure" || echo "  UNAVAILABLE PAI infrastructure (skill works standalone for project analysis)"
+[ -d "$ENGINE_DIR/PAI/USER/SKILLCUSTOMIZATIONS" ] && echo "  AVAILABLE Skill customizations directory" || echo "  UNAVAILABLE Skill customizations (defaults will be used)"
 ```
 
 ---

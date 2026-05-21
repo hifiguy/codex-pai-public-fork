@@ -36,33 +36,33 @@ Let me analyze your system and guide you through installation."
 
 ```bash
 # Check for ChatGPT Codex skills directory
-CLAUDE_DIR="$HOME/.codex"
-echo "Claude directory: $CLAUDE_DIR"
+ENGINE_DIR="$HOME/.codex"
+echo "Engine directory: $ENGINE_DIR"
 
 # Check if skills directory exists
-if [ -d "$CLAUDE_DIR/skills" ]; then
-  echo "OK Skills directory exists at: $CLAUDE_DIR/skills"
+if [ -d "$ENGINE_DIR/skills" ]; then
+  echo "OK Skills directory exists at: $ENGINE_DIR/skills"
 else
   echo "INFO Skills directory does not exist (will be created)"
 fi
 
 # Check for existing Media skill
-if [ -d "$CLAUDE_DIR/skills/Media" ]; then
-  echo "WARNING Existing Media skill found at: $CLAUDE_DIR/skills/Media"
-  ls -la "$CLAUDE_DIR/skills/Media/" 2>/dev/null
+if [ -d "$ENGINE_DIR/skills/Media" ]; then
+  echo "WARNING Existing Media skill found at: $ENGINE_DIR/skills/Media"
+  ls -la "$ENGINE_DIR/skills/Media/" 2>/dev/null
 else
   echo "OK No existing Media skill (clean install)"
 fi
 
 # Check for Art subdirectory
-if [ -d "$CLAUDE_DIR/skills/Media/Art" ]; then
+if [ -d "$ENGINE_DIR/skills/Media/Art" ]; then
   echo "WARNING Existing Art subsystem found"
 else
   echo "OK No existing Art subsystem"
 fi
 
 # Check for Remotion subdirectory
-if [ -d "$CLAUDE_DIR/skills/Media/Remotion" ]; then
+if [ -d "$ENGINE_DIR/skills/Media/Remotion" ]; then
   echo "WARNING Existing Remotion subsystem found"
 else
   echo "OK No existing Remotion subsystem"
@@ -84,13 +84,13 @@ else
 fi
 
 # Check for user customizations
-if [ -d "$CLAUDE_DIR/PAI/USER/SKILLCUSTOMIZATIONS/Art" ]; then
+if [ -d "$ENGINE_DIR/PAI/USER/SKILLCUSTOMIZATIONS/Art" ]; then
   echo "OK Art customizations found"
 else
   echo "INFO No Art customizations (skill will use defaults)"
 fi
 
-if [ -d "$CLAUDE_DIR/PAI/USER/SKILLCUSTOMIZATIONS/Remotion" ]; then
+if [ -d "$ENGINE_DIR/PAI/USER/SKILLCUSTOMIZATIONS/Remotion" ]; then
   echo "OK Remotion customizations found"
 else
   echo "INFO No Remotion customizations (skill will use defaults)"
@@ -195,13 +195,13 @@ Then re-ask the final confirmation question.
 **Only execute if user chose "Backup and Replace":**
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
-BACKUP_DIR="$CLAUDE_DIR/Backups/media-skill-$(date +%Y%m%d-%H%M%S)"
+ENGINE_DIR="$HOME/.codex"
+BACKUP_DIR="$ENGINE_DIR/Backups/media-skill-$(date +%Y%m%d-%H%M%S)"
 mkdir -p "$BACKUP_DIR"
 
 # Backup existing Media skill
-if [ -d "$CLAUDE_DIR/skills/Media" ]; then
-  cp -R "$CLAUDE_DIR/skills/Media" "$BACKUP_DIR/Media"
+if [ -d "$ENGINE_DIR/skills/Media" ]; then
+  cp -R "$ENGINE_DIR/skills/Media" "$BACKUP_DIR/Media"
   echo "Backed up Media skill to: $BACKUP_DIR/Media"
 fi
 
@@ -230,14 +230,14 @@ echo "Backup created at: $BACKUP_DIR"
 **Mark todo "Create skill directory structure" as in_progress.**
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
-mkdir -p "$CLAUDE_DIR/skills/Media"
-mkdir -p "$CLAUDE_DIR/skills/Media/Art/Workflows"
-mkdir -p "$CLAUDE_DIR/skills/Media/Art/Tools"
-mkdir -p "$CLAUDE_DIR/skills/Media/Art/Lib"
-mkdir -p "$CLAUDE_DIR/skills/Media/Art/Examples"
-mkdir -p "$CLAUDE_DIR/skills/Media/Remotion/Tools"
-mkdir -p "$CLAUDE_DIR/skills/Media/Remotion/Workflows"
+ENGINE_DIR="$HOME/.codex"
+mkdir -p "$ENGINE_DIR/skills/Media"
+mkdir -p "$ENGINE_DIR/skills/Media/Art/Workflows"
+mkdir -p "$ENGINE_DIR/skills/Media/Art/Tools"
+mkdir -p "$ENGINE_DIR/skills/Media/Art/Lib"
+mkdir -p "$ENGINE_DIR/skills/Media/Art/Examples"
+mkdir -p "$ENGINE_DIR/skills/Media/Remotion/Tools"
+mkdir -p "$ENGINE_DIR/skills/Media/Remotion/Workflows"
 echo "Directory structure created"
 ```
 
@@ -249,16 +249,16 @@ echo "Directory structure created"
 
 ```bash
 PACK_DIR="$(pwd)"
-CLAUDE_DIR="$HOME/.codex"
+ENGINE_DIR="$HOME/.codex"
 
 # Copy top-level SKILL.md
-cp "$PACK_DIR/src/SKILL.md" "$CLAUDE_DIR/skills/Media/SKILL.md"
+cp "$PACK_DIR/src/SKILL.md" "$ENGINE_DIR/skills/Media/SKILL.md"
 
 # Copy Art subsystem
-cp -R "$PACK_DIR/src/Art/." "$CLAUDE_DIR/skills/Media/Art/"
+cp -R "$PACK_DIR/src/Art/." "$ENGINE_DIR/skills/Media/Art/"
 
 # Copy Remotion subsystem
-cp -R "$PACK_DIR/src/Remotion/." "$CLAUDE_DIR/skills/Media/Remotion/"
+cp -R "$PACK_DIR/src/Remotion/." "$ENGINE_DIR/skills/Media/Remotion/"
 
 echo "All skill files copied"
 ```
@@ -273,17 +273,17 @@ echo "All skill files copied"
 **Mark todo "Install tool dependencies" as in_progress.**
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
+ENGINE_DIR="$HOME/.codex"
 
 # Install Art tool dependencies
-if [ -f "$CLAUDE_DIR/skills/Media/Art/Tools/package.json" ]; then
-  cd "$CLAUDE_DIR/skills/Media/Art/Tools" && bun install
+if [ -f "$ENGINE_DIR/skills/Media/Art/Tools/package.json" ]; then
+  cd "$ENGINE_DIR/skills/Media/Art/Tools" && bun install
   echo "Art tool dependencies installed"
 fi
 
 # Install Remotion tool dependencies
-if [ -f "$CLAUDE_DIR/skills/Media/Remotion/Tools/package.json" ]; then
-  cd "$CLAUDE_DIR/skills/Media/Remotion/Tools" && bun install
+if [ -f "$ENGINE_DIR/skills/Media/Remotion/Tools/package.json" ]; then
+  cd "$ENGINE_DIR/skills/Media/Remotion/Tools" && bun install
   echo "Remotion tool dependencies installed"
 fi
 ```
@@ -299,39 +299,39 @@ fi
 **Execute all checks from VERIFY.md:**
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
+ENGINE_DIR="$HOME/.codex"
 
 echo "=== Media Skill Verification ==="
 
 # Check SKILL.md exists
 echo "Checking skill files..."
-[ -f "$CLAUDE_DIR/skills/Media/SKILL.md" ] && echo "OK Media SKILL.md installed" || echo "ERROR Media SKILL.md missing"
-[ -f "$CLAUDE_DIR/skills/Media/Art/SKILL.md" ] && echo "OK Art SKILL.md installed" || echo "SKIP Art not installed"
-[ -f "$CLAUDE_DIR/skills/Media/Remotion/SKILL.md" ] && echo "OK Remotion SKILL.md installed" || echo "SKIP Remotion not installed"
+[ -f "$ENGINE_DIR/skills/Media/SKILL.md" ] && echo "OK Media SKILL.md installed" || echo "ERROR Media SKILL.md missing"
+[ -f "$ENGINE_DIR/skills/Media/Art/SKILL.md" ] && echo "OK Art SKILL.md installed" || echo "SKIP Art not installed"
+[ -f "$ENGINE_DIR/skills/Media/Remotion/SKILL.md" ] && echo "OK Remotion SKILL.md installed" || echo "SKIP Remotion not installed"
 
 # Check subdirectories
 echo "Checking directories..."
-[ -d "$CLAUDE_DIR/skills/Media/Art/Workflows" ] && echo "OK Art/Workflows exists" || echo "SKIP Art/Workflows"
-[ -d "$CLAUDE_DIR/skills/Media/Art/Tools" ] && echo "OK Art/Tools exists" || echo "SKIP Art/Tools"
-[ -d "$CLAUDE_DIR/skills/Media/Art/Lib" ] && echo "OK Art/Lib exists" || echo "SKIP Art/Lib"
-[ -d "$CLAUDE_DIR/skills/Media/Art/Examples" ] && echo "OK Art/Examples exists" || echo "SKIP Art/Examples"
-[ -d "$CLAUDE_DIR/skills/Media/Remotion/Tools" ] && echo "OK Remotion/Tools exists" || echo "SKIP Remotion/Tools"
-[ -d "$CLAUDE_DIR/skills/Media/Remotion/Workflows" ] && echo "OK Remotion/Workflows exists" || echo "SKIP Remotion/Workflows"
+[ -d "$ENGINE_DIR/skills/Media/Art/Workflows" ] && echo "OK Art/Workflows exists" || echo "SKIP Art/Workflows"
+[ -d "$ENGINE_DIR/skills/Media/Art/Tools" ] && echo "OK Art/Tools exists" || echo "SKIP Art/Tools"
+[ -d "$ENGINE_DIR/skills/Media/Art/Lib" ] && echo "OK Art/Lib exists" || echo "SKIP Art/Lib"
+[ -d "$ENGINE_DIR/skills/Media/Art/Examples" ] && echo "OK Art/Examples exists" || echo "SKIP Art/Examples"
+[ -d "$ENGINE_DIR/skills/Media/Remotion/Tools" ] && echo "OK Remotion/Tools exists" || echo "SKIP Remotion/Tools"
+[ -d "$ENGINE_DIR/skills/Media/Remotion/Workflows" ] && echo "OK Remotion/Workflows exists" || echo "SKIP Remotion/Workflows"
 
 # Check frontmatter
 echo "Checking frontmatter..."
-head -1 "$CLAUDE_DIR/skills/Media/SKILL.md" | grep -q "^---" && echo "OK SKILL.md has valid frontmatter" || echo "ERROR SKILL.md missing frontmatter"
+head -1 "$ENGINE_DIR/skills/Media/SKILL.md" | grep -q "^---" && echo "OK SKILL.md has valid frontmatter" || echo "ERROR SKILL.md missing frontmatter"
 
 # Check workflow count
-if [ -d "$CLAUDE_DIR/skills/Media/Art/Workflows" ]; then
-  WORKFLOW_COUNT=$(ls -1 "$CLAUDE_DIR/skills/Media/Art/Workflows/"*.md 2>/dev/null | wc -l | tr -d ' ')
+if [ -d "$ENGINE_DIR/skills/Media/Art/Workflows" ]; then
+  WORKFLOW_COUNT=$(ls -1 "$ENGINE_DIR/skills/Media/Art/Workflows/"*.md 2>/dev/null | wc -l | tr -d ' ')
   echo "OK Art workflows installed: $WORKFLOW_COUNT"
 fi
 
 # Check tools
-if [ -d "$CLAUDE_DIR/skills/Media/Art/Tools" ]; then
-  [ -f "$CLAUDE_DIR/skills/Media/Art/Tools/Generate.ts" ] && echo "OK Generate.ts present" || echo "ERROR Generate.ts missing"
-  [ -f "$CLAUDE_DIR/skills/Media/Art/Tools/ComposeThumbnail.ts" ] && echo "OK ComposeThumbnail.ts present" || echo "ERROR ComposeThumbnail.ts missing"
+if [ -d "$ENGINE_DIR/skills/Media/Art/Tools" ]; then
+  [ -f "$ENGINE_DIR/skills/Media/Art/Tools/Generate.ts" ] && echo "OK Generate.ts present" || echo "ERROR Generate.ts missing"
+  [ -f "$ENGINE_DIR/skills/Media/Art/Tools/ComposeThumbnail.ts" ] && echo "OK ComposeThumbnail.ts present" || echo "ERROR ComposeThumbnail.ts missing"
 fi
 
 echo ""

@@ -7,8 +7,8 @@
 ## File Verification
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
-SKILL_DIR="$CLAUDE_DIR/skills/PAIUpgrade"
+CODEX_DIR="$HOME/.codex"
+SKILL_DIR="$CODEX_DIR/skills/PAIUpgrade"
 
 [ -d "$SKILL_DIR" ]            && echo "OK directory exists"        || echo "MISSING directory"
 [ -f "$SKILL_DIR/SKILL.md" ]   && echo "OK SKILL.md present"        || echo "MISSING SKILL.md"
@@ -26,10 +26,10 @@ SKILL_DIR="$CLAUDE_DIR/skills/PAIUpgrade"
 ## Frontmatter Check
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
-head -1 "$CLAUDE_DIR/skills/PAIUpgrade/SKILL.md" | grep -q "^---" && echo "OK frontmatter delimited" || echo "ERROR missing frontmatter"
-grep -q "^name:" "$CLAUDE_DIR/skills/PAIUpgrade/SKILL.md" && echo "OK has name" || echo "ERROR missing name"
-grep -q "^description:" "$CLAUDE_DIR/skills/PAIUpgrade/SKILL.md" && echo "OK has description" || echo "ERROR missing description"
+CODEX_DIR="$HOME/.codex"
+head -1 "$CODEX_DIR/skills/PAIUpgrade/SKILL.md" | grep -q "^---" && echo "OK frontmatter delimited" || echo "ERROR missing frontmatter"
+grep -q "^name:" "$CODEX_DIR/skills/PAIUpgrade/SKILL.md" && echo "OK has name" || echo "ERROR missing name"
+grep -q "^description:" "$CODEX_DIR/skills/PAIUpgrade/SKILL.md" && echo "OK has description" || echo "ERROR missing description"
 ```
 
 ---

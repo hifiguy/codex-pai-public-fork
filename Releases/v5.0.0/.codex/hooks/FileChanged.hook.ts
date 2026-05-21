@@ -14,7 +14,7 @@ const filePath: string = input?.toolInput?.file_path ?? input?.filePath ?? "";
 const watchedPatterns = [
   /settings\.json$/,
   /settings\.local\.json$/,
-  /CLAUDE\.md$/,
+  /AGENTS\.md$/,
   /CONTEXT_ROUTING\.md$/,
   /Algorithm\/v[\d.]+\.md$/,
 ];

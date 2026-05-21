@@ -7,8 +7,8 @@
 ## File Verification
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
-SKILL_DIR="$CLAUDE_DIR/skills/RedTeam"
+ENGINE_DIR="$HOME/.codex"
+SKILL_DIR="$ENGINE_DIR/skills/RedTeam"
 
 [ -d "$SKILL_DIR" ]            && echo "OK directory exists"        || echo "MISSING directory"
 [ -f "$SKILL_DIR/SKILL.md" ]   && echo "OK SKILL.md present"        || echo "MISSING SKILL.md"
@@ -26,10 +26,10 @@ SKILL_DIR="$CLAUDE_DIR/skills/RedTeam"
 ## Frontmatter Check
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
-head -1 "$CLAUDE_DIR/skills/RedTeam/SKILL.md" | grep -q "^---" && echo "OK frontmatter delimited" || echo "ERROR missing frontmatter"
-grep -q "^name:" "$CLAUDE_DIR/skills/RedTeam/SKILL.md" && echo "OK has name" || echo "ERROR missing name"
-grep -q "^description:" "$CLAUDE_DIR/skills/RedTeam/SKILL.md" && echo "OK has description" || echo "ERROR missing description"
+ENGINE_DIR="$HOME/.codex"
+head -1 "$ENGINE_DIR/skills/RedTeam/SKILL.md" | grep -q "^---" && echo "OK frontmatter delimited" || echo "ERROR missing frontmatter"
+grep -q "^name:" "$ENGINE_DIR/skills/RedTeam/SKILL.md" && echo "OK has name" || echo "ERROR missing name"
+grep -q "^description:" "$ENGINE_DIR/skills/RedTeam/SKILL.md" && echo "OK has description" || echo "ERROR missing description"
 ```
 
 ---

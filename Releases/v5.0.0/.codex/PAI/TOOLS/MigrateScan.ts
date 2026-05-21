@@ -2,7 +2,7 @@
 
 /**
  * MigrateScan — intake content from external sources (other PAI installs, other
- * agent harnesses, Obsidian/Notion/Apple-Notes exports, Claude.md files, Cursor
+ * agent harnesses, Obsidian/Notion/Apple-Notes exports, legacy instruction files, Cursor
  * rules, OpenAI Custom Instructions, raw journal dumps) and propose a target
  * destination in the PAI structure per chunk.
  *

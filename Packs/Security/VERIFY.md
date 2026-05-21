@@ -9,8 +9,8 @@
 ### Check top-level SKILL.md exists
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
-[ -f "$CLAUDE_DIR/skills/Security/SKILL.md" ] && echo "OK SKILL.md" || echo "MISSING SKILL.md"
+ENGINE_DIR="$HOME/.codex"
+[ -f "$ENGINE_DIR/skills/Security/SKILL.md" ] && echo "OK SKILL.md" || echo "MISSING SKILL.md"
 ```
 
 **Expected:** SKILL.md present at `~/.codex/skills/Security/SKILL.md`.
@@ -18,9 +18,9 @@ CLAUDE_DIR="$HOME/.codex"
 ### Check sub-domain SKILL.md files
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
+ENGINE_DIR="$HOME/.codex"
 for subdir in Recon WebAssessment PromptInjection SECUpdates AnnualReports; do
-  [ -f "$CLAUDE_DIR/skills/Security/$subdir/SKILL.md" ] && echo "OK $subdir/SKILL.md" || echo "MISSING $subdir/SKILL.md"
+  [ -f "$ENGINE_DIR/skills/Security/$subdir/SKILL.md" ] && echo "OK $subdir/SKILL.md" || echo "MISSING $subdir/SKILL.md"
 done
 ```
 
@@ -29,28 +29,28 @@ done
 ### Check sub-domain directories exist
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
+ENGINE_DIR="$HOME/.codex"
 
 echo "Recon directories:"
-[ -d "$CLAUDE_DIR/skills/Security/Recon/Tools" ] && echo "  OK Recon/Tools/" || echo "  MISSING Recon/Tools/"
-[ -d "$CLAUDE_DIR/skills/Security/Recon/Workflows" ] && echo "  OK Recon/Workflows/" || echo "  MISSING Recon/Workflows/"
-[ -d "$CLAUDE_DIR/skills/Security/Recon/Data" ] && echo "  OK Recon/Data/" || echo "  MISSING Recon/Data/"
+[ -d "$ENGINE_DIR/skills/Security/Recon/Tools" ] && echo "  OK Recon/Tools/" || echo "  MISSING Recon/Tools/"
+[ -d "$ENGINE_DIR/skills/Security/Recon/Workflows" ] && echo "  OK Recon/Workflows/" || echo "  MISSING Recon/Workflows/"
+[ -d "$ENGINE_DIR/skills/Security/Recon/Data" ] && echo "  OK Recon/Data/" || echo "  MISSING Recon/Data/"
 
 echo "WebAssessment directories:"
-[ -d "$CLAUDE_DIR/skills/Security/WebAssessment/Workflows" ] && echo "  OK WebAssessment/Workflows/" || echo "  MISSING WebAssessment/Workflows/"
-[ -d "$CLAUDE_DIR/skills/Security/WebAssessment/BugBountyTool" ] && echo "  OK WebAssessment/BugBountyTool/" || echo "  MISSING WebAssessment/BugBountyTool/"
-[ -d "$CLAUDE_DIR/skills/Security/WebAssessment/FfufResources" ] && echo "  OK WebAssessment/FfufResources/" || echo "  MISSING WebAssessment/FfufResources/"
-[ -d "$CLAUDE_DIR/skills/Security/WebAssessment/OsintTools" ] && echo "  OK WebAssessment/OsintTools/" || echo "  MISSING WebAssessment/OsintTools/"
+[ -d "$ENGINE_DIR/skills/Security/WebAssessment/Workflows" ] && echo "  OK WebAssessment/Workflows/" || echo "  MISSING WebAssessment/Workflows/"
+[ -d "$ENGINE_DIR/skills/Security/WebAssessment/BugBountyTool" ] && echo "  OK WebAssessment/BugBountyTool/" || echo "  MISSING WebAssessment/BugBountyTool/"
+[ -d "$ENGINE_DIR/skills/Security/WebAssessment/FfufResources" ] && echo "  OK WebAssessment/FfufResources/" || echo "  MISSING WebAssessment/FfufResources/"
+[ -d "$ENGINE_DIR/skills/Security/WebAssessment/OsintTools" ] && echo "  OK WebAssessment/OsintTools/" || echo "  MISSING WebAssessment/OsintTools/"
 
 echo "PromptInjection directories:"
-[ -d "$CLAUDE_DIR/skills/Security/PromptInjection/Workflows" ] && echo "  OK PromptInjection/Workflows/" || echo "  MISSING PromptInjection/Workflows/"
+[ -d "$ENGINE_DIR/skills/Security/PromptInjection/Workflows" ] && echo "  OK PromptInjection/Workflows/" || echo "  MISSING PromptInjection/Workflows/"
 
 echo "SECUpdates directories:"
-[ -d "$CLAUDE_DIR/skills/Security/SECUpdates/Workflows" ] && echo "  OK SECUpdates/Workflows/" || echo "  MISSING SECUpdates/Workflows/"
-[ -d "$CLAUDE_DIR/skills/Security/SECUpdates/State" ] && echo "  OK SECUpdates/State/" || echo "  MISSING SECUpdates/State/"
+[ -d "$ENGINE_DIR/skills/Security/SECUpdates/Workflows" ] && echo "  OK SECUpdates/Workflows/" || echo "  MISSING SECUpdates/Workflows/"
+[ -d "$ENGINE_DIR/skills/Security/SECUpdates/State" ] && echo "  OK SECUpdates/State/" || echo "  MISSING SECUpdates/State/"
 
 echo "AnnualReports directories:"
-[ -d "$CLAUDE_DIR/skills/Security/AnnualReports/Tools" ] && echo "  OK AnnualReports/Tools/" || echo "  MISSING AnnualReports/Tools/"
+[ -d "$ENGINE_DIR/skills/Security/AnnualReports/Tools" ] && echo "  OK AnnualReports/Tools/" || echo "  MISSING AnnualReports/Tools/"
 ```
 
 **Expected:** All directories present.
@@ -58,16 +58,16 @@ echo "AnnualReports directories:"
 ### Check frontmatter validity
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
+ENGINE_DIR="$HOME/.codex"
 for skill_file in \
-  "$CLAUDE_DIR/skills/Security/SKILL.md" \
-  "$CLAUDE_DIR/skills/Security/Recon/SKILL.md" \
-  "$CLAUDE_DIR/skills/Security/WebAssessment/SKILL.md" \
-  "$CLAUDE_DIR/skills/Security/PromptInjection/SKILL.md" \
-  "$CLAUDE_DIR/skills/Security/SECUpdates/SKILL.md" \
-  "$CLAUDE_DIR/skills/Security/AnnualReports/SKILL.md"; do
+  "$ENGINE_DIR/skills/Security/SKILL.md" \
+  "$ENGINE_DIR/skills/Security/Recon/SKILL.md" \
+  "$ENGINE_DIR/skills/Security/WebAssessment/SKILL.md" \
+  "$ENGINE_DIR/skills/Security/PromptInjection/SKILL.md" \
+  "$ENGINE_DIR/skills/Security/SECUpdates/SKILL.md" \
+  "$ENGINE_DIR/skills/Security/AnnualReports/SKILL.md"; do
   if [ -f "$skill_file" ]; then
-    basename_dir=$(echo "$skill_file" | sed "s|$CLAUDE_DIR/skills/Security/||")
+    basename_dir=$(echo "$skill_file" | sed "s|$ENGINE_DIR/skills/Security/||")
     head -1 "$skill_file" | grep -q "^---" && echo "OK $basename_dir frontmatter" || echo "ERROR $basename_dir missing frontmatter"
     grep -q "^name:" "$skill_file" && echo "OK $basename_dir has name field" || echo "ERROR $basename_dir missing name field"
     grep -q "^description:" "$skill_file" && echo "OK $basename_dir has description" || echo "ERROR $basename_dir missing description"
@@ -80,16 +80,16 @@ done
 ### Check key tool files exist
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
+ENGINE_DIR="$HOME/.codex"
 
 echo "Recon tools:"
 for tool in SubdomainEnum.ts PortScan.ts DnsUtils.ts WhoisParser.ts CidrUtils.ts MassScan.ts EndpointDiscovery.ts PathDiscovery.ts; do
-  [ -f "$CLAUDE_DIR/skills/Security/Recon/Tools/$tool" ] && echo "  OK $tool" || echo "  MISSING $tool"
+  [ -f "$ENGINE_DIR/skills/Security/Recon/Tools/$tool" ] && echo "  OK $tool" || echo "  MISSING $tool"
 done
 
 echo "AnnualReports tools:"
 for tool in FetchReport.ts ListSources.ts UpdateSources.ts; do
-  [ -f "$CLAUDE_DIR/skills/Security/AnnualReports/Tools/$tool" ] && echo "  OK $tool" || echo "  MISSING $tool"
+  [ -f "$ENGINE_DIR/skills/Security/AnnualReports/Tools/$tool" ] && echo "  OK $tool" || echo "  MISSING $tool"
 done
 ```
 
@@ -110,9 +110,9 @@ command -v python3 >/dev/null 2>&1 && echo "  AVAILABLE python3 (Python tools)" 
 
 echo ""
 echo "PAI integration (informational):"
-CLAUDE_DIR="$HOME/.codex"
-[ -d "$CLAUDE_DIR/PAI" ] && echo "  AVAILABLE PAI infrastructure" || echo "  UNAVAILABLE PAI infrastructure (skill works standalone)"
-[ -d "$CLAUDE_DIR/PAI/USER/SKILLCUSTOMIZATIONS" ] && echo "  AVAILABLE Skill customizations directory" || echo "  UNAVAILABLE Skill customizations (defaults will be used)"
+ENGINE_DIR="$HOME/.codex"
+[ -d "$ENGINE_DIR/PAI" ] && echo "  AVAILABLE PAI infrastructure" || echo "  UNAVAILABLE PAI infrastructure (skill works standalone)"
+[ -d "$ENGINE_DIR/PAI/USER/SKILLCUSTOMIZATIONS" ] && echo "  AVAILABLE Skill customizations directory" || echo "  UNAVAILABLE Skill customizations (defaults will be used)"
 ```
 
 ---

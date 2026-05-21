@@ -18,10 +18,10 @@ import { getDAName } from './lib/identity';
 
 const paiDir = getPaiDir();
 
-// Skip for subagents
-const claudeProjectDir = process.env.CLAUDE_PROJECT_DIR || '';
-const isSubagent = claudeProjectDir.includes('/.codex/Agents/') ||
-                  process.env.CLAUDE_AGENT_TYPE !== undefined;
+// Skip for subagents when the engine exposes project/type metadata.
+const engineProjectDir = process.env.CODEX_PROJECT_DIR || '';
+const isSubagent = engineProjectDir.includes('/.codex/Agents/') ||
+                  process.env.CODEX_AGENT_TYPE !== undefined;
 if (isSubagent) process.exit(0);
 
 // Read session_id + source from stdin (SessionStart hook input)
@@ -53,7 +53,7 @@ if (kittyListenOn && kittyWindowId) {
 }
 
 // Reset tab title to clean state — prevents stale titles bleeding through when a
-// kitty window is reused for a brand-new Claude session. Only `source: "compact"`
+// kitty window is reused for a brand-new engine session. Only `source: "compact"`
 // is the same running session continuing; every other source (startup, resume,
 // clear, or missing) is a distinct session and MUST drop the prior title so
 // SessionAnalysis can rebuild it from THIS session's own name.

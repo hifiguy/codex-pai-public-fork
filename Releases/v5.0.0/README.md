@@ -47,7 +47,7 @@ open http://localhost:31337    # the Life Dashboard
 
 ## TL;DR
 
-**Stop thinking of PAI as a Claude Code config.** PAI is the framework that turns AI from a chatbot you talk to into a system that **runs your life** — it knows your goals, your people, your workflows, your current state, your ideal state, and continuously hill-climbs you from one to the other.
+**Stop thinking of PAI as a single engine config.** PAI is the framework that turns AI from a chatbot you talk to into a system that **runs your life** — it knows your goals, your people, your workflows, your current state, your ideal state, and continuously hill-climbs you from one to the other.
 
 - **PAI** = Personal AI Infrastructure = the **Life Operating System**
 - **Your DA** = your Digital Assistant = the primary interface to the OS (you name it)
@@ -83,7 +83,7 @@ The release is large. If you only read four bullets, read these:
 3. **Pulse — the unified daemon.** One bun process, one port (`31337`), one launchd service, one log file. Replaces every loose voice/observability/hook script from v4.x.
 4. **45 skills shipped — the most ever.** Up from 36 leaf skills in v4.0.3 and 41 in v3.0. Catalog with descriptions and use cases below.
 
-**Plus a new constitutional layer:** v5.0.0 adds a top-level **system prompt** (`PAI/PAI_SYSTEM_PROMPT.md`) loaded via `--append-system-prompt-file`, which encodes the non-negotiable behavioral rules — output format, verification doctrine, security protocol — at the highest priority above `CLAUDE.md`. Adherence is dramatically stronger than v4.x.
+**Plus a new constitutional layer:** v5.0.0 adds a top-level **system prompt** (`PAI/PAI_SYSTEM_PROMPT.md`) loaded by the PAI launcher as initial engine instructions, which encodes the non-negotiable behavioral rules — output format, verification doctrine, security protocol — above `AGENTS.md`. Adherence is dramatically stronger than v4.x.
 
 ---
 
@@ -265,7 +265,7 @@ v5.0.0 introduces **`PAI/PAI_SYSTEM_PROMPT.md`** — a top-level system prompt l
 - **Identity rules** — your DA speaks first person always; the principal is "you", never "the user".
 - **Operational non-negotiables** — bun/bunx always (never npm/npx), TypeScript always (never Python without explicit approval), markdown over HTML, plan-means-stop, etc.
 
-The system prompt loads at the **highest priority layer** — above `@`-imported context, above `CLAUDE.md`, above session content. The classifier hook (`PromptProcessing.hook.ts`) runs on every top-level prompt to decide MODE / TIER, and the executor obeys it. The result is **dramatically stronger instruction adherence than v4.x** — the constitutional rules don't drift across long sessions, and format violations are now a CRITICAL FAILURE rather than a stylistic preference.
+The system prompt loads at the **highest priority PAI layer** — above `@`-imported context, above `AGENTS.md`, above session content. The classifier hook (`PromptProcessing.hook.ts`) runs on every top-level prompt to decide MODE / TIER, and the executor obeys it. The result is **dramatically stronger instruction adherence than v4.x** — the constitutional rules don't drift across long sessions, and format violations are now a CRITICAL FAILURE rather than a stylistic preference.
 
 If you used PAI v4.x and felt it sometimes "forgot" hard rules deep into a session, this is the fix.
 

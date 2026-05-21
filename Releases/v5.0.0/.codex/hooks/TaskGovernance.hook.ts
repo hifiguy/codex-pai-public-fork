@@ -43,7 +43,7 @@ if (!task_description || task_description.trim().length < 10) {
 }
 
 // --- Rate limit: track tasks per session via temp file ---
-// CLAUDE_SESSION_ID doesn't exist in env, so we use ppid (ChatGPT Codex process)
+// Codex does not expose a stable session env var here, so we use ppid
 // and reset the counter when the session (ppid) changes.
 const trackFile = join("/tmp", "pai-task-governance.json");
 let taskCount = 0;

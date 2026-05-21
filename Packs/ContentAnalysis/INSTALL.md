@@ -37,42 +37,42 @@ Let me analyze your system and guide you through installation."
 
 ```bash
 # Check for ChatGPT Codex skills directory
-CLAUDE_DIR="$HOME/.codex"
-echo "Claude directory: $CLAUDE_DIR"
+ENGINE_DIR="$HOME/.codex"
+echo "Engine directory: $ENGINE_DIR"
 
 # Check if ContentAnalysis skill directory exists
-if [ -d "$CLAUDE_DIR/skills/ContentAnalysis" ]; then
-  echo "WARNING Existing ContentAnalysis skill found at: $CLAUDE_DIR/skills/ContentAnalysis"
-  ls -la "$CLAUDE_DIR/skills/ContentAnalysis/" 2>/dev/null
+if [ -d "$ENGINE_DIR/skills/ContentAnalysis" ]; then
+  echo "WARNING Existing ContentAnalysis skill found at: $ENGINE_DIR/skills/ContentAnalysis"
+  ls -la "$ENGINE_DIR/skills/ContentAnalysis/" 2>/dev/null
 else
   echo "OK No existing ContentAnalysis skill (clean install)"
 fi
 
 # Check for skills directory
-if [ -d "$CLAUDE_DIR/skills" ]; then
-  echo "OK Skills directory exists at: $CLAUDE_DIR/skills"
+if [ -d "$ENGINE_DIR/skills" ]; then
+  echo "OK Skills directory exists at: $ENGINE_DIR/skills"
 else
   echo "INFO Skills directory does not exist (will be created)"
 fi
 
 # Check for ExtractWisdom subdirectory specifically
-if [ -d "$CLAUDE_DIR/skills/ContentAnalysis/ExtractWisdom" ]; then
+if [ -d "$ENGINE_DIR/skills/ContentAnalysis/ExtractWisdom" ]; then
   echo "WARNING Existing ExtractWisdom sub-skill found"
-  ls -la "$CLAUDE_DIR/skills/ContentAnalysis/ExtractWisdom/" 2>/dev/null
+  ls -la "$ENGINE_DIR/skills/ContentAnalysis/ExtractWisdom/" 2>/dev/null
 else
   echo "OK No existing ExtractWisdom sub-skill"
 fi
 
 # Check for user customization directory
-if [ -d "$CLAUDE_DIR/PAI/USER/SKILLCUSTOMIZATIONS/ExtractWisdom" ]; then
+if [ -d "$ENGINE_DIR/PAI/USER/SKILLCUSTOMIZATIONS/ExtractWisdom" ]; then
   echo "OK User customizations found (will be preserved)"
-  ls -la "$CLAUDE_DIR/PAI/USER/SKILLCUSTOMIZATIONS/ExtractWisdom/" 2>/dev/null
+  ls -la "$ENGINE_DIR/PAI/USER/SKILLCUSTOMIZATIONS/ExtractWisdom/" 2>/dev/null
 else
   echo "INFO No user customizations found (none to preserve)"
 fi
 
 # Check for PAI writing style (enhances extraction tone)
-if [ -f "$CLAUDE_DIR/PAI/USER/WRITINGSTYLE.md" ]; then
+if [ -f "$ENGINE_DIR/PAI/USER/WRITINGSTYLE.md" ]; then
   echo "OK Writing style definition found (extraction voice will be calibrated)"
 else
   echo "INFO No writing style found (skill uses built-in voice standards)"
@@ -152,13 +152,13 @@ Then re-ask the final confirmation question.
 **Only execute if user chose "Backup and Replace":**
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
-BACKUP_DIR="$CLAUDE_DIR/Backups/contentanalysis-skill-$(date +%Y%m%d-%H%M%S)"
+ENGINE_DIR="$HOME/.codex"
+BACKUP_DIR="$ENGINE_DIR/Backups/contentanalysis-skill-$(date +%Y%m%d-%H%M%S)"
 mkdir -p "$BACKUP_DIR"
 
 # Backup existing skill directory
-if [ -d "$CLAUDE_DIR/skills/ContentAnalysis" ]; then
-  cp -r "$CLAUDE_DIR/skills/ContentAnalysis" "$BACKUP_DIR/ContentAnalysis"
+if [ -d "$ENGINE_DIR/skills/ContentAnalysis" ]; then
+  cp -r "$ENGINE_DIR/skills/ContentAnalysis" "$BACKUP_DIR/ContentAnalysis"
   echo "Backed up ContentAnalysis skill to: $BACKUP_DIR/ContentAnalysis"
 fi
 
@@ -186,10 +186,10 @@ echo "Backup created at: $BACKUP_DIR"
 **Mark todo "Create skill directory structure" as in_progress.**
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
-mkdir -p "$CLAUDE_DIR/skills/ContentAnalysis"
-mkdir -p "$CLAUDE_DIR/skills/ContentAnalysis/ExtractWisdom"
-mkdir -p "$CLAUDE_DIR/skills/ContentAnalysis/ExtractWisdom/Workflows"
+ENGINE_DIR="$HOME/.codex"
+mkdir -p "$ENGINE_DIR/skills/ContentAnalysis"
+mkdir -p "$ENGINE_DIR/skills/ContentAnalysis/ExtractWisdom"
+mkdir -p "$ENGINE_DIR/skills/ContentAnalysis/ExtractWisdom/Workflows"
 echo "Created ContentAnalysis skill directory structure"
 ```
 
@@ -201,12 +201,12 @@ echo "Created ContentAnalysis skill directory structure"
 
 ```bash
 PACK_DIR="$(pwd)"
-CLAUDE_DIR="$HOME/.codex"
+ENGINE_DIR="$HOME/.codex"
 
 # Copy all files from src/ to skill directory
-cp "$PACK_DIR/src/SKILL.md" "$CLAUDE_DIR/skills/ContentAnalysis/SKILL.md"
-cp "$PACK_DIR/src/ExtractWisdom/SKILL.md" "$CLAUDE_DIR/skills/ContentAnalysis/ExtractWisdom/SKILL.md"
-cp "$PACK_DIR/src/ExtractWisdom/Workflows/Extract.md" "$CLAUDE_DIR/skills/ContentAnalysis/ExtractWisdom/Workflows/Extract.md"
+cp "$PACK_DIR/src/SKILL.md" "$ENGINE_DIR/skills/ContentAnalysis/SKILL.md"
+cp "$PACK_DIR/src/ExtractWisdom/SKILL.md" "$ENGINE_DIR/skills/ContentAnalysis/ExtractWisdom/SKILL.md"
+cp "$PACK_DIR/src/ExtractWisdom/Workflows/Extract.md" "$ENGINE_DIR/skills/ContentAnalysis/ExtractWisdom/Workflows/Extract.md"
 
 echo "Copied all ContentAnalysis skill files"
 ```
@@ -222,34 +222,34 @@ echo "Copied all ContentAnalysis skill files"
 **Execute all checks from VERIFY.md:**
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
+ENGINE_DIR="$HOME/.codex"
 
 echo "=== ContentAnalysis Skill Verification ==="
 
 # Check SKILL.md exists
 echo "Checking skill definition..."
-[ -f "$CLAUDE_DIR/skills/ContentAnalysis/SKILL.md" ] && echo "OK SKILL.md installed" || echo "ERROR SKILL.md missing"
+[ -f "$ENGINE_DIR/skills/ContentAnalysis/SKILL.md" ] && echo "OK SKILL.md installed" || echo "ERROR SKILL.md missing"
 
 # Check directories exist
 echo "Checking directories..."
-[ -d "$CLAUDE_DIR/skills/ContentAnalysis/ExtractWisdom" ] && echo "OK ExtractWisdom/ directory exists" || echo "ERROR ExtractWisdom/ missing"
-[ -d "$CLAUDE_DIR/skills/ContentAnalysis/ExtractWisdom/Workflows" ] && echo "OK ExtractWisdom/Workflows/ directory exists" || echo "ERROR ExtractWisdom/Workflows/ missing"
+[ -d "$ENGINE_DIR/skills/ContentAnalysis/ExtractWisdom" ] && echo "OK ExtractWisdom/ directory exists" || echo "ERROR ExtractWisdom/ missing"
+[ -d "$ENGINE_DIR/skills/ContentAnalysis/ExtractWisdom/Workflows" ] && echo "OK ExtractWisdom/Workflows/ directory exists" || echo "ERROR ExtractWisdom/Workflows/ missing"
 
 # Check sub-skill files
 echo "Checking sub-skill files..."
-[ -f "$CLAUDE_DIR/skills/ContentAnalysis/ExtractWisdom/SKILL.md" ] && echo "OK ExtractWisdom SKILL.md installed" || echo "ERROR ExtractWisdom SKILL.md missing"
-[ -f "$CLAUDE_DIR/skills/ContentAnalysis/ExtractWisdom/Workflows/Extract.md" ] && echo "OK Extract workflow installed" || echo "ERROR Extract workflow missing"
+[ -f "$ENGINE_DIR/skills/ContentAnalysis/ExtractWisdom/SKILL.md" ] && echo "OK ExtractWisdom SKILL.md installed" || echo "ERROR ExtractWisdom SKILL.md missing"
+[ -f "$ENGINE_DIR/skills/ContentAnalysis/ExtractWisdom/Workflows/Extract.md" ] && echo "OK Extract workflow installed" || echo "ERROR Extract workflow missing"
 
 # Check frontmatter
 echo "Checking frontmatter..."
-head -1 "$CLAUDE_DIR/skills/ContentAnalysis/SKILL.md" | grep -q "^---" && echo "OK SKILL.md has valid frontmatter" || echo "ERROR SKILL.md missing frontmatter"
-head -1 "$CLAUDE_DIR/skills/ContentAnalysis/ExtractWisdom/SKILL.md" | grep -q "^---" && echo "OK ExtractWisdom SKILL.md has valid frontmatter" || echo "ERROR ExtractWisdom SKILL.md missing frontmatter"
+head -1 "$ENGINE_DIR/skills/ContentAnalysis/SKILL.md" | grep -q "^---" && echo "OK SKILL.md has valid frontmatter" || echo "ERROR SKILL.md missing frontmatter"
+head -1 "$ENGINE_DIR/skills/ContentAnalysis/ExtractWisdom/SKILL.md" | grep -q "^---" && echo "OK ExtractWisdom SKILL.md has valid frontmatter" || echo "ERROR ExtractWisdom SKILL.md missing frontmatter"
 
 # Informational checks
 echo ""
 echo "Enhancement availability (informational):"
-[ -f "$CLAUDE_DIR/PAI/USER/WRITINGSTYLE.md" ] && echo "  AVAILABLE Writing style (voice calibration)" || echo "  INFO No writing style (uses built-in voice standards)"
-[ -d "$CLAUDE_DIR/PAI/USER/SKILLCUSTOMIZATIONS/ExtractWisdom" ] && echo "  AVAILABLE User customizations" || echo "  INFO No user customizations (optional)"
+[ -f "$ENGINE_DIR/PAI/USER/WRITINGSTYLE.md" ] && echo "  AVAILABLE Writing style (voice calibration)" || echo "  INFO No writing style (uses built-in voice standards)"
+[ -d "$ENGINE_DIR/PAI/USER/SKILLCUSTOMIZATIONS/ExtractWisdom" ] && echo "  AVAILABLE User customizations" || echo "  INFO No user customizations (optional)"
 
 echo ""
 echo "=== Verification Complete ==="

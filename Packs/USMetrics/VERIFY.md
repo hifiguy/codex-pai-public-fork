@@ -9,8 +9,8 @@
 ### Check SKILL.md exists
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
-[ -f "$CLAUDE_DIR/skills/USMetrics/SKILL.md" ] && echo "OK SKILL.md" || echo "MISSING SKILL.md"
+ENGINE_DIR="$HOME/.codex"
+[ -f "$ENGINE_DIR/skills/USMetrics/SKILL.md" ] && echo "OK SKILL.md" || echo "MISSING SKILL.md"
 ```
 
 **Expected:** SKILL.md present at `~/.codex/skills/USMetrics/SKILL.md`.
@@ -18,9 +18,9 @@ CLAUDE_DIR="$HOME/.codex"
 ### Check subdirectories exist
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
-[ -d "$CLAUDE_DIR/skills/USMetrics/Tools" ] && echo "OK Tools/" || echo "MISSING Tools/"
-[ -d "$CLAUDE_DIR/skills/USMetrics/Workflows" ] && echo "OK Workflows/" || echo "MISSING Workflows/"
+ENGINE_DIR="$HOME/.codex"
+[ -d "$ENGINE_DIR/skills/USMetrics/Tools" ] && echo "OK Tools/" || echo "MISSING Tools/"
+[ -d "$ENGINE_DIR/skills/USMetrics/Workflows" ] && echo "OK Workflows/" || echo "MISSING Workflows/"
 ```
 
 **Expected:** Both Tools/ and Workflows/ directories present.
@@ -28,10 +28,10 @@ CLAUDE_DIR="$HOME/.codex"
 ### Check tool files exist
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
-[ -f "$CLAUDE_DIR/skills/USMetrics/Tools/UpdateSubstrateMetrics.ts" ] && echo "OK UpdateSubstrateMetrics.ts" || echo "MISSING UpdateSubstrateMetrics.ts"
-[ -f "$CLAUDE_DIR/skills/USMetrics/Tools/FetchFredSeries.ts" ] && echo "OK FetchFredSeries.ts" || echo "MISSING FetchFredSeries.ts"
-[ -f "$CLAUDE_DIR/skills/USMetrics/Tools/GenerateAnalysis.ts" ] && echo "OK GenerateAnalysis.ts" || echo "MISSING GenerateAnalysis.ts"
+ENGINE_DIR="$HOME/.codex"
+[ -f "$ENGINE_DIR/skills/USMetrics/Tools/UpdateSubstrateMetrics.ts" ] && echo "OK UpdateSubstrateMetrics.ts" || echo "MISSING UpdateSubstrateMetrics.ts"
+[ -f "$ENGINE_DIR/skills/USMetrics/Tools/FetchFredSeries.ts" ] && echo "OK FetchFredSeries.ts" || echo "MISSING FetchFredSeries.ts"
+[ -f "$ENGINE_DIR/skills/USMetrics/Tools/GenerateAnalysis.ts" ] && echo "OK GenerateAnalysis.ts" || echo "MISSING GenerateAnalysis.ts"
 ```
 
 **Expected:** All three TypeScript tool files present.
@@ -39,9 +39,9 @@ CLAUDE_DIR="$HOME/.codex"
 ### Check workflow files exist
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
-[ -f "$CLAUDE_DIR/skills/USMetrics/Workflows/UpdateData.md" ] && echo "OK UpdateData.md" || echo "MISSING UpdateData.md"
-[ -f "$CLAUDE_DIR/skills/USMetrics/Workflows/GetCurrentState.md" ] && echo "OK GetCurrentState.md" || echo "MISSING GetCurrentState.md"
+ENGINE_DIR="$HOME/.codex"
+[ -f "$ENGINE_DIR/skills/USMetrics/Workflows/UpdateData.md" ] && echo "OK UpdateData.md" || echo "MISSING UpdateData.md"
+[ -f "$ENGINE_DIR/skills/USMetrics/Workflows/GetCurrentState.md" ] && echo "OK GetCurrentState.md" || echo "MISSING GetCurrentState.md"
 ```
 
 **Expected:** Both workflow files present.
@@ -49,11 +49,11 @@ CLAUDE_DIR="$HOME/.codex"
 ### Check frontmatter is valid
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
-if [ -f "$CLAUDE_DIR/skills/USMetrics/SKILL.md" ]; then
-  head -1 "$CLAUDE_DIR/skills/USMetrics/SKILL.md" | grep -q "^---" && echo "OK SKILL.md frontmatter" || echo "ERROR SKILL.md missing frontmatter"
-  grep -q "^name:" "$CLAUDE_DIR/skills/USMetrics/SKILL.md" && echo "OK SKILL.md has name field" || echo "ERROR SKILL.md missing name field"
-  grep -q "^description:" "$CLAUDE_DIR/skills/USMetrics/SKILL.md" && echo "OK SKILL.md has description" || echo "ERROR SKILL.md missing description"
+ENGINE_DIR="$HOME/.codex"
+if [ -f "$ENGINE_DIR/skills/USMetrics/SKILL.md" ]; then
+  head -1 "$ENGINE_DIR/skills/USMetrics/SKILL.md" | grep -q "^---" && echo "OK SKILL.md frontmatter" || echo "ERROR SKILL.md missing frontmatter"
+  grep -q "^name:" "$ENGINE_DIR/skills/USMetrics/SKILL.md" && echo "OK SKILL.md has name field" || echo "ERROR SKILL.md missing name field"
+  grep -q "^description:" "$ENGINE_DIR/skills/USMetrics/SKILL.md" && echo "OK SKILL.md has description" || echo "ERROR SKILL.md missing description"
 fi
 ```
 

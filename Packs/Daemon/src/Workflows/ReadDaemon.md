@@ -29,7 +29,7 @@ Extract the JSON response and display each section with its content length and f
 Compare the local `${PAI_USER_DIR}/Daemon/daemon.md` against the live API response to identify drift.
 
 ```bash
-bun ${CLAUDE_SKILL_DIR}/Tools/DaemonAggregator.ts --sources
+bun ${ENGINE_SKILL_DIR}/Tools/DaemonAggregator.ts --sources
 ```
 
 ## Output Format

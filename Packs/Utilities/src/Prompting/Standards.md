@@ -747,7 +747,7 @@ When updating prompts for Claude 4.x:
 
 **Primary Sources:**
 - Anthropic: "Claude 4.x Best Practices" (November 2025)
-  https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-4-best-practices
+  source-engine prompt-engineering best-practices documentation
 - Anthropic: "Effective Context Engineering for AI Agents"
   https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents
 - The Fabric System (January 2024)
@@ -1262,7 +1262,7 @@ The templating system reduces duplication by ~65% across the skill system:
 ## References
 
 **Anthropic Official:**
-- [Prompt Templates and Variables](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompt-templates-and-variables)
+- Prompt templates and variables documentation
 - [Prompt Generator](https://codex.com/blog/prompt-generator)
 
 **Industry:**

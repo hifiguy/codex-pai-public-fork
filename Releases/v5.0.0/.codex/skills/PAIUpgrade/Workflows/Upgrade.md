@@ -82,7 +82,7 @@ Spawn 4 parallel agents (`subagent_type=general-purpose`):
 Spawn 4 parallel agents (`subagent_type=general-purpose`):
 
 **Agent 1 — Anthropic Sources**
-Run: `bun ${CLAUDE_SKILL_DIR}/Tools/Anthropic.ts`.
+Run: `bun ~/.codex/skills/PAIUpgrade/Tools/Anthropic.ts`.
 For each finding (release notes, GitHub commits, doc updates), extract specific techniques: exact syntax/API/configuration, quoted documentation showing usage, which PAI component this improves, before/after code where applicable. Skip findings with no concrete technique. Do NOT return vague "new release available" entries.
 
 **Agent 2 — YouTube Channels**
@@ -225,16 +225,16 @@ If none pass: "No registry updates needed this cycle."
 - `State/youtube-videos.json` — add newly processed video IDs.
 - `State/github-trending.json` — add newly seen repo full_names.
 
-### Step 10: Memory Redistribution & Cleanup
+### Step 10: Memory Maintenance Recommendations
 
-Scan `~/.codex/projects/-$(whoami)--codex/memory/MEMORY.md` and each referenced memory file. Triage:
+Review `~/.codex/projects/-$(whoami)--codex/memory/MEMORY.md` and each referenced memory file. Recommend changes only; do not delete, migrate, or edit memory files during this workflow. Triage:
 
 | Condition | Action |
 |-----------|--------|
-| Redundant with system prompt or AGENTS.md operational notes | Delete file, remove from MEMORY.md |
-| Behavioral rule not yet in system prompt | Migrate to PAI_SYSTEM_PROMPT.md (constitutional) or AGENTS.md (operational), then delete |
-| Stale/resolved (problem fixed, project completed, info outdated) | Delete file, remove from MEMORY.md |
-| Wrong paths or outdated references | Verify against filesystem; fix or delete |
+| Redundant with system prompt or AGENTS.md operational notes | Recommend deleting file and removing from MEMORY.md |
+| Behavioral rule not yet in system prompt | Recommend migration target: PAI_SYSTEM_PROMPT.md (constitutional) or AGENTS.md (operational) |
+| Stale/resolved (problem fixed, project completed, info outdated) | Recommend deletion with evidence |
+| Wrong paths or outdated references | Verify against filesystem; recommend fix or deletion |
 | Valid project/user/reference, still current | Keep — update if needed |
 
 **Version pointer check:**
@@ -246,8 +246,8 @@ Output:
 ```
 🧹 MEMORY MAINTENANCE:
  Scanned: [N] memory files
- Deleted: [N] (redundant/stale/resolved)
- Migrated: [N] (moved to steering rules)
+ Recommended deletion: [N] (redundant/stale/resolved)
+ Recommended migration: [N] (move to steering rules)
  Kept: [N] (still valid)
  Version pointers: [all consistent / fixed N mismatches]
 ```

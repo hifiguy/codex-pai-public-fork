@@ -4,14 +4,12 @@ description: Extract system improvements from content, monitor external sources,
 argument-hint: [url or topic]
 ---
 
-# pu — Redirect
+# pu — PAIUpgrade Shortcut
 
-This command has been migrated to the **PAIUpgrade** skill.
+Run the **PAIUpgrade** skill in review-only mode with the provided arguments.
 
-**Invoke the skill directly:**
+Do not modify files, memory, settings, hooks, skills, or USER data. Return upgrade recommendations only.
 
-Use the Skill tool to invoke PAIUpgrade with the provided arguments:
+Focus on preserving Codex-native behavior. Flag any finding that would reintroduce source-engine runtime dependencies, legacy engine-home paths, or source-engine tool syntax.
 
-```
-Skill("PAIUpgrade", "$ARGUMENTS")
-```
+Arguments: `$ARGUMENTS`

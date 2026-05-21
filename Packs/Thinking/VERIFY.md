@@ -9,8 +9,8 @@
 ### Check top-level SKILL.md exists
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
-[ -f "$CLAUDE_DIR/skills/Thinking/SKILL.md" ] && echo "OK SKILL.md" || echo "MISSING SKILL.md"
+ENGINE_DIR="$HOME/.codex"
+[ -f "$ENGINE_DIR/skills/Thinking/SKILL.md" ] && echo "OK SKILL.md" || echo "MISSING SKILL.md"
 ```
 
 **Expected:** SKILL.md present at `~/.codex/skills/Thinking/SKILL.md`.
@@ -18,9 +18,9 @@ CLAUDE_DIR="$HOME/.codex"
 ### Check thinking mode SKILL.md files
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
+ENGINE_DIR="$HOME/.codex"
 for subdir in FirstPrinciples IterativeDepth BeCreative Council RedTeam WorldThreatModelHarness Science; do
-  [ -f "$CLAUDE_DIR/skills/Thinking/$subdir/SKILL.md" ] && echo "OK $subdir/SKILL.md" || echo "MISSING $subdir/SKILL.md"
+  [ -f "$ENGINE_DIR/skills/Thinking/$subdir/SKILL.md" ] && echo "OK $subdir/SKILL.md" || echo "MISSING $subdir/SKILL.md"
 done
 ```
 
@@ -29,9 +29,9 @@ done
 ### Check workflow directories exist
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
+ENGINE_DIR="$HOME/.codex"
 for subdir in FirstPrinciples IterativeDepth BeCreative Council RedTeam WorldThreatModelHarness Science; do
-  [ -d "$CLAUDE_DIR/skills/Thinking/$subdir/Workflows" ] && echo "OK $subdir/Workflows/" || echo "MISSING $subdir/Workflows/"
+  [ -d "$ENGINE_DIR/skills/Thinking/$subdir/Workflows" ] && echo "OK $subdir/Workflows/" || echo "MISSING $subdir/Workflows/"
 done
 ```
 
@@ -40,39 +40,39 @@ done
 ### Check key workflow files exist
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
+ENGINE_DIR="$HOME/.codex"
 
 echo "FirstPrinciples workflows:"
 for wf in Deconstruct.md Challenge.md Reconstruct.md; do
-  [ -f "$CLAUDE_DIR/skills/Thinking/FirstPrinciples/Workflows/$wf" ] && echo "  OK $wf" || echo "  MISSING $wf"
+  [ -f "$ENGINE_DIR/skills/Thinking/FirstPrinciples/Workflows/$wf" ] && echo "  OK $wf" || echo "  MISSING $wf"
 done
 
 echo "IterativeDepth workflows:"
-[ -f "$CLAUDE_DIR/skills/Thinking/IterativeDepth/Workflows/Explore.md" ] && echo "  OK Explore.md" || echo "  MISSING Explore.md"
+[ -f "$ENGINE_DIR/skills/Thinking/IterativeDepth/Workflows/Explore.md" ] && echo "  OK Explore.md" || echo "  MISSING Explore.md"
 
 echo "BeCreative workflows:"
 for wf in StandardCreativity.md MaximumCreativity.md TreeOfThoughts.md IdeaGeneration.md DomainSpecific.md TechnicalCreativityGemini3.md; do
-  [ -f "$CLAUDE_DIR/skills/Thinking/BeCreative/Workflows/$wf" ] && echo "  OK $wf" || echo "  MISSING $wf"
+  [ -f "$ENGINE_DIR/skills/Thinking/BeCreative/Workflows/$wf" ] && echo "  OK $wf" || echo "  MISSING $wf"
 done
 
 echo "Council workflows:"
 for wf in Debate.md Quick.md; do
-  [ -f "$CLAUDE_DIR/skills/Thinking/Council/Workflows/$wf" ] && echo "  OK $wf" || echo "  MISSING $wf"
+  [ -f "$ENGINE_DIR/skills/Thinking/Council/Workflows/$wf" ] && echo "  OK $wf" || echo "  MISSING $wf"
 done
 
 echo "RedTeam workflows:"
 for wf in AdversarialValidation.md ParallelAnalysis.md; do
-  [ -f "$CLAUDE_DIR/skills/Thinking/RedTeam/Workflows/$wf" ] && echo "  OK $wf" || echo "  MISSING $wf"
+  [ -f "$ENGINE_DIR/skills/Thinking/RedTeam/Workflows/$wf" ] && echo "  OK $wf" || echo "  MISSING $wf"
 done
 
 echo "WorldThreatModelHarness workflows:"
 for wf in TestIdea.md UpdateModels.md ViewModels.md; do
-  [ -f "$CLAUDE_DIR/skills/Thinking/WorldThreatModelHarness/Workflows/$wf" ] && echo "  OK $wf" || echo "  MISSING $wf"
+  [ -f "$ENGINE_DIR/skills/Thinking/WorldThreatModelHarness/Workflows/$wf" ] && echo "  OK $wf" || echo "  MISSING $wf"
 done
 
 echo "Science workflows:"
 for wf in DefineGoal.md GenerateHypotheses.md DesignExperiment.md MeasureResults.md AnalyzeResults.md Iterate.md FullCycle.md QuickDiagnosis.md StructuredInvestigation.md; do
-  [ -f "$CLAUDE_DIR/skills/Thinking/Science/Workflows/$wf" ] && echo "  OK $wf" || echo "  MISSING $wf"
+  [ -f "$ENGINE_DIR/skills/Thinking/Science/Workflows/$wf" ] && echo "  OK $wf" || echo "  MISSING $wf"
 done
 ```
 
@@ -81,37 +81,37 @@ done
 ### Check supporting reference files
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
+ENGINE_DIR="$HOME/.codex"
 
 echo "BeCreative references:"
-[ -f "$CLAUDE_DIR/skills/Thinking/BeCreative/Principles.md" ] && echo "  OK Principles.md" || echo "  MISSING Principles.md"
-[ -f "$CLAUDE_DIR/skills/Thinking/BeCreative/Templates.md" ] && echo "  OK Templates.md" || echo "  MISSING Templates.md"
-[ -f "$CLAUDE_DIR/skills/Thinking/BeCreative/Examples.md" ] && echo "  OK Examples.md" || echo "  MISSING Examples.md"
-[ -f "$CLAUDE_DIR/skills/Thinking/BeCreative/ResearchFoundation.md" ] && echo "  OK ResearchFoundation.md" || echo "  MISSING ResearchFoundation.md"
-[ -d "$CLAUDE_DIR/skills/Thinking/BeCreative/Assets" ] && echo "  OK Assets/" || echo "  MISSING Assets/"
+[ -f "$ENGINE_DIR/skills/Thinking/BeCreative/Principles.md" ] && echo "  OK Principles.md" || echo "  MISSING Principles.md"
+[ -f "$ENGINE_DIR/skills/Thinking/BeCreative/Templates.md" ] && echo "  OK Templates.md" || echo "  MISSING Templates.md"
+[ -f "$ENGINE_DIR/skills/Thinking/BeCreative/Examples.md" ] && echo "  OK Examples.md" || echo "  MISSING Examples.md"
+[ -f "$ENGINE_DIR/skills/Thinking/BeCreative/ResearchFoundation.md" ] && echo "  OK ResearchFoundation.md" || echo "  MISSING ResearchFoundation.md"
+[ -d "$ENGINE_DIR/skills/Thinking/BeCreative/Assets" ] && echo "  OK Assets/" || echo "  MISSING Assets/"
 
 echo "Council references:"
-[ -f "$CLAUDE_DIR/skills/Thinking/Council/CouncilMembers.md" ] && echo "  OK CouncilMembers.md" || echo "  MISSING CouncilMembers.md"
-[ -f "$CLAUDE_DIR/skills/Thinking/Council/OutputFormat.md" ] && echo "  OK OutputFormat.md" || echo "  MISSING OutputFormat.md"
-[ -f "$CLAUDE_DIR/skills/Thinking/Council/RoundStructure.md" ] && echo "  OK RoundStructure.md" || echo "  MISSING RoundStructure.md"
+[ -f "$ENGINE_DIR/skills/Thinking/Council/CouncilMembers.md" ] && echo "  OK CouncilMembers.md" || echo "  MISSING CouncilMembers.md"
+[ -f "$ENGINE_DIR/skills/Thinking/Council/OutputFormat.md" ] && echo "  OK OutputFormat.md" || echo "  MISSING OutputFormat.md"
+[ -f "$ENGINE_DIR/skills/Thinking/Council/RoundStructure.md" ] && echo "  OK RoundStructure.md" || echo "  MISSING RoundStructure.md"
 
 echo "RedTeam references:"
-[ -f "$CLAUDE_DIR/skills/Thinking/RedTeam/Philosophy.md" ] && echo "  OK Philosophy.md" || echo "  MISSING Philosophy.md"
-[ -f "$CLAUDE_DIR/skills/Thinking/RedTeam/Integration.md" ] && echo "  OK Integration.md" || echo "  MISSING Integration.md"
+[ -f "$ENGINE_DIR/skills/Thinking/RedTeam/Philosophy.md" ] && echo "  OK Philosophy.md" || echo "  MISSING Philosophy.md"
+[ -f "$ENGINE_DIR/skills/Thinking/RedTeam/Integration.md" ] && echo "  OK Integration.md" || echo "  MISSING Integration.md"
 
 echo "IterativeDepth references:"
-[ -f "$CLAUDE_DIR/skills/Thinking/IterativeDepth/TheLenses.md" ] && echo "  OK TheLenses.md" || echo "  MISSING TheLenses.md"
-[ -f "$CLAUDE_DIR/skills/Thinking/IterativeDepth/ScientificFoundation.md" ] && echo "  OK ScientificFoundation.md" || echo "  MISSING ScientificFoundation.md"
+[ -f "$ENGINE_DIR/skills/Thinking/IterativeDepth/TheLenses.md" ] && echo "  OK TheLenses.md" || echo "  MISSING TheLenses.md"
+[ -f "$ENGINE_DIR/skills/Thinking/IterativeDepth/ScientificFoundation.md" ] && echo "  OK ScientificFoundation.md" || echo "  MISSING ScientificFoundation.md"
 
 echo "WorldThreatModelHarness references:"
-[ -f "$CLAUDE_DIR/skills/Thinking/WorldThreatModelHarness/ModelTemplate.md" ] && echo "  OK ModelTemplate.md" || echo "  MISSING ModelTemplate.md"
-[ -f "$CLAUDE_DIR/skills/Thinking/WorldThreatModelHarness/OutputFormat.md" ] && echo "  OK OutputFormat.md" || echo "  MISSING OutputFormat.md"
+[ -f "$ENGINE_DIR/skills/Thinking/WorldThreatModelHarness/ModelTemplate.md" ] && echo "  OK ModelTemplate.md" || echo "  MISSING ModelTemplate.md"
+[ -f "$ENGINE_DIR/skills/Thinking/WorldThreatModelHarness/OutputFormat.md" ] && echo "  OK OutputFormat.md" || echo "  MISSING OutputFormat.md"
 
 echo "Science references:"
-[ -f "$CLAUDE_DIR/skills/Thinking/Science/METHODOLOGY.md" ] && echo "  OK METHODOLOGY.md" || echo "  MISSING METHODOLOGY.md"
-[ -f "$CLAUDE_DIR/skills/Thinking/Science/Protocol.md" ] && echo "  OK Protocol.md" || echo "  MISSING Protocol.md"
-[ -f "$CLAUDE_DIR/skills/Thinking/Science/Examples.md" ] && echo "  OK Examples.md" || echo "  MISSING Examples.md"
-[ -f "$CLAUDE_DIR/skills/Thinking/Science/Templates.md" ] && echo "  OK Templates.md" || echo "  MISSING Templates.md"
+[ -f "$ENGINE_DIR/skills/Thinking/Science/METHODOLOGY.md" ] && echo "  OK METHODOLOGY.md" || echo "  MISSING METHODOLOGY.md"
+[ -f "$ENGINE_DIR/skills/Thinking/Science/Protocol.md" ] && echo "  OK Protocol.md" || echo "  MISSING Protocol.md"
+[ -f "$ENGINE_DIR/skills/Thinking/Science/Examples.md" ] && echo "  OK Examples.md" || echo "  MISSING Examples.md"
+[ -f "$ENGINE_DIR/skills/Thinking/Science/Templates.md" ] && echo "  OK Templates.md" || echo "  MISSING Templates.md"
 ```
 
 **Expected:** All supporting reference files present.
@@ -119,18 +119,18 @@ echo "Science references:"
 ### Check frontmatter validity
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
+ENGINE_DIR="$HOME/.codex"
 for skill_file in \
-  "$CLAUDE_DIR/skills/Thinking/SKILL.md" \
-  "$CLAUDE_DIR/skills/Thinking/FirstPrinciples/SKILL.md" \
-  "$CLAUDE_DIR/skills/Thinking/IterativeDepth/SKILL.md" \
-  "$CLAUDE_DIR/skills/Thinking/BeCreative/SKILL.md" \
-  "$CLAUDE_DIR/skills/Thinking/Council/SKILL.md" \
-  "$CLAUDE_DIR/skills/Thinking/RedTeam/SKILL.md" \
-  "$CLAUDE_DIR/skills/Thinking/WorldThreatModelHarness/SKILL.md" \
-  "$CLAUDE_DIR/skills/Thinking/Science/SKILL.md"; do
+  "$ENGINE_DIR/skills/Thinking/SKILL.md" \
+  "$ENGINE_DIR/skills/Thinking/FirstPrinciples/SKILL.md" \
+  "$ENGINE_DIR/skills/Thinking/IterativeDepth/SKILL.md" \
+  "$ENGINE_DIR/skills/Thinking/BeCreative/SKILL.md" \
+  "$ENGINE_DIR/skills/Thinking/Council/SKILL.md" \
+  "$ENGINE_DIR/skills/Thinking/RedTeam/SKILL.md" \
+  "$ENGINE_DIR/skills/Thinking/WorldThreatModelHarness/SKILL.md" \
+  "$ENGINE_DIR/skills/Thinking/Science/SKILL.md"; do
   if [ -f "$skill_file" ]; then
-    basename_dir=$(echo "$skill_file" | sed "s|$CLAUDE_DIR/skills/Thinking/||")
+    basename_dir=$(echo "$skill_file" | sed "s|$ENGINE_DIR/skills/Thinking/||")
     head -1 "$skill_file" | grep -q "^---" && echo "OK $basename_dir frontmatter" || echo "ERROR $basename_dir missing frontmatter"
     grep -q "^name:" "$skill_file" && echo "OK $basename_dir has name field" || echo "ERROR $basename_dir missing name field"
     grep -q "^description:" "$skill_file" && echo "OK $basename_dir has description" || echo "ERROR $basename_dir missing description"
@@ -148,9 +148,9 @@ These checks are NOT blocking -- the Thinking skill has no external dependencies
 
 ```bash
 echo "PAI integration (informational):"
-CLAUDE_DIR="$HOME/.codex"
-[ -d "$CLAUDE_DIR/PAI" ] && echo "  AVAILABLE PAI infrastructure" || echo "  UNAVAILABLE PAI infrastructure (skill works standalone)"
-[ -d "$CLAUDE_DIR/PAI/USER/SKILLCUSTOMIZATIONS" ] && echo "  AVAILABLE Skill customizations directory" || echo "  UNAVAILABLE Skill customizations (defaults will be used)"
+ENGINE_DIR="$HOME/.codex"
+[ -d "$ENGINE_DIR/PAI" ] && echo "  AVAILABLE PAI infrastructure" || echo "  UNAVAILABLE PAI infrastructure (skill works standalone)"
+[ -d "$ENGINE_DIR/PAI/USER/SKILLCUSTOMIZATIONS" ] && echo "  AVAILABLE Skill customizations directory" || echo "  UNAVAILABLE Skill customizations (defaults will be used)"
 
 echo ""
 echo "The Thinking skill has no external dependencies."

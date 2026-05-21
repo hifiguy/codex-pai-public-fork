@@ -37,55 +37,55 @@ Let me analyze your system and guide you through installation."
 
 ```bash
 # Check for ChatGPT Codex skills directory
-CLAUDE_DIR="$HOME/.codex"
-echo "Claude directory: $CLAUDE_DIR"
+ENGINE_DIR="$HOME/.codex"
+echo "Engine directory: $ENGINE_DIR"
 
 # Check if Investigation skill directory exists
-if [ -d "$CLAUDE_DIR/skills/Investigation" ]; then
-  echo "WARNING Existing Investigation skill found at: $CLAUDE_DIR/skills/Investigation"
-  ls -la "$CLAUDE_DIR/skills/Investigation/" 2>/dev/null
+if [ -d "$ENGINE_DIR/skills/Investigation" ]; then
+  echo "WARNING Existing Investigation skill found at: $ENGINE_DIR/skills/Investigation"
+  ls -la "$ENGINE_DIR/skills/Investigation/" 2>/dev/null
 else
   echo "OK No existing Investigation skill (clean install)"
 fi
 
 # Check for skills directory
-if [ -d "$CLAUDE_DIR/skills" ]; then
-  echo "OK Skills directory exists at: $CLAUDE_DIR/skills"
+if [ -d "$ENGINE_DIR/skills" ]; then
+  echo "OK Skills directory exists at: $ENGINE_DIR/skills"
 else
   echo "INFO Skills directory does not exist (will be created)"
 fi
 
 # Check for OSINT subdirectory specifically
-if [ -d "$CLAUDE_DIR/skills/Investigation/OSINT" ]; then
+if [ -d "$ENGINE_DIR/skills/Investigation/OSINT" ]; then
   echo "WARNING Existing OSINT sub-skill found"
-  ls -la "$CLAUDE_DIR/skills/Investigation/OSINT/" 2>/dev/null
+  ls -la "$ENGINE_DIR/skills/Investigation/OSINT/" 2>/dev/null
 else
   echo "OK No existing OSINT sub-skill"
 fi
 
 # Check for PrivateInvestigator subdirectory
-if [ -d "$CLAUDE_DIR/skills/Investigation/PrivateInvestigator" ]; then
+if [ -d "$ENGINE_DIR/skills/Investigation/PrivateInvestigator" ]; then
   echo "WARNING Existing PrivateInvestigator sub-skill found"
-  ls -la "$CLAUDE_DIR/skills/Investigation/PrivateInvestigator/" 2>/dev/null
+  ls -la "$ENGINE_DIR/skills/Investigation/PrivateInvestigator/" 2>/dev/null
 else
   echo "OK No existing PrivateInvestigator sub-skill"
 fi
 
 # Check for user customization directories
-if [ -d "$CLAUDE_DIR/PAI/USER/SKILLCUSTOMIZATIONS/OSINT" ]; then
+if [ -d "$ENGINE_DIR/PAI/USER/SKILLCUSTOMIZATIONS/OSINT" ]; then
   echo "OK OSINT user customizations found (will be preserved)"
 else
   echo "INFO No OSINT user customizations found"
 fi
 
-if [ -d "$CLAUDE_DIR/PAI/USER/SKILLCUSTOMIZATIONS/PrivateInvestigator" ]; then
+if [ -d "$ENGINE_DIR/PAI/USER/SKILLCUSTOMIZATIONS/PrivateInvestigator" ]; then
   echo "OK PrivateInvestigator user customizations found (will be preserved)"
 else
   echo "INFO No PrivateInvestigator user customizations found"
 fi
 
 # Check for Research skill (enhances parallel agent deployment)
-if [ -d "$CLAUDE_DIR/skills/Research" ]; then
+if [ -d "$ENGINE_DIR/skills/Research" ]; then
   echo "OK Research skill found (parallel agent deployment available)"
 else
   echo "INFO Research skill not found (investigation still works, parallel deployment enhanced by it)"
@@ -194,13 +194,13 @@ Then re-ask the final confirmation question.
 **Only execute if user chose "Backup and Replace":**
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
-BACKUP_DIR="$CLAUDE_DIR/Backups/investigation-skill-$(date +%Y%m%d-%H%M%S)"
+ENGINE_DIR="$HOME/.codex"
+BACKUP_DIR="$ENGINE_DIR/Backups/investigation-skill-$(date +%Y%m%d-%H%M%S)"
 mkdir -p "$BACKUP_DIR"
 
 # Backup existing skill directory
-if [ -d "$CLAUDE_DIR/skills/Investigation" ]; then
-  cp -r "$CLAUDE_DIR/skills/Investigation" "$BACKUP_DIR/Investigation"
+if [ -d "$ENGINE_DIR/skills/Investigation" ]; then
+  cp -r "$ENGINE_DIR/skills/Investigation" "$BACKUP_DIR/Investigation"
   echo "Backed up Investigation skill to: $BACKUP_DIR/Investigation"
 fi
 
@@ -229,12 +229,12 @@ echo "Backup created at: $BACKUP_DIR"
 **Mark todo "Create skill directory structure" as in_progress.**
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
-mkdir -p "$CLAUDE_DIR/skills/Investigation"
-mkdir -p "$CLAUDE_DIR/skills/Investigation/OSINT"
-mkdir -p "$CLAUDE_DIR/skills/Investigation/OSINT/Workflows"
-mkdir -p "$CLAUDE_DIR/skills/Investigation/PrivateInvestigator"
-mkdir -p "$CLAUDE_DIR/skills/Investigation/PrivateInvestigator/Workflows"
+ENGINE_DIR="$HOME/.codex"
+mkdir -p "$ENGINE_DIR/skills/Investigation"
+mkdir -p "$ENGINE_DIR/skills/Investigation/OSINT"
+mkdir -p "$ENGINE_DIR/skills/Investigation/OSINT/Workflows"
+mkdir -p "$ENGINE_DIR/skills/Investigation/PrivateInvestigator"
+mkdir -p "$ENGINE_DIR/skills/Investigation/PrivateInvestigator/Workflows"
 echo "Created Investigation skill directory structure"
 ```
 
@@ -248,27 +248,27 @@ echo "Created Investigation skill directory structure"
 
 ```bash
 PACK_DIR="$(pwd)"
-CLAUDE_DIR="$HOME/.codex"
+ENGINE_DIR="$HOME/.codex"
 
 # Copy top-level skill definition
-cp "$PACK_DIR/src/SKILL.md" "$CLAUDE_DIR/skills/Investigation/SKILL.md"
+cp "$PACK_DIR/src/SKILL.md" "$ENGINE_DIR/skills/Investigation/SKILL.md"
 
 # Copy OSINT sub-skill
-cp "$PACK_DIR/src/OSINT/SKILL.md" "$CLAUDE_DIR/skills/Investigation/OSINT/SKILL.md"
-cp "$PACK_DIR/src/OSINT/SOURCES.JSON" "$CLAUDE_DIR/skills/Investigation/OSINT/SOURCES.JSON"
-cp "$PACK_DIR/src/OSINT/SOURCES.md" "$CLAUDE_DIR/skills/Investigation/OSINT/SOURCES.md"
-cp "$PACK_DIR/src/OSINT/EthicalFramework.md" "$CLAUDE_DIR/skills/Investigation/OSINT/EthicalFramework.md"
-cp "$PACK_DIR/src/OSINT/Methodology.md" "$CLAUDE_DIR/skills/Investigation/OSINT/Methodology.md"
-cp "$PACK_DIR/src/OSINT/PeopleTools.md" "$CLAUDE_DIR/skills/Investigation/OSINT/PeopleTools.md"
-cp "$PACK_DIR/src/OSINT/CompanyTools.md" "$CLAUDE_DIR/skills/Investigation/OSINT/CompanyTools.md"
-cp "$PACK_DIR/src/OSINT/EntityTools.md" "$CLAUDE_DIR/skills/Investigation/OSINT/EntityTools.md"
-cp "$PACK_DIR/src/OSINT/Workflows/PeopleLookup.md" "$CLAUDE_DIR/skills/Investigation/OSINT/Workflows/PeopleLookup.md"
-cp "$PACK_DIR/src/OSINT/Workflows/CompanyLookup.md" "$CLAUDE_DIR/skills/Investigation/OSINT/Workflows/CompanyLookup.md"
-cp "$PACK_DIR/src/OSINT/Workflows/CompanyDueDiligence.md" "$CLAUDE_DIR/skills/Investigation/OSINT/Workflows/CompanyDueDiligence.md"
-cp "$PACK_DIR/src/OSINT/Workflows/EntityLookup.md" "$CLAUDE_DIR/skills/Investigation/OSINT/Workflows/EntityLookup.md"
-cp "$PACK_DIR/src/OSINT/Workflows/DomainLookup.md" "$CLAUDE_DIR/skills/Investigation/OSINT/Workflows/DomainLookup.md"
-cp "$PACK_DIR/src/OSINT/Workflows/OrganizationLookup.md" "$CLAUDE_DIR/skills/Investigation/OSINT/Workflows/OrganizationLookup.md"
-cp "$PACK_DIR/src/OSINT/Workflows/DiscoverOSINTSources.md" "$CLAUDE_DIR/skills/Investigation/OSINT/Workflows/DiscoverOSINTSources.md"
+cp "$PACK_DIR/src/OSINT/SKILL.md" "$ENGINE_DIR/skills/Investigation/OSINT/SKILL.md"
+cp "$PACK_DIR/src/OSINT/SOURCES.JSON" "$ENGINE_DIR/skills/Investigation/OSINT/SOURCES.JSON"
+cp "$PACK_DIR/src/OSINT/SOURCES.md" "$ENGINE_DIR/skills/Investigation/OSINT/SOURCES.md"
+cp "$PACK_DIR/src/OSINT/EthicalFramework.md" "$ENGINE_DIR/skills/Investigation/OSINT/EthicalFramework.md"
+cp "$PACK_DIR/src/OSINT/Methodology.md" "$ENGINE_DIR/skills/Investigation/OSINT/Methodology.md"
+cp "$PACK_DIR/src/OSINT/PeopleTools.md" "$ENGINE_DIR/skills/Investigation/OSINT/PeopleTools.md"
+cp "$PACK_DIR/src/OSINT/CompanyTools.md" "$ENGINE_DIR/skills/Investigation/OSINT/CompanyTools.md"
+cp "$PACK_DIR/src/OSINT/EntityTools.md" "$ENGINE_DIR/skills/Investigation/OSINT/EntityTools.md"
+cp "$PACK_DIR/src/OSINT/Workflows/PeopleLookup.md" "$ENGINE_DIR/skills/Investigation/OSINT/Workflows/PeopleLookup.md"
+cp "$PACK_DIR/src/OSINT/Workflows/CompanyLookup.md" "$ENGINE_DIR/skills/Investigation/OSINT/Workflows/CompanyLookup.md"
+cp "$PACK_DIR/src/OSINT/Workflows/CompanyDueDiligence.md" "$ENGINE_DIR/skills/Investigation/OSINT/Workflows/CompanyDueDiligence.md"
+cp "$PACK_DIR/src/OSINT/Workflows/EntityLookup.md" "$ENGINE_DIR/skills/Investigation/OSINT/Workflows/EntityLookup.md"
+cp "$PACK_DIR/src/OSINT/Workflows/DomainLookup.md" "$ENGINE_DIR/skills/Investigation/OSINT/Workflows/DomainLookup.md"
+cp "$PACK_DIR/src/OSINT/Workflows/OrganizationLookup.md" "$ENGINE_DIR/skills/Investigation/OSINT/Workflows/OrganizationLookup.md"
+cp "$PACK_DIR/src/OSINT/Workflows/DiscoverOSINTSources.md" "$ENGINE_DIR/skills/Investigation/OSINT/Workflows/DiscoverOSINTSources.md"
 
 echo "Copied OSINT sub-skill files"
 ```
@@ -283,18 +283,18 @@ echo "Copied OSINT sub-skill files"
 
 ```bash
 PACK_DIR="$(pwd)"
-CLAUDE_DIR="$HOME/.codex"
+ENGINE_DIR="$HOME/.codex"
 
 # Copy top-level skill definition (if not already copied in 4.2)
-cp "$PACK_DIR/src/SKILL.md" "$CLAUDE_DIR/skills/Investigation/SKILL.md"
+cp "$PACK_DIR/src/SKILL.md" "$ENGINE_DIR/skills/Investigation/SKILL.md"
 
 # Copy PrivateInvestigator sub-skill
-cp "$PACK_DIR/src/PrivateInvestigator/SKILL.md" "$CLAUDE_DIR/skills/Investigation/PrivateInvestigator/SKILL.md"
-cp "$PACK_DIR/src/PrivateInvestigator/Workflows/FindPerson.md" "$CLAUDE_DIR/skills/Investigation/PrivateInvestigator/Workflows/FindPerson.md"
-cp "$PACK_DIR/src/PrivateInvestigator/Workflows/SocialMediaSearch.md" "$CLAUDE_DIR/skills/Investigation/PrivateInvestigator/Workflows/SocialMediaSearch.md"
-cp "$PACK_DIR/src/PrivateInvestigator/Workflows/PublicRecordsSearch.md" "$CLAUDE_DIR/skills/Investigation/PrivateInvestigator/Workflows/PublicRecordsSearch.md"
-cp "$PACK_DIR/src/PrivateInvestigator/Workflows/ReverseLookup.md" "$CLAUDE_DIR/skills/Investigation/PrivateInvestigator/Workflows/ReverseLookup.md"
-cp "$PACK_DIR/src/PrivateInvestigator/Workflows/VerifyIdentity.md" "$CLAUDE_DIR/skills/Investigation/PrivateInvestigator/Workflows/VerifyIdentity.md"
+cp "$PACK_DIR/src/PrivateInvestigator/SKILL.md" "$ENGINE_DIR/skills/Investigation/PrivateInvestigator/SKILL.md"
+cp "$PACK_DIR/src/PrivateInvestigator/Workflows/FindPerson.md" "$ENGINE_DIR/skills/Investigation/PrivateInvestigator/Workflows/FindPerson.md"
+cp "$PACK_DIR/src/PrivateInvestigator/Workflows/SocialMediaSearch.md" "$ENGINE_DIR/skills/Investigation/PrivateInvestigator/Workflows/SocialMediaSearch.md"
+cp "$PACK_DIR/src/PrivateInvestigator/Workflows/PublicRecordsSearch.md" "$ENGINE_DIR/skills/Investigation/PrivateInvestigator/Workflows/PublicRecordsSearch.md"
+cp "$PACK_DIR/src/PrivateInvestigator/Workflows/ReverseLookup.md" "$ENGINE_DIR/skills/Investigation/PrivateInvestigator/Workflows/ReverseLookup.md"
+cp "$PACK_DIR/src/PrivateInvestigator/Workflows/VerifyIdentity.md" "$ENGINE_DIR/skills/Investigation/PrivateInvestigator/Workflows/VerifyIdentity.md"
 
 echo "Copied PrivateInvestigator sub-skill files"
 ```
@@ -310,50 +310,50 @@ echo "Copied PrivateInvestigator sub-skill files"
 **Execute all checks from VERIFY.md:**
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
+ENGINE_DIR="$HOME/.codex"
 
 echo "=== Investigation Skill Verification ==="
 
 # Check top-level SKILL.md
 echo "Checking skill definition..."
-[ -f "$CLAUDE_DIR/skills/Investigation/SKILL.md" ] && echo "OK SKILL.md installed" || echo "ERROR SKILL.md missing"
+[ -f "$ENGINE_DIR/skills/Investigation/SKILL.md" ] && echo "OK SKILL.md installed" || echo "ERROR SKILL.md missing"
 
 # Check OSINT sub-skill
 echo "Checking OSINT sub-skill..."
-[ -d "$CLAUDE_DIR/skills/Investigation/OSINT" ] && echo "OK OSINT/ directory exists" || echo "SKIP OSINT/ not installed"
-[ -f "$CLAUDE_DIR/skills/Investigation/OSINT/SKILL.md" ] && echo "OK OSINT SKILL.md installed" || echo "SKIP OSINT SKILL.md not installed"
-[ -f "$CLAUDE_DIR/skills/Investigation/OSINT/SOURCES.JSON" ] && echo "OK SOURCES.JSON installed" || echo "SKIP SOURCES.JSON not installed"
-[ -f "$CLAUDE_DIR/skills/Investigation/OSINT/EthicalFramework.md" ] && echo "OK EthicalFramework.md installed" || echo "SKIP EthicalFramework.md not installed"
-[ -d "$CLAUDE_DIR/skills/Investigation/OSINT/Workflows" ] && echo "OK OSINT/Workflows/ directory exists" || echo "SKIP OSINT/Workflows/ not installed"
+[ -d "$ENGINE_DIR/skills/Investigation/OSINT" ] && echo "OK OSINT/ directory exists" || echo "SKIP OSINT/ not installed"
+[ -f "$ENGINE_DIR/skills/Investigation/OSINT/SKILL.md" ] && echo "OK OSINT SKILL.md installed" || echo "SKIP OSINT SKILL.md not installed"
+[ -f "$ENGINE_DIR/skills/Investigation/OSINT/SOURCES.JSON" ] && echo "OK SOURCES.JSON installed" || echo "SKIP SOURCES.JSON not installed"
+[ -f "$ENGINE_DIR/skills/Investigation/OSINT/EthicalFramework.md" ] && echo "OK EthicalFramework.md installed" || echo "SKIP EthicalFramework.md not installed"
+[ -d "$ENGINE_DIR/skills/Investigation/OSINT/Workflows" ] && echo "OK OSINT/Workflows/ directory exists" || echo "SKIP OSINT/Workflows/ not installed"
 
 # Count OSINT workflows
-if [ -d "$CLAUDE_DIR/skills/Investigation/OSINT/Workflows" ]; then
-  OSINT_WF=$(ls -1 "$CLAUDE_DIR/skills/Investigation/OSINT/Workflows/"*.md 2>/dev/null | wc -l | tr -d ' ')
+if [ -d "$ENGINE_DIR/skills/Investigation/OSINT/Workflows" ]; then
+  OSINT_WF=$(ls -1 "$ENGINE_DIR/skills/Investigation/OSINT/Workflows/"*.md 2>/dev/null | wc -l | tr -d ' ')
   echo "OK $OSINT_WF OSINT workflow(s) installed (expected 7)"
 fi
 
 # Check PrivateInvestigator sub-skill
 echo "Checking PrivateInvestigator sub-skill..."
-[ -d "$CLAUDE_DIR/skills/Investigation/PrivateInvestigator" ] && echo "OK PrivateInvestigator/ directory exists" || echo "SKIP PrivateInvestigator/ not installed"
-[ -f "$CLAUDE_DIR/skills/Investigation/PrivateInvestigator/SKILL.md" ] && echo "OK PI SKILL.md installed" || echo "SKIP PI SKILL.md not installed"
-[ -d "$CLAUDE_DIR/skills/Investigation/PrivateInvestigator/Workflows" ] && echo "OK PI/Workflows/ directory exists" || echo "SKIP PI/Workflows/ not installed"
+[ -d "$ENGINE_DIR/skills/Investigation/PrivateInvestigator" ] && echo "OK PrivateInvestigator/ directory exists" || echo "SKIP PrivateInvestigator/ not installed"
+[ -f "$ENGINE_DIR/skills/Investigation/PrivateInvestigator/SKILL.md" ] && echo "OK PI SKILL.md installed" || echo "SKIP PI SKILL.md not installed"
+[ -d "$ENGINE_DIR/skills/Investigation/PrivateInvestigator/Workflows" ] && echo "OK PI/Workflows/ directory exists" || echo "SKIP PI/Workflows/ not installed"
 
 # Count PI workflows
-if [ -d "$CLAUDE_DIR/skills/Investigation/PrivateInvestigator/Workflows" ]; then
-  PI_WF=$(ls -1 "$CLAUDE_DIR/skills/Investigation/PrivateInvestigator/Workflows/"*.md 2>/dev/null | wc -l | tr -d ' ')
+if [ -d "$ENGINE_DIR/skills/Investigation/PrivateInvestigator/Workflows" ]; then
+  PI_WF=$(ls -1 "$ENGINE_DIR/skills/Investigation/PrivateInvestigator/Workflows/"*.md 2>/dev/null | wc -l | tr -d ' ')
   echo "OK $PI_WF PrivateInvestigator workflow(s) installed (expected 5)"
 fi
 
 # Check frontmatter
 echo "Checking frontmatter..."
-head -1 "$CLAUDE_DIR/skills/Investigation/SKILL.md" | grep -q "^---" && echo "OK SKILL.md has valid frontmatter" || echo "ERROR SKILL.md missing frontmatter"
+head -1 "$ENGINE_DIR/skills/Investigation/SKILL.md" | grep -q "^---" && echo "OK SKILL.md has valid frontmatter" || echo "ERROR SKILL.md missing frontmatter"
 
 # Informational checks
 echo ""
 echo "Enhancement availability (informational):"
-[ -d "$CLAUDE_DIR/skills/Research" ] && echo "  AVAILABLE Research skill (parallel agent deployment)" || echo "  INFO Research skill not found (investigations still work)"
-[ -d "$CLAUDE_DIR/PAI/USER/SKILLCUSTOMIZATIONS/OSINT" ] && echo "  AVAILABLE OSINT user customizations" || echo "  INFO No OSINT user customizations"
-[ -d "$CLAUDE_DIR/PAI/USER/SKILLCUSTOMIZATIONS/PrivateInvestigator" ] && echo "  AVAILABLE PI user customizations" || echo "  INFO No PI user customizations"
+[ -d "$ENGINE_DIR/skills/Research" ] && echo "  AVAILABLE Research skill (parallel agent deployment)" || echo "  INFO Research skill not found (investigations still work)"
+[ -d "$ENGINE_DIR/PAI/USER/SKILLCUSTOMIZATIONS/OSINT" ] && echo "  AVAILABLE OSINT user customizations" || echo "  INFO No OSINT user customizations"
+[ -d "$ENGINE_DIR/PAI/USER/SKILLCUSTOMIZATIONS/PrivateInvestigator" ] && echo "  AVAILABLE PI user customizations" || echo "  INFO No PI user customizations"
 
 echo ""
 echo "=== Verification Complete ==="

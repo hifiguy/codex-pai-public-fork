@@ -33,6 +33,7 @@ accomplishing any task: Current State to Ideal State via verifiable iteration (I
 | DA subsystem (design) | PAI/DOCUMENTATION/Pulse/DaSubsystem.md |
 | CLI tools (Algorithm + Arbol) | PAI/DOCUMENTATION/Tools/Cli.md |
 | Configuration | PAI/DOCUMENTATION/Config/ConfigSystem.md |
+| Engine portability | PAI/DOCUMENTATION/Portability/EnginePortingGuide.md |
 | Containment policy | PAI/DOCUMENTATION/Tools/Containment.md |
 | Arbol (cloud execution) | PAI/DOCUMENTATION/Arbol/ArbolSystem.md |
 | Feed | PAI/DOCUMENTATION/Feed/FeedSystem.md |

@@ -15,7 +15,7 @@ PAI uses directly-edited configuration files. There is no template rendering or 
 
 **Edit directly.** When you need to change hooks, identity, permissions, or any runtime behavior, edit `settings.json` directly. When you need to change operational rules or context routing, edit `AGENTS.md`. When you need to change constitutional rules, edit `PAI/PAI_SYSTEM_PROMPT.md`.
 
-Changes to `settings.json` and `AGENTS.md` take effect at the next session start. Changes to `PAI_SYSTEM_PROMPT.md` (loaded via `--append-system-prompt-file`) also take effect next session.
+Changes to `settings.json` and `AGENTS.md` take effect at the next session start. Changes to `PAI_SYSTEM_PROMPT.md` also take effect next session because `pai.ts` loads it into the initial session instructions.
 
 ## Public Releases
 

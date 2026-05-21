@@ -38,34 +38,34 @@ Let me analyze your system and guide you through installation."
 
 ```bash
 # Check for ChatGPT Codex skills directory
-CLAUDE_DIR="$HOME/.codex"
-echo "Claude directory: $CLAUDE_DIR"
+ENGINE_DIR="$HOME/.codex"
+echo "Engine directory: $ENGINE_DIR"
 
 # Check if skills directory exists
-if [ -d "$CLAUDE_DIR/skills" ]; then
-  echo "OK Skills directory exists at: $CLAUDE_DIR/skills"
-  ls -la "$CLAUDE_DIR/skills/" 2>/dev/null
+if [ -d "$ENGINE_DIR/skills" ]; then
+  echo "OK Skills directory exists at: $ENGINE_DIR/skills"
+  ls -la "$ENGINE_DIR/skills/" 2>/dev/null
 else
   echo "INFO Skills directory does not exist (will be created)"
 fi
 
 # Check for existing Utilities skill
-if [ -d "$CLAUDE_DIR/skills/Utilities" ]; then
-  echo "WARNING Existing Utilities skill found at: $CLAUDE_DIR/skills/Utilities"
-  ls -la "$CLAUDE_DIR/skills/Utilities/" 2>/dev/null
+if [ -d "$ENGINE_DIR/skills/Utilities" ]; then
+  echo "WARNING Existing Utilities skill found at: $ENGINE_DIR/skills/Utilities"
+  ls -la "$ENGINE_DIR/skills/Utilities/" 2>/dev/null
 else
   echo "OK No existing Utilities skill (clean install)"
 fi
 
 # Check for existing sub-skill directories
 for subskill in Aphorisms AudioEditor Browser Cloudflare CreateCLI CreateSkill Delegation Documents Evals Fabric PAIUpgrade Parser Prompting; do
-  if [ -d "$CLAUDE_DIR/skills/Utilities/$subskill" ]; then
+  if [ -d "$ENGINE_DIR/skills/Utilities/$subskill" ]; then
     echo "WARNING Existing $subskill sub-skill found"
   fi
 done
 
 # Check for PAI infrastructure
-if [ -d "$CLAUDE_DIR/skills/PAI" ] || [ -d "$HOME/.codex/PAI" ]; then
+if [ -d "$ENGINE_DIR/skills/PAI" ] || [ -d "$HOME/.codex/PAI" ]; then
   echo "OK PAI infrastructure detected"
 else
   echo "INFO PAI infrastructure not detected (some sub-skills may have reduced functionality)"
@@ -184,13 +184,13 @@ Then re-ask the final confirmation question.
 **Only execute if user chose "Backup and Replace":**
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
-BACKUP_DIR="$CLAUDE_DIR/Backups/Utilities-$(date +%Y%m%d-%H%M%S)"
+ENGINE_DIR="$HOME/.codex"
+BACKUP_DIR="$ENGINE_DIR/Backups/Utilities-$(date +%Y%m%d-%H%M%S)"
 mkdir -p "$BACKUP_DIR"
 
 # Backup existing skill directory
-if [ -d "$CLAUDE_DIR/skills/Utilities" ]; then
-  cp -r "$CLAUDE_DIR/skills/Utilities" "$BACKUP_DIR/Utilities"
+if [ -d "$ENGINE_DIR/skills/Utilities" ]; then
+  cp -r "$ENGINE_DIR/skills/Utilities" "$BACKUP_DIR/Utilities"
   echo "Backed up Utilities skill directory"
 fi
 
@@ -219,8 +219,8 @@ echo "Backup created at: $BACKUP_DIR"
 **Mark todo "Create skill directory structure" as in_progress.**
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
-mkdir -p "$CLAUDE_DIR/skills/Utilities"
+ENGINE_DIR="$HOME/.codex"
+mkdir -p "$ENGINE_DIR/skills/Utilities"
 echo "Created Utilities skill directory"
 ```
 
@@ -232,8 +232,8 @@ echo "Created Utilities skill directory"
 
 ```bash
 PACK_DIR="$(pwd)"
-CLAUDE_DIR="$HOME/.codex"
-cp "$PACK_DIR/src/SKILL.md" "$CLAUDE_DIR/skills/Utilities/SKILL.md"
+ENGINE_DIR="$HOME/.codex"
+cp "$PACK_DIR/src/SKILL.md" "$ENGINE_DIR/skills/Utilities/SKILL.md"
 echo "Installed Utilities routing file"
 ```
 
@@ -247,11 +247,11 @@ echo "Installed Utilities routing file"
 
 ```bash
 PACK_DIR="$(pwd)"
-CLAUDE_DIR="$HOME/.codex"
+ENGINE_DIR="$HOME/.codex"
 
 for subskill in Aphorisms AudioEditor Browser Cloudflare CreateCLI CreateSkill Delegation Documents Evals Fabric PAIUpgrade Parser Prompting; do
   if [ -d "$PACK_DIR/src/$subskill" ]; then
-    cp -r "$PACK_DIR/src/$subskill" "$CLAUDE_DIR/skills/Utilities/$subskill"
+    cp -r "$PACK_DIR/src/$subskill" "$ENGINE_DIR/skills/Utilities/$subskill"
     echo "Installed $subskill"
   else
     echo "WARNING $subskill not found in pack source"
@@ -272,21 +272,21 @@ echo "All sub-skills installed"
 **Execute all checks from VERIFY.md:**
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
+ENGINE_DIR="$HOME/.codex"
 
 echo "=== Utilities Verification ==="
 
 # Check routing file
 echo "Checking routing file..."
-[ -f "$CLAUDE_DIR/skills/Utilities/SKILL.md" ] && echo "OK SKILL.md installed" || echo "ERROR SKILL.md missing"
+[ -f "$ENGINE_DIR/skills/Utilities/SKILL.md" ] && echo "OK SKILL.md installed" || echo "ERROR SKILL.md missing"
 
 # Check all sub-skill directories
 echo "Checking sub-skill directories..."
 for subskill in Aphorisms AudioEditor Browser Cloudflare CreateCLI CreateSkill Delegation Documents Evals Fabric PAIUpgrade Parser Prompting; do
-  if [ -d "$CLAUDE_DIR/skills/Utilities/$subskill" ]; then
+  if [ -d "$ENGINE_DIR/skills/Utilities/$subskill" ]; then
     echo "OK $subskill/"
     # Check for SKILL.md in each sub-skill
-    [ -f "$CLAUDE_DIR/skills/Utilities/$subskill/SKILL.md" ] && echo "  OK $subskill/SKILL.md" || echo "  WARNING $subskill/SKILL.md missing"
+    [ -f "$ENGINE_DIR/skills/Utilities/$subskill/SKILL.md" ] && echo "  OK $subskill/SKILL.md" || echo "  WARNING $subskill/SKILL.md missing"
   else
     echo "MISSING $subskill/"
   fi
@@ -294,12 +294,12 @@ done
 
 # Check frontmatter
 echo "Checking frontmatter..."
-head -1 "$CLAUDE_DIR/skills/Utilities/SKILL.md" | grep -q "^---" && echo "OK SKILL.md has valid frontmatter" || echo "ERROR SKILL.md missing frontmatter"
+head -1 "$ENGINE_DIR/skills/Utilities/SKILL.md" | grep -q "^---" && echo "OK SKILL.md has valid frontmatter" || echo "ERROR SKILL.md missing frontmatter"
 
 # Check routing table
 echo "Checking routing table..."
-grep -q "CreateCLI" "$CLAUDE_DIR/skills/Utilities/SKILL.md" && echo "OK Routing table references CreateCLI" || echo "ERROR Routing table incomplete"
-grep -q "Parser" "$CLAUDE_DIR/skills/Utilities/SKILL.md" && echo "OK Routing table references Parser" || echo "ERROR Routing table incomplete"
+grep -q "CreateCLI" "$ENGINE_DIR/skills/Utilities/SKILL.md" && echo "OK Routing table references CreateCLI" || echo "ERROR Routing table incomplete"
+grep -q "Parser" "$ENGINE_DIR/skills/Utilities/SKILL.md" && echo "OK Routing table references Parser" || echo "ERROR Routing table incomplete"
 
 # Dependency checks (informational)
 echo ""

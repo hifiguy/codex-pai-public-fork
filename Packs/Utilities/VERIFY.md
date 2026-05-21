@@ -9,8 +9,8 @@
 ### Check SKILL.md exists
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
-[ -f "$CLAUDE_DIR/skills/Utilities/SKILL.md" ] && echo "OK SKILL.md" || echo "MISSING SKILL.md"
+ENGINE_DIR="$HOME/.codex"
+[ -f "$ENGINE_DIR/skills/Utilities/SKILL.md" ] && echo "OK SKILL.md" || echo "MISSING SKILL.md"
 ```
 
 **Expected:** SKILL.md present at `~/.codex/skills/Utilities/SKILL.md`.
@@ -18,9 +18,9 @@ CLAUDE_DIR="$HOME/.codex"
 ### Check sub-skill directories exist
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
+ENGINE_DIR="$HOME/.codex"
 for subskill in Aphorisms AudioEditor Browser Cloudflare CreateCLI CreateSkill Delegation Documents Evals Fabric PAIUpgrade Parser Prompting; do
-  [ -d "$CLAUDE_DIR/skills/Utilities/$subskill" ] && echo "OK $subskill/" || echo "MISSING $subskill/"
+  [ -d "$ENGINE_DIR/skills/Utilities/$subskill" ] && echo "OK $subskill/" || echo "MISSING $subskill/"
 done
 ```
 
@@ -29,10 +29,10 @@ done
 ### Check sub-skill SKILL.md files exist
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
+ENGINE_DIR="$HOME/.codex"
 for subskill in Aphorisms AudioEditor Browser Cloudflare CreateCLI CreateSkill Delegation Documents Evals Fabric PAIUpgrade Parser Prompting; do
-  if [ -d "$CLAUDE_DIR/skills/Utilities/$subskill" ]; then
-    [ -f "$CLAUDE_DIR/skills/Utilities/$subskill/SKILL.md" ] && echo "OK $subskill/SKILL.md" || echo "MISSING $subskill/SKILL.md"
+  if [ -d "$ENGINE_DIR/skills/Utilities/$subskill" ]; then
+    [ -f "$ENGINE_DIR/skills/Utilities/$subskill/SKILL.md" ] && echo "OK $subskill/SKILL.md" || echo "MISSING $subskill/SKILL.md"
   fi
 done
 ```
@@ -42,11 +42,11 @@ done
 ### Check frontmatter is valid
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
-if [ -f "$CLAUDE_DIR/skills/Utilities/SKILL.md" ]; then
-  head -1 "$CLAUDE_DIR/skills/Utilities/SKILL.md" | grep -q "^---" && echo "OK SKILL.md frontmatter" || echo "ERROR SKILL.md missing frontmatter"
-  grep -q "^name:" "$CLAUDE_DIR/skills/Utilities/SKILL.md" && echo "OK SKILL.md has name field" || echo "ERROR SKILL.md missing name field"
-  grep -q "^description:" "$CLAUDE_DIR/skills/Utilities/SKILL.md" && echo "OK SKILL.md has description" || echo "ERROR SKILL.md missing description"
+ENGINE_DIR="$HOME/.codex"
+if [ -f "$ENGINE_DIR/skills/Utilities/SKILL.md" ]; then
+  head -1 "$ENGINE_DIR/skills/Utilities/SKILL.md" | grep -q "^---" && echo "OK SKILL.md frontmatter" || echo "ERROR SKILL.md missing frontmatter"
+  grep -q "^name:" "$ENGINE_DIR/skills/Utilities/SKILL.md" && echo "OK SKILL.md has name field" || echo "ERROR SKILL.md missing name field"
+  grep -q "^description:" "$ENGINE_DIR/skills/Utilities/SKILL.md" && echo "OK SKILL.md has description" || echo "ERROR SKILL.md missing description"
 fi
 ```
 
@@ -55,11 +55,11 @@ fi
 ### Check routing table integrity
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
-if [ -f "$CLAUDE_DIR/skills/Utilities/SKILL.md" ]; then
+ENGINE_DIR="$HOME/.codex"
+if [ -f "$ENGINE_DIR/skills/Utilities/SKILL.md" ]; then
   echo "Checking routing table..."
   for subskill in Aphorisms AudioEditor Browser Cloudflare CreateCLI CreateSkill Delegation Documents Evals Fabric PAIUpgrade Parser Prompting; do
-    grep -q "$subskill" "$CLAUDE_DIR/skills/Utilities/SKILL.md" && echo "  OK $subskill referenced in routing table" || echo "  WARNING $subskill not found in routing table"
+    grep -q "$subskill" "$ENGINE_DIR/skills/Utilities/SKILL.md" && echo "  OK $subskill referenced in routing table" || echo "  WARNING $subskill not found in routing table"
   done
 fi
 ```
@@ -69,33 +69,33 @@ fi
 ### Check key sub-skill contents
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
+ENGINE_DIR="$HOME/.codex"
 
 # Check sub-skills with Workflows/ directories
 for subskill in Aphorisms AudioEditor Browser Cloudflare CreateCLI CreateSkill Documents Evals Fabric PAIUpgrade Parser Prompting; do
-  if [ -d "$CLAUDE_DIR/skills/Utilities/$subskill" ]; then
-    [ -d "$CLAUDE_DIR/skills/Utilities/$subskill/Workflows" ] && echo "OK $subskill/Workflows/" || echo "INFO $subskill/Workflows/ not present"
+  if [ -d "$ENGINE_DIR/skills/Utilities/$subskill" ]; then
+    [ -d "$ENGINE_DIR/skills/Utilities/$subskill/Workflows" ] && echo "OK $subskill/Workflows/" || echo "INFO $subskill/Workflows/ not present"
   fi
 done
 
 # Check Evals has its key directories
-if [ -d "$CLAUDE_DIR/skills/Utilities/Evals" ]; then
+if [ -d "$ENGINE_DIR/skills/Utilities/Evals" ]; then
   for dir in Data Graders Results Suites Tools Types UseCases Workflows; do
-    [ -d "$CLAUDE_DIR/skills/Utilities/Evals/$dir" ] && echo "OK Evals/$dir/" || echo "WARNING Evals/$dir/ missing"
+    [ -d "$ENGINE_DIR/skills/Utilities/Evals/$dir" ] && echo "OK Evals/$dir/" || echo "WARNING Evals/$dir/ missing"
   done
 fi
 
 # Check Documents has format directories
-if [ -d "$CLAUDE_DIR/skills/Utilities/Documents" ]; then
+if [ -d "$ENGINE_DIR/skills/Utilities/Documents" ]; then
   for dir in Docx Pdf Pptx Xlsx Workflows; do
-    [ -d "$CLAUDE_DIR/skills/Utilities/Documents/$dir" ] && echo "OK Documents/$dir/" || echo "WARNING Documents/$dir/ missing"
+    [ -d "$ENGINE_DIR/skills/Utilities/Documents/$dir" ] && echo "OK Documents/$dir/" || echo "WARNING Documents/$dir/ missing"
   done
 fi
 
 # Check Parser has its key directories
-if [ -d "$CLAUDE_DIR/skills/Utilities/Parser" ]; then
+if [ -d "$ENGINE_DIR/skills/Utilities/Parser" ]; then
   for dir in Lib Prompts Schema Tests Utils Web Workflows; do
-    [ -d "$CLAUDE_DIR/skills/Utilities/Parser/$dir" ] && echo "OK Parser/$dir/" || echo "WARNING Parser/$dir/ missing"
+    [ -d "$ENGINE_DIR/skills/Utilities/Parser/$dir" ] && echo "OK Parser/$dir/" || echo "WARNING Parser/$dir/ missing"
   done
 fi
 ```

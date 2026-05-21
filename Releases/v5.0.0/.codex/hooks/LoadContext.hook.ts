@@ -3,7 +3,7 @@
  * LoadContext.hook.ts - Inject PAI dynamic context into Claude's Context (SessionStart)
  *
  * PAI v5.0 Context Architecture:
- * - Constitutional rules     → PAI/PAI_SYSTEM_PROMPT.md (system prompt via --append-system-prompt-file)
+ * - Constitutional rules     → PAI/PAI_SYSTEM_PROMPT.md (loaded by pai.ts as initial engine instructions)
  * - Operational procedures   → AGENTS.md (loaded natively by ChatGPT Codex)
  * - Contextual knowledge     → @imports in AGENTS.md (native ChatGPT Codex mechanism, v5.0)
  * - Dynamic context          → this hook (relationship, learning, work)
@@ -405,7 +405,7 @@ async function checkActiveProgress(paiDir: string): Promise<string | null> {
     }
   }
 
-  const toolsDir = paiDir + '/Tools';
+  const toolsDir = paiDir + '/TOOLS';
   summary += `\n💡 To resume project: \`bun run ${toolsDir}/SessionProgress.ts resume <project>\`\n`;
   summary += `💡 To complete project: \`bun run ${toolsDir}/SessionProgress.ts complete <project>\`\n`;
 
@@ -414,10 +414,10 @@ async function checkActiveProgress(paiDir: string): Promise<string | null> {
 
 async function main() {
   try {
-    // Subagents don't need dynamic context injection
-    const claudeProjectDir = process.env.CLAUDE_PROJECT_DIR || '';
-    const isSubagent = claudeProjectDir.includes('/.codex/Agents/') ||
-                      process.env.CLAUDE_AGENT_TYPE !== undefined;
+    // Subagents don't need dynamic context injection.
+    const engineProjectDir = process.env.CODEX_PROJECT_DIR || '';
+    const isSubagent = engineProjectDir.includes('/.codex/Agents/') ||
+                      process.env.CODEX_AGENT_TYPE !== undefined;
 
     if (isSubagent) {
       console.error('🤖 Subagent session - skipping context loading');

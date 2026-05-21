@@ -9,8 +9,8 @@
 ### Check SKILL.md exists
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
-[ -f "$CLAUDE_DIR/skills/Agents/SKILL.md" ] && echo "OK SKILL.md" || echo "MISSING SKILL.md"
+ENGINE_DIR="$HOME/.codex"
+[ -f "$ENGINE_DIR/skills/Agents/SKILL.md" ] && echo "OK SKILL.md" || echo "MISSING SKILL.md"
 ```
 
 **Expected:** SKILL.md present at `~/.codex/skills/Agents/SKILL.md`.
@@ -18,12 +18,12 @@ CLAUDE_DIR="$HOME/.codex"
 ### Check directories exist
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
-[ -d "$CLAUDE_DIR/skills/Agents/Data" ] && echo "OK Data/" || echo "MISSING Data/"
-[ -d "$CLAUDE_DIR/skills/Agents/Tools" ] && echo "OK Tools/" || echo "MISSING Tools/"
-[ -d "$CLAUDE_DIR/skills/Agents/Templates" ] && echo "OK Templates/" || echo "MISSING Templates/"
-[ -d "$CLAUDE_DIR/skills/Agents/Workflows" ] && echo "OK Workflows/" || echo "MISSING Workflows/"
-[ -d "$CLAUDE_DIR/skills/Agents/Scratchpad" ] && echo "OK Scratchpad/" || echo "MISSING Scratchpad/"
+ENGINE_DIR="$HOME/.codex"
+[ -d "$ENGINE_DIR/skills/Agents/Data" ] && echo "OK Data/" || echo "MISSING Data/"
+[ -d "$ENGINE_DIR/skills/Agents/Tools" ] && echo "OK Tools/" || echo "MISSING Tools/"
+[ -d "$ENGINE_DIR/skills/Agents/Templates" ] && echo "OK Templates/" || echo "MISSING Templates/"
+[ -d "$ENGINE_DIR/skills/Agents/Workflows" ] && echo "OK Workflows/" || echo "MISSING Workflows/"
+[ -d "$ENGINE_DIR/skills/Agents/Scratchpad" ] && echo "OK Scratchpad/" || echo "MISSING Scratchpad/"
 ```
 
 **Expected:** All five subdirectories present.
@@ -31,29 +31,29 @@ CLAUDE_DIR="$HOME/.codex"
 ### Check key files exist
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
+ENGINE_DIR="$HOME/.codex"
 
 echo "Data files..."
-[ -f "$CLAUDE_DIR/skills/Agents/Data/Traits.yaml" ] && echo "OK Traits.yaml" || echo "MISSING Traits.yaml"
+[ -f "$ENGINE_DIR/skills/Agents/Data/Traits.yaml" ] && echo "OK Traits.yaml" || echo "MISSING Traits.yaml"
 
 echo "Tool files..."
-[ -f "$CLAUDE_DIR/skills/Agents/Tools/ComposeAgent.ts" ] && echo "OK ComposeAgent.ts" || echo "MISSING ComposeAgent.ts"
-[ -f "$CLAUDE_DIR/skills/Agents/Tools/LoadAgentContext.ts" ] && echo "OK LoadAgentContext.ts" || echo "MISSING LoadAgentContext.ts"
-[ -f "$CLAUDE_DIR/skills/Agents/Tools/SpawnAgentWithProfile.ts" ] && echo "OK SpawnAgentWithProfile.ts" || echo "MISSING SpawnAgentWithProfile.ts"
-[ -f "$CLAUDE_DIR/skills/Agents/Tools/package.json" ] && echo "OK package.json" || echo "MISSING package.json"
+[ -f "$ENGINE_DIR/skills/Agents/Tools/ComposeAgent.ts" ] && echo "OK ComposeAgent.ts" || echo "MISSING ComposeAgent.ts"
+[ -f "$ENGINE_DIR/skills/Agents/Tools/LoadAgentContext.ts" ] && echo "OK LoadAgentContext.ts" || echo "MISSING LoadAgentContext.ts"
+[ -f "$ENGINE_DIR/skills/Agents/Tools/SpawnAgentWithProfile.ts" ] && echo "OK SpawnAgentWithProfile.ts" || echo "MISSING SpawnAgentWithProfile.ts"
+[ -f "$ENGINE_DIR/skills/Agents/Tools/package.json" ] && echo "OK package.json" || echo "MISSING package.json"
 
 echo "Template files..."
-[ -f "$CLAUDE_DIR/skills/Agents/Templates/DynamicAgent.hbs" ] && echo "OK DynamicAgent.hbs" || echo "MISSING DynamicAgent.hbs"
-[ -f "$CLAUDE_DIR/skills/Agents/Templates/CUSTOMAGENTTEMPLATE.md" ] && echo "OK CUSTOMAGENTTEMPLATE.md" || echo "MISSING CUSTOMAGENTTEMPLATE.md"
+[ -f "$ENGINE_DIR/skills/Agents/Templates/DynamicAgent.hbs" ] && echo "OK DynamicAgent.hbs" || echo "MISSING DynamicAgent.hbs"
+[ -f "$ENGINE_DIR/skills/Agents/Templates/CUSTOMAGENTTEMPLATE.md" ] && echo "OK CUSTOMAGENTTEMPLATE.md" || echo "MISSING CUSTOMAGENTTEMPLATE.md"
 
 echo "Workflow files..."
-[ -f "$CLAUDE_DIR/skills/Agents/Workflows/CreateCustomAgent.md" ] && echo "OK CreateCustomAgent.md" || echo "MISSING CreateCustomAgent.md"
-[ -f "$CLAUDE_DIR/skills/Agents/Workflows/ListTraits.md" ] && echo "OK ListTraits.md" || echo "MISSING ListTraits.md"
-[ -f "$CLAUDE_DIR/skills/Agents/Workflows/SpawnParallelAgents.md" ] && echo "OK SpawnParallelAgents.md" || echo "MISSING SpawnParallelAgents.md"
+[ -f "$ENGINE_DIR/skills/Agents/Workflows/CreateCustomAgent.md" ] && echo "OK CreateCustomAgent.md" || echo "MISSING CreateCustomAgent.md"
+[ -f "$ENGINE_DIR/skills/Agents/Workflows/ListTraits.md" ] && echo "OK ListTraits.md" || echo "MISSING ListTraits.md"
+[ -f "$ENGINE_DIR/skills/Agents/Workflows/SpawnParallelAgents.md" ] && echo "OK SpawnParallelAgents.md" || echo "MISSING SpawnParallelAgents.md"
 
 echo "Context files..."
 for ctx in AgentPersonalities AgentProfileSystem ArchitectContext ArtistContext ClaudeResearcherContext CodexResearcherContext DesignerContext EngineerContext GeminiResearcherContext GrokResearcherContext PerplexityResearcherContext QATesterContext; do
-  [ -f "$CLAUDE_DIR/skills/Agents/${ctx}.md" ] && echo "OK ${ctx}.md" || echo "MISSING ${ctx}.md"
+  [ -f "$ENGINE_DIR/skills/Agents/${ctx}.md" ] && echo "OK ${ctx}.md" || echo "MISSING ${ctx}.md"
 done
 ```
 
@@ -62,11 +62,11 @@ done
 ### Check frontmatter is valid
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
-if [ -f "$CLAUDE_DIR/skills/Agents/SKILL.md" ]; then
-  head -1 "$CLAUDE_DIR/skills/Agents/SKILL.md" | grep -q "^---" && echo "OK SKILL.md has frontmatter opener" || echo "ERROR SKILL.md missing frontmatter"
-  grep -q "^name:" "$CLAUDE_DIR/skills/Agents/SKILL.md" && echo "OK SKILL.md has name field" || echo "ERROR SKILL.md missing name field"
-  grep -q "^description:" "$CLAUDE_DIR/skills/Agents/SKILL.md" && echo "OK SKILL.md has description field" || echo "ERROR SKILL.md missing description"
+ENGINE_DIR="$HOME/.codex"
+if [ -f "$ENGINE_DIR/skills/Agents/SKILL.md" ]; then
+  head -1 "$ENGINE_DIR/skills/Agents/SKILL.md" | grep -q "^---" && echo "OK SKILL.md has frontmatter opener" || echo "ERROR SKILL.md missing frontmatter"
+  grep -q "^name:" "$ENGINE_DIR/skills/Agents/SKILL.md" && echo "OK SKILL.md has name field" || echo "ERROR SKILL.md missing name field"
+  grep -q "^description:" "$ENGINE_DIR/skills/Agents/SKILL.md" && echo "OK SKILL.md has description field" || echo "ERROR SKILL.md missing description"
 fi
 ```
 
@@ -75,13 +75,13 @@ fi
 ### Check skill content is complete
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
-if [ -f "$CLAUDE_DIR/skills/Agents/SKILL.md" ]; then
+ENGINE_DIR="$HOME/.codex"
+if [ -f "$ENGINE_DIR/skills/Agents/SKILL.md" ]; then
   echo "Checking SKILL.md content..."
-  grep -q "Workflow Routing" "$CLAUDE_DIR/skills/Agents/SKILL.md" && echo "  OK Has workflow routing" || echo "  ERROR Missing workflow routing"
-  grep -q "ComposeAgent" "$CLAUDE_DIR/skills/Agents/SKILL.md" && echo "  OK References ComposeAgent tool" || echo "  ERROR Missing ComposeAgent reference"
-  grep -q "Traits.yaml" "$CLAUDE_DIR/skills/Agents/SKILL.md" && echo "  OK References trait library" || echo "  ERROR Missing trait library reference"
-  grep -q "CREATECUSTOMAGENT\|CreateCustomAgent" "$CLAUDE_DIR/skills/Agents/SKILL.md" && echo "  OK References CreateCustomAgent workflow" || echo "  ERROR Missing workflow reference"
+  grep -q "Workflow Routing" "$ENGINE_DIR/skills/Agents/SKILL.md" && echo "  OK Has workflow routing" || echo "  ERROR Missing workflow routing"
+  grep -q "ComposeAgent" "$ENGINE_DIR/skills/Agents/SKILL.md" && echo "  OK References ComposeAgent tool" || echo "  ERROR Missing ComposeAgent reference"
+  grep -q "Traits.yaml" "$ENGINE_DIR/skills/Agents/SKILL.md" && echo "  OK References trait library" || echo "  ERROR Missing trait library reference"
+  grep -q "CREATECUSTOMAGENT\|CreateCustomAgent" "$ENGINE_DIR/skills/Agents/SKILL.md" && echo "  OK References CreateCustomAgent workflow" || echo "  ERROR Missing workflow reference"
 fi
 ```
 
@@ -104,8 +104,8 @@ else
 fi
 
 # Tool node_modules
-CLAUDE_DIR="$HOME/.codex"
-if [ -d "$CLAUDE_DIR/skills/Agents/Tools/node_modules" ]; then
+ENGINE_DIR="$HOME/.codex"
+if [ -d "$ENGINE_DIR/skills/Agents/Tools/node_modules" ]; then
   echo "  AVAILABLE Tool dependencies installed"
 else
   echo "  UNAVAILABLE Tool dependencies (run: cd ~/.codex/skills/Agents/Tools && bun install)"
@@ -115,7 +115,7 @@ fi
 curl -s -o /dev/null -w "%{http_code}" http://localhost:8888/health 2>/dev/null | grep -q "200" && echo "  AVAILABLE Voice server at localhost:8888" || echo "  UNAVAILABLE Voice server (agents work without it, text-only)"
 
 # User customizations
-if [ -d "$CLAUDE_DIR/PAI/USER/SKILLCUSTOMIZATIONS/Agents" ]; then
+if [ -d "$ENGINE_DIR/PAI/USER/SKILLCUSTOMIZATIONS/Agents" ]; then
   echo "  AVAILABLE User customizations directory"
 else
   echo "  INFO No user customizations (optional, create at ~/.codex/PAI/USER/SKILLCUSTOMIZATIONS/Agents/)"

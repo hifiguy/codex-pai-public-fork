@@ -22,7 +22,7 @@ Run a multi-turn agent scenario — simulated user drives N-turn conversation ag
 
 2. **Run the scenario** (single trial first, for fast iteration):
    ```bash
-   cd ${CLAUDE_SKILL_DIR}
+   cd ${ENGINE_SKILL_DIR}
    bun run Tools/ScenarioRunner.ts --scenario Scenarios/<name>.scenario.ts
    ```
 

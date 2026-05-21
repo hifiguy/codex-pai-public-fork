@@ -20,7 +20,7 @@
  */
 
 import { readFileSync } from 'fs';
-import { isContained, isPatternAllowlisted, relativeToClaudeRoot } from './lib/containment-zones';
+import { isContained, isPatternAllowlisted, relativeToEngineRoot } from './lib/containment-zones';
 
 interface HookInput {
   session_id?: string;
@@ -44,20 +44,20 @@ const IDENTITY_PATTERNS: readonly string[] = [
   '<private-namespace-id>',
 ];
 
-const CLAUDE_ROOT = `${process.env.HOME ?? ''}/.codex`;
+const ENGINE_ROOT = `${process.env.HOME ?? ''}/.codex`;
 
-function isUnderClaudeRoot(filePath: string): boolean {
-  const prefix = CLAUDE_ROOT.endsWith('/') ? CLAUDE_ROOT : CLAUDE_ROOT + '/';
-  return filePath === CLAUDE_ROOT || filePath.startsWith(prefix);
+function isUnderEngineRoot(filePath: string): boolean {
+  const prefix = ENGINE_ROOT.endsWith('/') ? ENGINE_ROOT : ENGINE_ROOT + '/';
+  return filePath === ENGINE_ROOT || filePath.startsWith(prefix);
 }
 
 function isFileContained(filePath: string): boolean {
   // Files outside ~/.codex/ are personal project repos (~/Projects, ~/LocalProjects, etc.)
   // and are not part of the PAI release tree that ShadowRelease scrubs. The containment
   // guard exists to keep PAI public-release content clean, not to police unrelated projects.
-  if (!isUnderClaudeRoot(filePath)) return true;
-  if (isPatternAllowlisted(relativeToClaudeRoot(filePath, CLAUDE_ROOT))) return true;
-  return isContained(filePath, CLAUDE_ROOT);
+  if (!isUnderEngineRoot(filePath)) return true;
+  if (isPatternAllowlisted(relativeToEngineRoot(filePath, ENGINE_ROOT))) return true;
+  return isContained(filePath, ENGINE_ROOT);
 }
 
 function extractScanTargets(toolName: string, toolInput: Record<string, unknown>): ScanTarget[] {

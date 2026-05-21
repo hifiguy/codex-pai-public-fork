@@ -12,8 +12,9 @@ set -o pipefail
 # ─────────────────────────────────────────────────────────────────────────────
 
 PAI_DIR="${PAI_DIR:-$HOME/.codex/PAI}"
-CODEX_HOME="${CODEX_HOME:-$HOME/.codex}"
-SETTINGS_FILE="$CODEX_HOME/settings.json"
+ENGINE_HOME="${ENGINE_HOME:-${CODEX_HOME:-$HOME/.codex}}"
+CODEX_HOME="$ENGINE_HOME"
+SETTINGS_FILE="$ENGINE_HOME/settings.json"
 RATINGS_FILE="$PAI_DIR/MEMORY/LEARNING/SIGNALS/ratings.jsonl"
 MODEL_CACHE="$PAI_DIR/MEMORY/STATE/model-cache.txt"
 QUOTE_CACHE="$PAI_DIR/.quote-cache"
@@ -261,9 +262,9 @@ if [ "$context_pct" = "0" ] && [ "$total_input" -eq 0 ] 2>/dev/null; then
         _est=$((_est + 12000))
 
         # AGENTS.md (loaded natively by ChatGPT Codex, ~3.5 chars/token)
-        [ -f "$CLAUDE_HOME/AGENTS.md" ] && _est=$((_est + $(wc -c < "$CLAUDE_HOME/AGENTS.md") * 10 / 35))
+        [ -f "$ENGINE_HOME/AGENTS.md" ] && _est=$((_est + $(wc -c < "$ENGINE_HOME/AGENTS.md") * 10 / 35))
 
-        # System prompt (loaded via --append-system-prompt-file, ~3.5 chars/token)
+        # PAI operating prompt (sent by pai.ts as initial session instructions, ~3.5 chars/token)
         [ -f "$PAI_DIR/PAI_SYSTEM_PROMPT.md" ] && _est=$((_est + $(wc -c < "$PAI_DIR/PAI_SYSTEM_PROMPT.md") * 10 / 35))
 
         # loadAtStartup files (injected by LoadContext.hook.ts as system-reminders)
@@ -624,8 +625,8 @@ if [ "$MODE" != "nano" ]; then
     # Skills count is dynamic (dirs with SKILL.md) — never stale after skill changes
     # Private skills start with _ prefix, public skills don't
     shopt -s nullglob
-    _skill_files=("$CLAUDE_HOME"/skills/*/SKILL.md)
-    _private_skill_files=("$CLAUDE_HOME"/skills/_*/SKILL.md)
+    _skill_files=("$ENGINE_HOME"/skills/*/SKILL.md)
+    _private_skill_files=("$ENGINE_HOME"/skills/_*/SKILL.md)
     _live_skills=${#_skill_files[@]}
     _private_skills=${#_private_skill_files[@]}
     shopt -u nullglob
@@ -1244,7 +1245,7 @@ printf "${SLATE_600}%s${RESET}\n" "$SEP_DOT"
 _ctx_files=()
 while IFS= read -r _cf; do
     [ -n "$_cf" ] && _ctx_files+=("${_cf##*/}")
-done < <(sed -n 's/^@//p' "$CLAUDE_HOME/AGENTS.md" 2>/dev/null)
+done < <(sed -n 's/^@//p' "$ENGINE_HOME/AGENTS.md" 2>/dev/null)
 _ctx_count=${#_ctx_files[@]}
 if [ "$_ctx_count" -gt 0 ]; then
     _prefix="  FILES(${_ctx_count}): "

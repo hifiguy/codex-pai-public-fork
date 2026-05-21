@@ -9,8 +9,8 @@
 ### Check SKILL.md exists at target
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
-[ -f "$CLAUDE_DIR/skills/Research/SKILL.md" ] && echo "OK Research SKILL.md" || echo "MISSING Research SKILL.md"
+ENGINE_DIR="$HOME/.codex"
+[ -f "$ENGINE_DIR/skills/Research/SKILL.md" ] && echo "OK Research SKILL.md" || echo "MISSING Research SKILL.md"
 ```
 
 **Expected:** SKILL.md present at `~/.codex/skills/Research/SKILL.md`.
@@ -18,11 +18,11 @@ CLAUDE_DIR="$HOME/.codex"
 ### Check subdirectories exist
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
+ENGINE_DIR="$HOME/.codex"
 
 echo "Directories:"
-[ -d "$CLAUDE_DIR/skills/Research/Workflows" ] && echo "  OK Workflows/" || echo "  MISSING Workflows/"
-[ -d "$CLAUDE_DIR/skills/Research/Templates" ] && echo "  OK Templates/" || echo "  MISSING Templates/"
+[ -d "$ENGINE_DIR/skills/Research/Workflows" ] && echo "  OK Workflows/" || echo "  MISSING Workflows/"
+[ -d "$ENGINE_DIR/skills/Research/Templates" ] && echo "  OK Templates/" || echo "  MISSING Templates/"
 ```
 
 **Expected:** Both Workflows/ and Templates/ directories present.
@@ -30,8 +30,8 @@ echo "Directories:"
 ### Check frontmatter validity
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
-SKILL_FILE="$CLAUDE_DIR/skills/Research/SKILL.md"
+ENGINE_DIR="$HOME/.codex"
+SKILL_FILE="$ENGINE_DIR/skills/Research/SKILL.md"
 
 if [ -f "$SKILL_FILE" ]; then
   head -1 "$SKILL_FILE" | grep -q "^---" && echo "OK SKILL.md frontmatter" || echo "ERROR SKILL.md missing frontmatter"
@@ -45,12 +45,12 @@ fi
 ### Check support files
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
+ENGINE_DIR="$HOME/.codex"
 
 echo "Support files:"
-[ -f "$CLAUDE_DIR/skills/Research/QuickReference.md" ] && echo "  OK QuickReference.md" || echo "  MISSING QuickReference.md"
-[ -f "$CLAUDE_DIR/skills/Research/UrlVerificationProtocol.md" ] && echo "  OK UrlVerificationProtocol.md" || echo "  MISSING UrlVerificationProtocol.md"
-[ -f "$CLAUDE_DIR/skills/Research/MigrationNotes.md" ] && echo "  OK MigrationNotes.md" || echo "  MISSING MigrationNotes.md"
+[ -f "$ENGINE_DIR/skills/Research/QuickReference.md" ] && echo "  OK QuickReference.md" || echo "  MISSING QuickReference.md"
+[ -f "$ENGINE_DIR/skills/Research/UrlVerificationProtocol.md" ] && echo "  OK UrlVerificationProtocol.md" || echo "  MISSING UrlVerificationProtocol.md"
+[ -f "$ENGINE_DIR/skills/Research/MigrationNotes.md" ] && echo "  OK MigrationNotes.md" || echo "  MISSING MigrationNotes.md"
 ```
 
 **Expected:** All three support files present.
@@ -58,17 +58,17 @@ echo "Support files:"
 ### Check all workflow files
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
+ENGINE_DIR="$HOME/.codex"
 
 echo "Workflows:"
 for wf in QuickResearch.md StandardResearch.md ExtensiveResearch.md DeepInvestigation.md \
           ExtractAlpha.md Retrieve.md YoutubeExtraction.md WebScraping.md \
           ClaudeResearch.md InterviewResearch.md AnalyzeAiTrends.md Fabric.md \
           Enhance.md ExtractKnowledge.md; do
-  [ -f "$CLAUDE_DIR/skills/Research/Workflows/$wf" ] && echo "  OK $wf" || echo "  MISSING $wf"
+  [ -f "$ENGINE_DIR/skills/Research/Workflows/$wf" ] && echo "  OK $wf" || echo "  MISSING $wf"
 done
 
-WORKFLOW_COUNT=$(ls -1 "$CLAUDE_DIR/skills/Research/Workflows/"*.md 2>/dev/null | wc -l | tr -d ' ')
+WORKFLOW_COUNT=$(ls -1 "$ENGINE_DIR/skills/Research/Workflows/"*.md 2>/dev/null | wc -l | tr -d ' ')
 echo "Total workflows: $WORKFLOW_COUNT (expected: 14)"
 ```
 
@@ -77,13 +77,13 @@ echo "Total workflows: $WORKFLOW_COUNT (expected: 14)"
 ### Check template files
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
+ENGINE_DIR="$HOME/.codex"
 
 echo "Templates:"
-[ -f "$CLAUDE_DIR/skills/Research/Templates/MarketResearch.md" ] && echo "  OK MarketResearch.md" || echo "  MISSING MarketResearch.md"
-[ -f "$CLAUDE_DIR/skills/Research/Templates/ThreatLandscape.md" ] && echo "  OK ThreatLandscape.md" || echo "  MISSING ThreatLandscape.md"
+[ -f "$ENGINE_DIR/skills/Research/Templates/MarketResearch.md" ] && echo "  OK MarketResearch.md" || echo "  MISSING MarketResearch.md"
+[ -f "$ENGINE_DIR/skills/Research/Templates/ThreatLandscape.md" ] && echo "  OK ThreatLandscape.md" || echo "  MISSING ThreatLandscape.md"
 
-TEMPLATE_COUNT=$(ls -1 "$CLAUDE_DIR/skills/Research/Templates/"*.md 2>/dev/null | wc -l | tr -d ' ')
+TEMPLATE_COUNT=$(ls -1 "$ENGINE_DIR/skills/Research/Templates/"*.md 2>/dev/null | wc -l | tr -d ' ')
 echo "Total templates: $TEMPLATE_COUNT (expected: 2)"
 ```
 
@@ -115,15 +115,15 @@ else
 fi
 
 # PAI MEMORY structure
-CLAUDE_DIR="$HOME/.codex"
-if [ -d "$CLAUDE_DIR/MEMORY" ]; then
+ENGINE_DIR="$HOME/.codex"
+if [ -d "$ENGINE_DIR/MEMORY" ]; then
   echo "  AVAILABLE PAI MEMORY (research artifacts will persist)"
 else
   echo "  UNAVAILABLE PAI MEMORY (deep investigation vault requires this)"
 fi
 
 # User customizations
-if [ -d "$CLAUDE_DIR/PAI/USER/SKILLCUSTOMIZATIONS/Research" ]; then
+if [ -d "$ENGINE_DIR/PAI/USER/SKILLCUSTOMIZATIONS/Research" ]; then
   echo "  AVAILABLE Research customizations"
 else
   echo "  INFO No Research customizations (defaults will be used)"

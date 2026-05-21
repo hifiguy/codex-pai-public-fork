@@ -316,7 +316,7 @@ Recovery is straightforward:
 
 **Community Discord:** PAI is discussed in the [community Discord](https://danielmiessler.com/upgrade) along with other AI projects
 
-**Maintainer contact:** GitHub `hifiguy` · Discord `SecDude2469`
+**Maintainer contact:** GitHub `HiFiGuy` · Discord `SecDude2469` · Email `34317110+hifiguy@users.noreply.github.com`
 
 **Twitter/X:** [@danielmiessler](https://twitter.com/danielmiessler)
 

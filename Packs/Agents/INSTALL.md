@@ -38,28 +38,28 @@ Let me analyze your system and guide you through installation."
 
 ```bash
 # Check for ChatGPT Codex skills directory
-CLAUDE_DIR="$HOME/.codex"
-echo "Claude directory: $CLAUDE_DIR"
+ENGINE_DIR="$HOME/.codex"
+echo "Engine directory: $ENGINE_DIR"
 
 # Check if Agents skill directory exists
-if [ -d "$CLAUDE_DIR/skills/Agents" ]; then
-  echo "WARNING Existing Agents skill found at: $CLAUDE_DIR/skills/Agents"
-  ls -la "$CLAUDE_DIR/skills/Agents/" 2>/dev/null
+if [ -d "$ENGINE_DIR/skills/Agents" ]; then
+  echo "WARNING Existing Agents skill found at: $ENGINE_DIR/skills/Agents"
+  ls -la "$ENGINE_DIR/skills/Agents/" 2>/dev/null
 else
   echo "OK No existing Agents skill (clean install)"
 fi
 
 # Check for skills directory
-if [ -d "$CLAUDE_DIR/skills" ]; then
-  echo "OK Skills directory exists at: $CLAUDE_DIR/skills"
+if [ -d "$ENGINE_DIR/skills" ]; then
+  echo "OK Skills directory exists at: $ENGINE_DIR/skills"
 else
   echo "INFO Skills directory does not exist (will be created)"
 fi
 
 # Check for user customization directory
-if [ -d "$CLAUDE_DIR/PAI/USER/SKILLCUSTOMIZATIONS/Agents" ]; then
+if [ -d "$ENGINE_DIR/PAI/USER/SKILLCUSTOMIZATIONS/Agents" ]; then
   echo "OK User customizations found (will be preserved)"
-  ls -la "$CLAUDE_DIR/PAI/USER/SKILLCUSTOMIZATIONS/Agents/" 2>/dev/null
+  ls -la "$ENGINE_DIR/PAI/USER/SKILLCUSTOMIZATIONS/Agents/" 2>/dev/null
 else
   echo "INFO No user customizations found (none to preserve)"
 fi
@@ -73,7 +73,7 @@ else
 fi
 
 # Check for existing tool dependencies
-if [ -f "$CLAUDE_DIR/skills/Agents/Tools/node_modules/.package-lock.json" ] || [ -d "$CLAUDE_DIR/skills/Agents/Tools/node_modules" ]; then
+if [ -f "$ENGINE_DIR/skills/Agents/Tools/node_modules/.package-lock.json" ] || [ -d "$ENGINE_DIR/skills/Agents/Tools/node_modules" ]; then
   echo "OK Existing tool dependencies found"
 else
   echo "INFO Tool dependencies will need to be installed after copy"
@@ -179,13 +179,13 @@ Then re-ask the final confirmation question.
 **Only execute if user chose "Backup and Replace":**
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
-BACKUP_DIR="$CLAUDE_DIR/Backups/agents-skill-$(date +%Y%m%d-%H%M%S)"
+ENGINE_DIR="$HOME/.codex"
+BACKUP_DIR="$ENGINE_DIR/Backups/agents-skill-$(date +%Y%m%d-%H%M%S)"
 mkdir -p "$BACKUP_DIR"
 
 # Backup existing skill directory
-if [ -d "$CLAUDE_DIR/skills/Agents" ]; then
-  cp -r "$CLAUDE_DIR/skills/Agents" "$BACKUP_DIR/Agents"
+if [ -d "$ENGINE_DIR/skills/Agents" ]; then
+  cp -r "$ENGINE_DIR/skills/Agents" "$BACKUP_DIR/Agents"
   echo "Backed up Agents skill to: $BACKUP_DIR/Agents"
 fi
 
@@ -214,13 +214,13 @@ echo "Backup created at: $BACKUP_DIR"
 **Mark todo "Create skill directory structure" as in_progress.**
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
-mkdir -p "$CLAUDE_DIR/skills/Agents"
-mkdir -p "$CLAUDE_DIR/skills/Agents/Data"
-mkdir -p "$CLAUDE_DIR/skills/Agents/Tools"
-mkdir -p "$CLAUDE_DIR/skills/Agents/Templates"
-mkdir -p "$CLAUDE_DIR/skills/Agents/Workflows"
-mkdir -p "$CLAUDE_DIR/skills/Agents/Scratchpad"
+ENGINE_DIR="$HOME/.codex"
+mkdir -p "$ENGINE_DIR/skills/Agents"
+mkdir -p "$ENGINE_DIR/skills/Agents/Data"
+mkdir -p "$ENGINE_DIR/skills/Agents/Tools"
+mkdir -p "$ENGINE_DIR/skills/Agents/Templates"
+mkdir -p "$ENGINE_DIR/skills/Agents/Workflows"
+mkdir -p "$ENGINE_DIR/skills/Agents/Scratchpad"
 echo "Created Agents skill directory structure"
 ```
 
@@ -232,35 +232,35 @@ echo "Created Agents skill directory structure"
 
 ```bash
 PACK_DIR="$(pwd)"
-CLAUDE_DIR="$HOME/.codex"
+ENGINE_DIR="$HOME/.codex"
 
 # Copy all files from src/ to skill directory
-cp "$PACK_DIR/src/SKILL.md" "$CLAUDE_DIR/skills/Agents/SKILL.md"
-cp "$PACK_DIR/src/Data/Traits.yaml" "$CLAUDE_DIR/skills/Agents/Data/Traits.yaml"
-cp "$PACK_DIR/src/Tools/ComposeAgent.ts" "$CLAUDE_DIR/skills/Agents/Tools/ComposeAgent.ts"
-cp "$PACK_DIR/src/Tools/LoadAgentContext.ts" "$CLAUDE_DIR/skills/Agents/Tools/LoadAgentContext.ts"
-cp "$PACK_DIR/src/Tools/SpawnAgentWithProfile.ts" "$CLAUDE_DIR/skills/Agents/Tools/SpawnAgentWithProfile.ts"
-cp "$PACK_DIR/src/Tools/package.json" "$CLAUDE_DIR/skills/Agents/Tools/package.json"
-cp "$PACK_DIR/src/Tools/bun.lock" "$CLAUDE_DIR/skills/Agents/Tools/bun.lock"
-cp "$PACK_DIR/src/Templates/DynamicAgent.hbs" "$CLAUDE_DIR/skills/Agents/Templates/DynamicAgent.hbs"
-cp "$PACK_DIR/src/Templates/CUSTOMAGENTTEMPLATE.md" "$CLAUDE_DIR/skills/Agents/Templates/CUSTOMAGENTTEMPLATE.md"
-cp "$PACK_DIR/src/Workflows/CreateCustomAgent.md" "$CLAUDE_DIR/skills/Agents/Workflows/CreateCustomAgent.md"
-cp "$PACK_DIR/src/Workflows/ListTraits.md" "$CLAUDE_DIR/skills/Agents/Workflows/ListTraits.md"
-cp "$PACK_DIR/src/Workflows/SpawnParallelAgents.md" "$CLAUDE_DIR/skills/Agents/Workflows/SpawnParallelAgents.md"
-cp "$PACK_DIR/src/AgentPersonalities.md" "$CLAUDE_DIR/skills/Agents/AgentPersonalities.md"
-cp "$PACK_DIR/src/AgentProfileSystem.md" "$CLAUDE_DIR/skills/Agents/AgentProfileSystem.md"
-cp "$PACK_DIR/src/ArchitectContext.md" "$CLAUDE_DIR/skills/Agents/ArchitectContext.md"
-cp "$PACK_DIR/src/ArtistContext.md" "$CLAUDE_DIR/skills/Agents/ArtistContext.md"
-cp "$PACK_DIR/src/ClaudeResearcherContext.md" "$CLAUDE_DIR/skills/Agents/ClaudeResearcherContext.md"
-cp "$PACK_DIR/src/CodexResearcherContext.md" "$CLAUDE_DIR/skills/Agents/CodexResearcherContext.md"
-cp "$PACK_DIR/src/DesignerContext.md" "$CLAUDE_DIR/skills/Agents/DesignerContext.md"
-cp "$PACK_DIR/src/EngineerContext.md" "$CLAUDE_DIR/skills/Agents/EngineerContext.md"
-cp "$PACK_DIR/src/GeminiResearcherContext.md" "$CLAUDE_DIR/skills/Agents/GeminiResearcherContext.md"
-cp "$PACK_DIR/src/GrokResearcherContext.md" "$CLAUDE_DIR/skills/Agents/GrokResearcherContext.md"
-cp "$PACK_DIR/src/PerplexityResearcherContext.md" "$CLAUDE_DIR/skills/Agents/PerplexityResearcherContext.md"
-cp "$PACK_DIR/src/QATesterContext.md" "$CLAUDE_DIR/skills/Agents/QATesterContext.md"
-cp "$PACK_DIR/src/REDESIGN-SUMMARY.md" "$CLAUDE_DIR/skills/Agents/REDESIGN-SUMMARY.md"
-cp -r "$PACK_DIR/src/Scratchpad/" "$CLAUDE_DIR/skills/Agents/Scratchpad/"
+cp "$PACK_DIR/src/SKILL.md" "$ENGINE_DIR/skills/Agents/SKILL.md"
+cp "$PACK_DIR/src/Data/Traits.yaml" "$ENGINE_DIR/skills/Agents/Data/Traits.yaml"
+cp "$PACK_DIR/src/Tools/ComposeAgent.ts" "$ENGINE_DIR/skills/Agents/Tools/ComposeAgent.ts"
+cp "$PACK_DIR/src/Tools/LoadAgentContext.ts" "$ENGINE_DIR/skills/Agents/Tools/LoadAgentContext.ts"
+cp "$PACK_DIR/src/Tools/SpawnAgentWithProfile.ts" "$ENGINE_DIR/skills/Agents/Tools/SpawnAgentWithProfile.ts"
+cp "$PACK_DIR/src/Tools/package.json" "$ENGINE_DIR/skills/Agents/Tools/package.json"
+cp "$PACK_DIR/src/Tools/bun.lock" "$ENGINE_DIR/skills/Agents/Tools/bun.lock"
+cp "$PACK_DIR/src/Templates/DynamicAgent.hbs" "$ENGINE_DIR/skills/Agents/Templates/DynamicAgent.hbs"
+cp "$PACK_DIR/src/Templates/CUSTOMAGENTTEMPLATE.md" "$ENGINE_DIR/skills/Agents/Templates/CUSTOMAGENTTEMPLATE.md"
+cp "$PACK_DIR/src/Workflows/CreateCustomAgent.md" "$ENGINE_DIR/skills/Agents/Workflows/CreateCustomAgent.md"
+cp "$PACK_DIR/src/Workflows/ListTraits.md" "$ENGINE_DIR/skills/Agents/Workflows/ListTraits.md"
+cp "$PACK_DIR/src/Workflows/SpawnParallelAgents.md" "$ENGINE_DIR/skills/Agents/Workflows/SpawnParallelAgents.md"
+cp "$PACK_DIR/src/AgentPersonalities.md" "$ENGINE_DIR/skills/Agents/AgentPersonalities.md"
+cp "$PACK_DIR/src/AgentProfileSystem.md" "$ENGINE_DIR/skills/Agents/AgentProfileSystem.md"
+cp "$PACK_DIR/src/ArchitectContext.md" "$ENGINE_DIR/skills/Agents/ArchitectContext.md"
+cp "$PACK_DIR/src/ArtistContext.md" "$ENGINE_DIR/skills/Agents/ArtistContext.md"
+cp "$PACK_DIR/src/ClaudeResearcherContext.md" "$ENGINE_DIR/skills/Agents/ClaudeResearcherContext.md"
+cp "$PACK_DIR/src/CodexResearcherContext.md" "$ENGINE_DIR/skills/Agents/CodexResearcherContext.md"
+cp "$PACK_DIR/src/DesignerContext.md" "$ENGINE_DIR/skills/Agents/DesignerContext.md"
+cp "$PACK_DIR/src/EngineerContext.md" "$ENGINE_DIR/skills/Agents/EngineerContext.md"
+cp "$PACK_DIR/src/GeminiResearcherContext.md" "$ENGINE_DIR/skills/Agents/GeminiResearcherContext.md"
+cp "$PACK_DIR/src/GrokResearcherContext.md" "$ENGINE_DIR/skills/Agents/GrokResearcherContext.md"
+cp "$PACK_DIR/src/PerplexityResearcherContext.md" "$ENGINE_DIR/skills/Agents/PerplexityResearcherContext.md"
+cp "$PACK_DIR/src/QATesterContext.md" "$ENGINE_DIR/skills/Agents/QATesterContext.md"
+cp "$PACK_DIR/src/REDESIGN-SUMMARY.md" "$ENGINE_DIR/skills/Agents/REDESIGN-SUMMARY.md"
+cp -r "$PACK_DIR/src/Scratchpad/" "$ENGINE_DIR/skills/Agents/Scratchpad/"
 
 echo "Copied all Agents skill files"
 ```
@@ -274,8 +274,8 @@ echo "Copied all Agents skill files"
 **Only execute if user approved dependency installation:**
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
-cd "$CLAUDE_DIR/skills/Agents/Tools" && bun install
+ENGINE_DIR="$HOME/.codex"
+cd "$ENGINE_DIR/skills/Agents/Tools" && bun install
 echo "Tool dependencies installed"
 ```
 
@@ -296,36 +296,36 @@ echo "Tool dependencies installed"
 **Execute all checks from VERIFY.md:**
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
+ENGINE_DIR="$HOME/.codex"
 
 echo "=== Agents Skill Verification ==="
 
 # Check SKILL.md exists
 echo "Checking skill definition..."
-[ -f "$CLAUDE_DIR/skills/Agents/SKILL.md" ] && echo "OK SKILL.md installed" || echo "ERROR SKILL.md missing"
+[ -f "$ENGINE_DIR/skills/Agents/SKILL.md" ] && echo "OK SKILL.md installed" || echo "ERROR SKILL.md missing"
 
 # Check directories exist
 echo "Checking directories..."
-[ -d "$CLAUDE_DIR/skills/Agents/Data" ] && echo "OK Data/ directory exists" || echo "ERROR Data/ missing"
-[ -d "$CLAUDE_DIR/skills/Agents/Tools" ] && echo "OK Tools/ directory exists" || echo "ERROR Tools/ missing"
-[ -d "$CLAUDE_DIR/skills/Agents/Templates" ] && echo "OK Templates/ directory exists" || echo "ERROR Templates/ missing"
-[ -d "$CLAUDE_DIR/skills/Agents/Workflows" ] && echo "OK Workflows/ directory exists" || echo "ERROR Workflows/ missing"
+[ -d "$ENGINE_DIR/skills/Agents/Data" ] && echo "OK Data/ directory exists" || echo "ERROR Data/ missing"
+[ -d "$ENGINE_DIR/skills/Agents/Tools" ] && echo "OK Tools/ directory exists" || echo "ERROR Tools/ missing"
+[ -d "$ENGINE_DIR/skills/Agents/Templates" ] && echo "OK Templates/ directory exists" || echo "ERROR Templates/ missing"
+[ -d "$ENGINE_DIR/skills/Agents/Workflows" ] && echo "OK Workflows/ directory exists" || echo "ERROR Workflows/ missing"
 
 # Check key files
 echo "Checking key files..."
-[ -f "$CLAUDE_DIR/skills/Agents/Data/Traits.yaml" ] && echo "OK Traits.yaml installed" || echo "ERROR Traits.yaml missing"
-[ -f "$CLAUDE_DIR/skills/Agents/Tools/ComposeAgent.ts" ] && echo "OK ComposeAgent.ts installed" || echo "ERROR ComposeAgent.ts missing"
-[ -f "$CLAUDE_DIR/skills/Agents/Templates/DynamicAgent.hbs" ] && echo "OK DynamicAgent.hbs installed" || echo "ERROR DynamicAgent.hbs missing"
+[ -f "$ENGINE_DIR/skills/Agents/Data/Traits.yaml" ] && echo "OK Traits.yaml installed" || echo "ERROR Traits.yaml missing"
+[ -f "$ENGINE_DIR/skills/Agents/Tools/ComposeAgent.ts" ] && echo "OK ComposeAgent.ts installed" || echo "ERROR ComposeAgent.ts missing"
+[ -f "$ENGINE_DIR/skills/Agents/Templates/DynamicAgent.hbs" ] && echo "OK DynamicAgent.hbs installed" || echo "ERROR DynamicAgent.hbs missing"
 
 # Check workflows
 echo "Checking workflows..."
-[ -f "$CLAUDE_DIR/skills/Agents/Workflows/CreateCustomAgent.md" ] && echo "OK CreateCustomAgent workflow" || echo "ERROR CreateCustomAgent missing"
-[ -f "$CLAUDE_DIR/skills/Agents/Workflows/ListTraits.md" ] && echo "OK ListTraits workflow" || echo "ERROR ListTraits missing"
-[ -f "$CLAUDE_DIR/skills/Agents/Workflows/SpawnParallelAgents.md" ] && echo "OK SpawnParallelAgents workflow" || echo "ERROR SpawnParallelAgents missing"
+[ -f "$ENGINE_DIR/skills/Agents/Workflows/CreateCustomAgent.md" ] && echo "OK CreateCustomAgent workflow" || echo "ERROR CreateCustomAgent missing"
+[ -f "$ENGINE_DIR/skills/Agents/Workflows/ListTraits.md" ] && echo "OK ListTraits workflow" || echo "ERROR ListTraits missing"
+[ -f "$ENGINE_DIR/skills/Agents/Workflows/SpawnParallelAgents.md" ] && echo "OK SpawnParallelAgents workflow" || echo "ERROR SpawnParallelAgents missing"
 
 # Check frontmatter
 echo "Checking frontmatter..."
-head -1 "$CLAUDE_DIR/skills/Agents/SKILL.md" | grep -q "^---" && echo "OK SKILL.md has valid frontmatter" || echo "ERROR SKILL.md missing frontmatter"
+head -1 "$ENGINE_DIR/skills/Agents/SKILL.md" | grep -q "^---" && echo "OK SKILL.md has valid frontmatter" || echo "ERROR SKILL.md missing frontmatter"
 
 echo ""
 echo "=== Verification Complete ==="

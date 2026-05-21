@@ -219,18 +219,18 @@ Built-in agent types (Designer, Architect, Engineer, etc.) are for INTERNAL work
 
 ```bash
 # Compose and use immediately
-bun run ${CLAUDE_SKILL_DIR}/Tools/ComposeAgent.ts --task "Review security"
-bun run ${CLAUDE_SKILL_DIR}/Tools/ComposeAgent.ts --traits "security,skeptical,thorough"
+bun run ${ENGINE_SKILL_DIR}/Tools/ComposeAgent.ts --task "Review security"
+bun run ${ENGINE_SKILL_DIR}/Tools/ComposeAgent.ts --traits "security,skeptical,thorough"
 
 # Persistent custom agents
-bun run ${CLAUDE_SKILL_DIR}/Tools/ComposeAgent.ts --task "Security review" --save
-bun run ${CLAUDE_SKILL_DIR}/Tools/ComposeAgent.ts --list-saved
-bun run ${CLAUDE_SKILL_DIR}/Tools/ComposeAgent.ts --load "security-expert-skeptical-thorough"
-bun run ${CLAUDE_SKILL_DIR}/Tools/ComposeAgent.ts --delete "security-expert-skeptical-thorough"
+bun run ${ENGINE_SKILL_DIR}/Tools/ComposeAgent.ts --task "Security review" --save
+bun run ${ENGINE_SKILL_DIR}/Tools/ComposeAgent.ts --list-saved
+bun run ${ENGINE_SKILL_DIR}/Tools/ComposeAgent.ts --load "security-expert-skeptical-thorough"
+bun run ${ENGINE_SKILL_DIR}/Tools/ComposeAgent.ts --delete "security-expert-skeptical-thorough"
 
 # Other options
-bun run ${CLAUDE_SKILL_DIR}/Tools/ComposeAgent.ts --list
-bun run ${CLAUDE_SKILL_DIR}/Tools/ComposeAgent.ts --output json
+bun run ${ENGINE_SKILL_DIR}/Tools/ComposeAgent.ts --list
+bun run ${ENGINE_SKILL_DIR}/Tools/ComposeAgent.ts --output json
 ```
 
 **JSON output includes:**

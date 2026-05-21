@@ -24,8 +24,8 @@ import * as path from "path";
 // Configuration
 // ============================================================================
 
-const CLAUDE_DIR = path.join(process.env.HOME!, ".codex");
-const LEARNING_DIR = path.join(CLAUDE_DIR, "PAI", "MEMORY", "LEARNING");
+const ENGINE_DIR = path.join(process.env.HOME!, ".codex");
+const LEARNING_DIR = path.join(ENGINE_DIR, "PAI", "MEMORY", "LEARNING");
 const RATINGS_FILE = path.join(LEARNING_DIR, "SIGNALS", "ratings.jsonl");
 const SYNTHESIS_DIR = path.join(LEARNING_DIR, "SYNTHESIS");
 

@@ -28,7 +28,7 @@ PAI targets **AS3** on the [PAI Maturity Model](https://example.com/blog/persona
   PAI/                               # System docs, tools, user context
     Algorithm/                       # Algorithm versions + optimization modes
     Components/                      # Source components for AGENTS.md generation
-    Tools/                           # TypeScript utilities
+    TOOLS/                           # TypeScript utilities
     MEMORY/                          # Persistent memory stores
     USER/                            # User context (identity, contacts, projects)
 ```
@@ -128,11 +128,11 @@ PAI injects instructions into ChatGPT Codex sessions through a 4-layer hierarchy
 
 ```
 Layer 1: SYSTEM PROMPT (highest authority, survives compaction)
-  File: PAI/PAI_SYSTEM_PROMPT.md (via --append-system-prompt-file)
+  File: PAI/PAI_SYSTEM_PROMPT.md (loaded by pai.ts as initial session instructions)
   Contains: Constitutional rules -- identity, mode architecture, format mandate,
   verification requirement, hard prohibitions, permission boundaries, security protocol.
 
-Layer 2: CLAUDE.MD (user context, loaded natively, survives compaction)
+Layer 2: AGENTS.md (user context, loaded natively, survives compaction)
   File: ~/.codex/AGENTS.md (directly edited)
   Contains: Operational procedures -- format templates, Algorithm file path,
   operational rules, context routing table. ~139 lines.
@@ -163,7 +163,7 @@ Layer 4: DYNAMIC CONTEXT (session-specific, ephemeral, does NOT survive compacti
 | `PAI/PAI_SYSTEM_PROMPT.md` | Constitutional rules (system prompt layer) |
 | `~/.codex/AGENTS.md` | Operational procedures (directly edited) |
 | `~/.codex/settings.json` | Runtime settings (directly edited) |
-| `PAI/TOOLS/pai.ts` | Launcher -- wires `--append-system-prompt-file` |
+| `PAI/TOOLS/pai.ts` | Launcher -- loads `PAI_SYSTEM_PROMPT.md` into initial session instructions |
 | `hooks/LoadContext.hook.ts` | Injects startup files + dynamic context |
 | `hooks/RestoreContext.hook.ts` | Re-injects critical files after compaction |
 
@@ -243,7 +243,7 @@ Agents default to inheriting the parent model (often Opus). Use the model parame
 Configuration files (`settings.json`, `AGENTS.md`, `PAI_SYSTEM_PROMPT.md`) are directly edited. `PAI_CONFIG.yaml` remains as a credentials store for private skills. The Shadow Release system (`ShadowRelease.ts`) produces public staging via **containment**: rsync clone with hard exclusions → delete sensitive zones (USER, MEMORY, skills/_*) → overlay fixed public templates → scaffold → run five gates (zone deletion, identity grep, CF ID grep, trufflehog, .env strays).
 
 - **Status:** Active (containment-based since v5; retired filter-walker/reverse-templating)
-- **Location:** `skills/_PAI/TOOLS/ShadowRelease.ts`, `skills/_PAI/TEMPLATES/` (settings.public.json, CLAUDE.public.md, USER/)
+- **Location:** `skills/_PAI/TOOLS/ShadowRelease.ts`, `skills/_PAI/TEMPLATES/` (settings.public.json, AGENTS.public.md, USER/)
 - **CLI:** `--create <version>`, `--update`, `--full`, `--check [--version <v>]`
 - **Full doc:** `PAI/DOCUMENTATION/Config/ConfigSystem.md`
 
@@ -385,6 +385,7 @@ Five states with distinct colors: Inference (purple), Working (orange), Complete
 | `PAI/DOCUMENTATION/LifeOs/LifeOsThesis.md` | **Canonical Life OS thesis** -- what PAI is for, the core loop, PAI-MM, RIoT lineage, respark |
 | `PAI/DOCUMENTATION/Tools/Cli.md` | Algorithm CLI (loop/interactive/optimize modes) and Arbol CLI (actions/pipelines) |
 | `PAI/DOCUMENTATION/Tools/CliFirstArchitecture.md` | CLI-First design pattern: build deterministic CLI tools first, then wrap with AI |
+| `PAI/DOCUMENTATION/Portability/EnginePortingGuide.md` | Engine adapter map for future non-Codex forks |
 | `PAI/DOCUMENTATION/Isa/IsaSystem.md` | ISA system architecture -- five identities, three-guardrail taxonomy, twelve-section body, six workflows, two homes, subsystem relationships |
 | `PAI/DOCUMENTATION/IsaFormat.md` | ISA format specification v2.0 -- the single source of truth for every Algorithm run |
 | `PAI/DOCUMENTATION/Tools/Tools.md` | CLI utilities reference: Inference.ts (fast/standard/smart), ActivityParser, and others |

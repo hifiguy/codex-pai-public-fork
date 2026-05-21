@@ -13,7 +13,7 @@ import { join } from "path";
 import { spawnSync } from "child_process";
 
 const HOME = process.env.HOME!;
-const CLAUDE_DIR = join(HOME, ".codex");
+const ENGINE_DIR = join(HOME, ".codex");
 
 // ═══════════════════════════════════════════════════════════════════════════
 // Terminal Width Detection
@@ -118,12 +118,12 @@ function getStats(): SystemStats {
   let catchphrase = "{name} here, ready to go";
   let repoUrl = "github.com/danielmiessler/PAI";
   try {
-    const settings = JSON.parse(readFileSync(join(CLAUDE_DIR, "settings.json"), "utf-8"));
+    const settings = JSON.parse(readFileSync(join(ENGINE_DIR, "settings.json"), "utf-8"));
     name = settings.daidentity?.displayName || settings.daidentity?.name || "PAI";
     paiVersion = settings.pai?.version || "2.0";
     // v6.2.0+: LATEST is the single source of truth. settings.pai.algorithmVersion was removed.
     try {
-      const latestPath = join(CLAUDE_DIR, "PAI", "ALGORITHM", "LATEST");
+      const latestPath = join(ENGINE_DIR, "PAI", "ALGORITHM", "LATEST");
       if (existsSync(latestPath)) {
         algorithmVersion = readFileSync(latestPath, "utf-8").trim().replace(/^v/i, "") || algorithmVersion;
       }
@@ -140,7 +140,7 @@ function getStats(): SystemStats {
 
   // Skills count — always live from filesystem so it matches the status line
   try {
-    const skillsDir = join(CLAUDE_DIR, "skills");
+    const skillsDir = join(ENGINE_DIR, "skills");
     if (existsSync(skillsDir)) {
       skills = readdirSync(skillsDir, { withFileTypes: true })
         .filter(d => d.isDirectory() && existsSync(join(skillsDir, d.name, "SKILL.md")))
@@ -149,7 +149,7 @@ function getStats(): SystemStats {
   } catch {}
 
   try {
-    const settings = JSON.parse(readFileSync(join(CLAUDE_DIR, "settings.json"), "utf-8"));
+    const settings = JSON.parse(readFileSync(join(ENGINE_DIR, "settings.json"), "utf-8"));
     if (settings.counts) {
       workflows = settings.counts.workflows || 0;
       hooks = settings.counts.hooks || 0;
@@ -159,7 +159,7 @@ function getStats(): SystemStats {
   } catch {}
 
   try {
-    const historyFile = join(CLAUDE_DIR, "history.jsonl");
+    const historyFile = join(ENGINE_DIR, "history.jsonl");
     if (existsSync(historyFile)) {
       const content = readFileSync(historyFile, "utf-8");
       sessions = content.split("\n").filter(line => line.trim()).length;

@@ -1670,7 +1670,7 @@ appendEvent({ type: 'work.created', source: 'ISASync', slug: 'my-task' });
 
 Every event has a common base shape plus type-specific fields:
 - `timestamp` (ISO 8601) -- auto-injected by `appendEvent()`
-- `session_id` -- auto-injected from `CLAUDE_SESSION_ID` env
+- `session_id` -- auto-injected from `ENGINE_SESSION_ID` env
 - `source` -- the hook or handler name that emitted the event
 - `type` -- dot-separated topic (e.g., `algorithm.phase`, `work.created`, `voice.sent`, `rating.captured`)
 

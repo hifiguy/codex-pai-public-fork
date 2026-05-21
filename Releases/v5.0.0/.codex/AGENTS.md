@@ -80,7 +80,7 @@ Startup context is `@`-imported above (PRINCIPAL_IDENTITY, DA_IDENTITY, PROJECTS
 |-------|------|
 | **Life OS thesis (what PAI is for)** | `~/.codex/PAI/DOCUMENTATION/LifeOs/LifeOsThesis.md` — canonical source of truth |
 | **Life OS schema (USER/ shape)** | `~/.codex/PAI/DOCUMENTATION/LifeOs/LifeOsSchema.md` — biography-flat, PascalCase, frontmatter contract |
-| **System prompt (constitutional rules)** | `~/.codex/PAI/PAI_SYSTEM_PROMPT.md` **(loaded via --append-system-prompt-file)** |
+| **System prompt (constitutional rules)** | `~/.codex/PAI/PAI_SYSTEM_PROMPT.md` **(loaded by `pai.ts` as initial engine instructions)** |
 | **System architecture (master doc)** | `~/.codex/PAI/DOCUMENTATION/PAISystemArchitecture.md` |
 | Architecture summary | `~/.codex/PAI/DOCUMENTATION/ARCHITECTURE_SUMMARY.md` **(loaded via @-import)** |
 | Algorithm system | `~/.codex/PAI/DOCUMENTATION/Algorithm/AlgorithmSystem.md` |

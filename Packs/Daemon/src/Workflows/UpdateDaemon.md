@@ -14,7 +14,7 @@
 ### Step 1: Run Aggregator
 
 ```bash
-bun ${CLAUDE_SKILL_DIR}/Tools/DaemonAggregator.ts --preview --verbose
+bun ${ENGINE_SKILL_DIR}/Tools/DaemonAggregator.ts --preview --verbose
 ```
 
 This reads from:
@@ -29,7 +29,7 @@ The SecurityFilter runs automatically and reports any redactions.
 ### Step 2: Show Diff Against Current
 
 ```bash
-bun ${CLAUDE_SKILL_DIR}/Tools/DaemonAggregator.ts --diff ${PAI_USER_DIR}/Daemon/daemon.md
+bun ${ENGINE_SKILL_DIR}/Tools/DaemonAggregator.ts --diff ${PAI_USER_DIR}/Daemon/daemon.md
 ```
 
 Present the diff to the user showing:
@@ -52,7 +52,7 @@ Ask the user to confirm the update. Show:
 ### Step 4: Write Updated daemon.md
 
 ```bash
-bun ${CLAUDE_SKILL_DIR}/Tools/DaemonAggregator.ts --output ${PAI_USER_DIR}/Daemon/daemon.md
+bun ${ENGINE_SKILL_DIR}/Tools/DaemonAggregator.ts --output ${PAI_USER_DIR}/Daemon/daemon.md
 ```
 
 ### Step 5: Sync to Public Repo
@@ -74,7 +74,7 @@ cd ~/Projects/daemon && git add -A && git commit -m "Update daemon data $(date +
 Then sync to MCP KV:
 
 ```bash
-cd ${CLAUDE_SKILL_DIR}/Mcp && bun install && bun update-daemon
+cd ${ENGINE_SKILL_DIR}/Mcp && bun install && bun update-daemon
 ```
 
 ### Step 7: Verify

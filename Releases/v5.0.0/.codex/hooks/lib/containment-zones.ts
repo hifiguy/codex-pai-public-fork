@@ -8,7 +8,7 @@
 // retrospective release gates (skills/_PAI/TOOLS/ShadowRelease.ts) import
 // from here. Add, remove, or rename zones in one place.
 //
-// Path patterns are matched relative to CLAUDE_ROOT (the .codex directory
+// Path patterns are matched relative to ENGINE_ROOT (the .codex directory
 // root, resolved from HOME). `**` means "anywhere under this prefix". A bare
 // path means "this exact file or directory (and anything inside it)".
 
@@ -127,11 +127,11 @@ function matchesPattern(relPath: string, pattern: string): boolean {
   return i === pathParts.length;
 }
 
-// Normalize an absolute path to the path relative to CLAUDE_ROOT. Returns
-// the input unchanged if it does not live under CLAUDE_ROOT.
-export function relativeToClaudeRoot(absolutePath: string, claudeRoot: string): string {
-  if (absolutePath === claudeRoot) return "";
-  const prefix = claudeRoot.endsWith("/") ? claudeRoot : claudeRoot + "/";
+// Normalize an absolute path to the path relative to ENGINE_ROOT. Returns
+// the input unchanged if it does not live under ENGINE_ROOT.
+export function relativeToEngineRoot(absolutePath: string, engineRoot: string): string {
+  if (absolutePath === engineRoot) return "";
+  const prefix = engineRoot.endsWith("/") ? engineRoot : engineRoot + "/";
   return absolutePath.startsWith(prefix) ? absolutePath.slice(prefix.length) : absolutePath;
 }
 

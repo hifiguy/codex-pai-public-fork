@@ -151,21 +151,21 @@ function isHookModified(modifiedFiles: Set<string>): boolean {
 /**
  * Check if ANY meaningful PAI system file was modified.
  * PAI spans TWO root directories:
- *   - CLAUDE_DIR (~/.codex) — hooks, skills, settings, agents, AGENTS.md
+ *   - ENGINE_DIR (~/.codex) — hooks, skills, settings, agents, AGENTS.md
  *   - PAI_DIR (~/.codex/PAI) — PAI data, Tools, Components, Workflows, SYSTEM docs
  * Excludes MEMORY/WORK, MEMORY/LEARNING, MEMORY/STATE, and other non-system paths.
  */
 function isSystemFileModified(modifiedFiles: Set<string>): boolean {
   const PAI_DIR = getPaiDir();
-  const CLAUDE_DIR = getCodexDir();
+  const ENGINE_DIR = getCodexDir();
   const PAI_EXCLUDED = ['MEMORY/WORK/', 'MEMORY/LEARNING/', 'MEMORY/STATE/', 'Plans/', '.git/', 'node_modules/', 'ShellSnapshots/', 'MEMORY/VOICE/', 'MEMORY/RELATIONSHIP/', 'history.jsonl', '.quote-cache'];
-  const CLAUDE_EXCLUDED = ['projects/', '.git/', 'node_modules/', 'history.jsonl'];
+  const ENGINE_EXCLUDED = ['projects/', '.git/', 'node_modules/', 'history.jsonl'];
 
   for (const filePath of modifiedFiles) {
     // --- Check ~/.codex/ paths ---
-    if (filePath.startsWith(CLAUDE_DIR + '/')) {
-      const relPath = filePath.slice(CLAUDE_DIR.length + 1);
-      if (CLAUDE_EXCLUDED.some(ex => relPath.includes(ex))) continue;
+    if (filePath.startsWith(ENGINE_DIR + '/')) {
+      const relPath = filePath.slice(ENGINE_DIR.length + 1);
+      if (ENGINE_EXCLUDED.some(ex => relPath.includes(ex))) continue;
 
       if (relPath.startsWith('hooks/') && (relPath.endsWith('.ts') || relPath.endsWith('.sh'))) return true;
       if (relPath.startsWith('skills/') && (relPath.endsWith('.md') || relPath.endsWith('.ts') || relPath.endsWith('.yaml') || relPath.endsWith('.yml'))) return true;

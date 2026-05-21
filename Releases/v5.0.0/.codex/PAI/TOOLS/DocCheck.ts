@@ -20,9 +20,9 @@ import { join, resolve, dirname, relative } from 'path';
 import { execSync } from 'child_process';
 
 const HOME = process.env.HOME || '';
-const CLAUDE_DIR = join(HOME, '.codex');
-const PAI_DIR = join(CLAUDE_DIR, 'PAI');
-const HOOKS_DIR = join(CLAUDE_DIR, 'hooks');
+const ENGINE_DIR = join(HOME, '.codex');
+const PAI_DIR = join(ENGINE_DIR, 'PAI');
+const HOOKS_DIR = join(ENGINE_DIR, 'hooks');
 
 const args = process.argv.slice(2);
 const changedOnly = args.includes('--changed');
@@ -111,7 +111,7 @@ function extractPathRefs(content: string, docPath: string): PathRef[] {
       // Resolve path — try ~/.codex/ first, then ~/.codex/PAI/, then
       // section-aware root from `## ... (paths under `X`)` heading hint, then
       // referrer-dir relative.
-      let resolved = resolve(CLAUDE_DIR, raw);
+      let resolved = resolve(ENGINE_DIR, raw);
       if (!existsSync(resolved)) {
         const paiResolved = resolve(PAI_DIR, raw);
         if (existsSync(paiResolved)) {
@@ -119,7 +119,7 @@ function extractPathRefs(content: string, docPath: string): PathRef[] {
         } else {
           const sectionRoot = getSectionRootAt(sectionRoots, match.index);
           if (sectionRoot) {
-            const sectionResolved = resolve(CLAUDE_DIR, sectionRoot, raw);
+            const sectionResolved = resolve(ENGINE_DIR, sectionRoot, raw);
             if (existsSync(sectionResolved)) resolved = sectionResolved;
           }
           if (!existsSync(resolved)) {
@@ -173,7 +173,7 @@ function findDocs(): string[] {
   if (existsSync(hooksReadme)) docs.push(hooksReadme);
 
   // AGENTS.md
-  const claudeMd = join(CLAUDE_DIR, 'AGENTS.md');
+  const claudeMd = join(ENGINE_DIR, 'AGENTS.md');
   if (existsSync(claudeMd)) docs.push(claudeMd);
 
   return docs;
@@ -182,9 +182,9 @@ function findDocs(): string[] {
 function getChangedFiles(): Set<string> {
   try {
     const diff = execSync('git diff --name-only HEAD 2>/dev/null; git diff --cached --name-only 2>/dev/null', {
-      cwd: CLAUDE_DIR, encoding: 'utf-8',
+      cwd: ENGINE_DIR, encoding: 'utf-8',
     });
-    return new Set(diff.split('\n').filter(Boolean).map(f => resolve(CLAUDE_DIR, f)));
+    return new Set(diff.split('\n').filter(Boolean).map(f => resolve(ENGINE_DIR, f)));
   } catch {
     return new Set();
   }
@@ -239,7 +239,7 @@ for (const docPath of docsToCheck) {
     // Check existence
     if (!existsSync(ref.resolved)) {
       findings.push({
-        doc: relative(CLAUDE_DIR, docPath),
+        doc: relative(ENGINE_DIR, docPath),
         ref: ref.raw,
         line: ref.line,
         type: 'missing',
@@ -253,7 +253,7 @@ for (const docPath of docsToCheck) {
       if (refMtime > docMtime) {
         const daysStale = Math.round((refMtime - docMtime) / (1000 * 60 * 60 * 24));
         findings.push({
-          doc: relative(CLAUDE_DIR, docPath),
+          doc: relative(ENGINE_DIR, docPath),
           ref: ref.raw,
           line: ref.line,
           type: 'stale',

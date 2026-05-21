@@ -9,8 +9,8 @@
 ### Check SKILL.md exists
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
-[ -f "$CLAUDE_DIR/skills/ContentAnalysis/SKILL.md" ] && echo "OK SKILL.md" || echo "MISSING SKILL.md"
+ENGINE_DIR="$HOME/.codex"
+[ -f "$ENGINE_DIR/skills/ContentAnalysis/SKILL.md" ] && echo "OK SKILL.md" || echo "MISSING SKILL.md"
 ```
 
 **Expected:** SKILL.md present at `~/.codex/skills/ContentAnalysis/SKILL.md`.
@@ -18,9 +18,9 @@ CLAUDE_DIR="$HOME/.codex"
 ### Check directories exist
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
-[ -d "$CLAUDE_DIR/skills/ContentAnalysis/ExtractWisdom" ] && echo "OK ExtractWisdom/" || echo "MISSING ExtractWisdom/"
-[ -d "$CLAUDE_DIR/skills/ContentAnalysis/ExtractWisdom/Workflows" ] && echo "OK ExtractWisdom/Workflows/" || echo "MISSING ExtractWisdom/Workflows/"
+ENGINE_DIR="$HOME/.codex"
+[ -d "$ENGINE_DIR/skills/ContentAnalysis/ExtractWisdom" ] && echo "OK ExtractWisdom/" || echo "MISSING ExtractWisdom/"
+[ -d "$ENGINE_DIR/skills/ContentAnalysis/ExtractWisdom/Workflows" ] && echo "OK ExtractWisdom/Workflows/" || echo "MISSING ExtractWisdom/Workflows/"
 ```
 
 **Expected:** Both subdirectories present.
@@ -28,9 +28,9 @@ CLAUDE_DIR="$HOME/.codex"
 ### Check sub-skill files exist
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
-[ -f "$CLAUDE_DIR/skills/ContentAnalysis/ExtractWisdom/SKILL.md" ] && echo "OK ExtractWisdom/SKILL.md" || echo "MISSING ExtractWisdom/SKILL.md"
-[ -f "$CLAUDE_DIR/skills/ContentAnalysis/ExtractWisdom/Workflows/Extract.md" ] && echo "OK Extract.md workflow" || echo "MISSING Extract.md workflow"
+ENGINE_DIR="$HOME/.codex"
+[ -f "$ENGINE_DIR/skills/ContentAnalysis/ExtractWisdom/SKILL.md" ] && echo "OK ExtractWisdom/SKILL.md" || echo "MISSING ExtractWisdom/SKILL.md"
+[ -f "$ENGINE_DIR/skills/ContentAnalysis/ExtractWisdom/Workflows/Extract.md" ] && echo "OK Extract.md workflow" || echo "MISSING Extract.md workflow"
 ```
 
 **Expected:** Both files present.
@@ -38,20 +38,20 @@ CLAUDE_DIR="$HOME/.codex"
 ### Check frontmatter is valid
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
+ENGINE_DIR="$HOME/.codex"
 
 echo "Checking top-level SKILL.md..."
-if [ -f "$CLAUDE_DIR/skills/ContentAnalysis/SKILL.md" ]; then
-  head -1 "$CLAUDE_DIR/skills/ContentAnalysis/SKILL.md" | grep -q "^---" && echo "OK Has frontmatter opener" || echo "ERROR Missing frontmatter"
-  grep -q "^name:" "$CLAUDE_DIR/skills/ContentAnalysis/SKILL.md" && echo "OK Has name field" || echo "ERROR Missing name field"
-  grep -q "^description:" "$CLAUDE_DIR/skills/ContentAnalysis/SKILL.md" && echo "OK Has description field" || echo "ERROR Missing description"
+if [ -f "$ENGINE_DIR/skills/ContentAnalysis/SKILL.md" ]; then
+  head -1 "$ENGINE_DIR/skills/ContentAnalysis/SKILL.md" | grep -q "^---" && echo "OK Has frontmatter opener" || echo "ERROR Missing frontmatter"
+  grep -q "^name:" "$ENGINE_DIR/skills/ContentAnalysis/SKILL.md" && echo "OK Has name field" || echo "ERROR Missing name field"
+  grep -q "^description:" "$ENGINE_DIR/skills/ContentAnalysis/SKILL.md" && echo "OK Has description field" || echo "ERROR Missing description"
 fi
 
 echo "Checking ExtractWisdom SKILL.md..."
-if [ -f "$CLAUDE_DIR/skills/ContentAnalysis/ExtractWisdom/SKILL.md" ]; then
-  head -1 "$CLAUDE_DIR/skills/ContentAnalysis/ExtractWisdom/SKILL.md" | grep -q "^---" && echo "OK Has frontmatter opener" || echo "ERROR Missing frontmatter"
-  grep -q "^name:" "$CLAUDE_DIR/skills/ContentAnalysis/ExtractWisdom/SKILL.md" && echo "OK Has name field" || echo "ERROR Missing name field"
-  grep -q "^description:" "$CLAUDE_DIR/skills/ContentAnalysis/ExtractWisdom/SKILL.md" && echo "OK Has description field" || echo "ERROR Missing description"
+if [ -f "$ENGINE_DIR/skills/ContentAnalysis/ExtractWisdom/SKILL.md" ]; then
+  head -1 "$ENGINE_DIR/skills/ContentAnalysis/ExtractWisdom/SKILL.md" | grep -q "^---" && echo "OK Has frontmatter opener" || echo "ERROR Missing frontmatter"
+  grep -q "^name:" "$ENGINE_DIR/skills/ContentAnalysis/ExtractWisdom/SKILL.md" && echo "OK Has name field" || echo "ERROR Missing name field"
+  grep -q "^description:" "$ENGINE_DIR/skills/ContentAnalysis/ExtractWisdom/SKILL.md" && echo "OK Has description field" || echo "ERROR Missing description"
 fi
 ```
 
@@ -60,21 +60,21 @@ fi
 ### Check skill content is complete
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
+ENGINE_DIR="$HOME/.codex"
 
 echo "Checking top-level routing..."
-if [ -f "$CLAUDE_DIR/skills/ContentAnalysis/SKILL.md" ]; then
-  grep -q "Workflow Routing" "$CLAUDE_DIR/skills/ContentAnalysis/SKILL.md" && echo "  OK Has workflow routing" || echo "  ERROR Missing workflow routing"
-  grep -q "ExtractWisdom" "$CLAUDE_DIR/skills/ContentAnalysis/SKILL.md" && echo "  OK References ExtractWisdom" || echo "  ERROR Missing ExtractWisdom reference"
+if [ -f "$ENGINE_DIR/skills/ContentAnalysis/SKILL.md" ]; then
+  grep -q "Workflow Routing" "$ENGINE_DIR/skills/ContentAnalysis/SKILL.md" && echo "  OK Has workflow routing" || echo "  ERROR Missing workflow routing"
+  grep -q "ExtractWisdom" "$ENGINE_DIR/skills/ContentAnalysis/SKILL.md" && echo "  OK References ExtractWisdom" || echo "  ERROR Missing ExtractWisdom reference"
 fi
 
 echo "Checking ExtractWisdom content..."
-if [ -f "$CLAUDE_DIR/skills/ContentAnalysis/ExtractWisdom/SKILL.md" ]; then
-  grep -q "Dynamic Section" "$CLAUDE_DIR/skills/ContentAnalysis/ExtractWisdom/SKILL.md" && echo "  OK Has dynamic section methodology" || echo "  ERROR Missing dynamic section methodology"
-  grep -q "Depth Level" "$CLAUDE_DIR/skills/ContentAnalysis/ExtractWisdom/SKILL.md" && echo "  OK Has depth levels" || echo "  ERROR Missing depth levels"
-  grep -q "Tone Rules" "$CLAUDE_DIR/skills/ContentAnalysis/ExtractWisdom/SKILL.md" && echo "  OK Has tone rules" || echo "  ERROR Missing tone rules"
-  grep -q "Quality Check" "$CLAUDE_DIR/skills/ContentAnalysis/ExtractWisdom/SKILL.md" && echo "  OK Has quality checks" || echo "  ERROR Missing quality checks"
-  grep -q "One-Sentence Takeaway" "$CLAUDE_DIR/skills/ContentAnalysis/ExtractWisdom/SKILL.md" && echo "  OK Has closing section definitions" || echo "  ERROR Missing closing sections"
+if [ -f "$ENGINE_DIR/skills/ContentAnalysis/ExtractWisdom/SKILL.md" ]; then
+  grep -q "Dynamic Section" "$ENGINE_DIR/skills/ContentAnalysis/ExtractWisdom/SKILL.md" && echo "  OK Has dynamic section methodology" || echo "  ERROR Missing dynamic section methodology"
+  grep -q "Depth Level" "$ENGINE_DIR/skills/ContentAnalysis/ExtractWisdom/SKILL.md" && echo "  OK Has depth levels" || echo "  ERROR Missing depth levels"
+  grep -q "Tone Rules" "$ENGINE_DIR/skills/ContentAnalysis/ExtractWisdom/SKILL.md" && echo "  OK Has tone rules" || echo "  ERROR Missing tone rules"
+  grep -q "Quality Check" "$ENGINE_DIR/skills/ContentAnalysis/ExtractWisdom/SKILL.md" && echo "  OK Has quality checks" || echo "  ERROR Missing quality checks"
+  grep -q "One-Sentence Takeaway" "$ENGINE_DIR/skills/ContentAnalysis/ExtractWisdom/SKILL.md" && echo "  OK Has closing section definitions" || echo "  ERROR Missing closing sections"
 fi
 ```
 
@@ -87,11 +87,11 @@ fi
 These checks are NOT blocking -- the skill works without these, but output improves with them.
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
+ENGINE_DIR="$HOME/.codex"
 
 echo "Enhancements:"
-[ -f "$CLAUDE_DIR/PAI/USER/WRITINGSTYLE.md" ] && echo "  AVAILABLE Writing style definition (voice calibration)" || echo "  UNAVAILABLE Writing style (skill uses built-in voice standards)"
-[ -d "$CLAUDE_DIR/PAI/USER/SKILLCUSTOMIZATIONS/ExtractWisdom" ] && echo "  AVAILABLE User customizations for ExtractWisdom" || echo "  UNAVAILABLE User customizations (optional, create at ~/.codex/PAI/USER/SKILLCUSTOMIZATIONS/ExtractWisdom/)"
+[ -f "$ENGINE_DIR/PAI/USER/WRITINGSTYLE.md" ] && echo "  AVAILABLE Writing style definition (voice calibration)" || echo "  UNAVAILABLE Writing style (skill uses built-in voice standards)"
+[ -d "$ENGINE_DIR/PAI/USER/SKILLCUSTOMIZATIONS/ExtractWisdom" ] && echo "  AVAILABLE User customizations for ExtractWisdom" || echo "  UNAVAILABLE User customizations (optional, create at ~/.codex/PAI/USER/SKILLCUSTOMIZATIONS/ExtractWisdom/)"
 ```
 
 ---

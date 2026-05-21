@@ -36,33 +36,33 @@ Let me analyze your system and guide you through installation."
 
 ```bash
 # Check for ChatGPT Codex skills directory
-CLAUDE_DIR="$HOME/.codex"
-echo "Claude directory: $CLAUDE_DIR"
+ENGINE_DIR="$HOME/.codex"
+echo "Engine directory: $ENGINE_DIR"
 
 # Check if skills directory exists
-if [ -d "$CLAUDE_DIR/skills" ]; then
-  echo "OK Skills directory exists at: $CLAUDE_DIR/skills"
+if [ -d "$ENGINE_DIR/skills" ]; then
+  echo "OK Skills directory exists at: $ENGINE_DIR/skills"
 else
   echo "INFO Skills directory does not exist (will be created)"
 fi
 
 # Check for existing Scraping skill
-if [ -d "$CLAUDE_DIR/skills/Scraping" ]; then
-  echo "WARNING Existing Scraping skill found at: $CLAUDE_DIR/skills/Scraping"
-  ls -la "$CLAUDE_DIR/skills/Scraping/" 2>/dev/null
+if [ -d "$ENGINE_DIR/skills/Scraping" ]; then
+  echo "WARNING Existing Scraping skill found at: $ENGINE_DIR/skills/Scraping"
+  ls -la "$ENGINE_DIR/skills/Scraping/" 2>/dev/null
 else
   echo "OK No existing Scraping skill (clean install)"
 fi
 
 # Check for BrightData subdirectory
-if [ -d "$CLAUDE_DIR/skills/Scraping/BrightData" ]; then
+if [ -d "$ENGINE_DIR/skills/Scraping/BrightData" ]; then
   echo "WARNING Existing BrightData subsystem found"
 else
   echo "OK No existing BrightData subsystem"
 fi
 
 # Check for Apify subdirectory
-if [ -d "$CLAUDE_DIR/skills/Scraping/Apify" ]; then
+if [ -d "$ENGINE_DIR/skills/Scraping/Apify" ]; then
   echo "WARNING Existing Apify subsystem found"
 else
   echo "OK No existing Apify subsystem"
@@ -85,8 +85,8 @@ else
 fi
 
 # Check for Bright Data MCP
-if [ -f "$CLAUDE_DIR/mcp.json" ] 2>/dev/null; then
-  if grep -q -i "bright" "$CLAUDE_DIR/mcp.json" 2>/dev/null; then
+if [ -f "$ENGINE_DIR/mcp.json" ] 2>/dev/null; then
+  if grep -q -i "bright" "$ENGINE_DIR/mcp.json" 2>/dev/null; then
     echo "OK Bright Data MCP configured"
   else
     echo "INFO Bright Data MCP not configured (Tier 4 proxy scraping unavailable)"
@@ -103,13 +103,13 @@ else
 fi
 
 # Check for user customizations
-if [ -d "$CLAUDE_DIR/PAI/USER/SKILLCUSTOMIZATIONS/BrightData" ]; then
+if [ -d "$ENGINE_DIR/PAI/USER/SKILLCUSTOMIZATIONS/BrightData" ]; then
   echo "OK BrightData customizations found"
 else
   echo "INFO No BrightData customizations (skill will use defaults)"
 fi
 
-if [ -d "$CLAUDE_DIR/PAI/USER/SKILLCUSTOMIZATIONS/Apify" ]; then
+if [ -d "$ENGINE_DIR/PAI/USER/SKILLCUSTOMIZATIONS/Apify" ]; then
   echo "OK Apify customizations found"
 else
   echo "INFO No Apify customizations (skill will use defaults)"
@@ -216,13 +216,13 @@ Then re-ask the final confirmation question.
 **Only execute if user chose "Backup and Replace":**
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
-BACKUP_DIR="$CLAUDE_DIR/Backups/scraping-skill-$(date +%Y%m%d-%H%M%S)"
+ENGINE_DIR="$HOME/.codex"
+BACKUP_DIR="$ENGINE_DIR/Backups/scraping-skill-$(date +%Y%m%d-%H%M%S)"
 mkdir -p "$BACKUP_DIR"
 
 # Backup existing Scraping skill
-if [ -d "$CLAUDE_DIR/skills/Scraping" ]; then
-  cp -R "$CLAUDE_DIR/skills/Scraping" "$BACKUP_DIR/Scraping"
+if [ -d "$ENGINE_DIR/skills/Scraping" ]; then
+  cp -R "$ENGINE_DIR/skills/Scraping" "$BACKUP_DIR/Scraping"
   echo "Backed up Scraping skill to: $BACKUP_DIR/Scraping"
 fi
 
@@ -251,17 +251,17 @@ echo "Backup created at: $BACKUP_DIR"
 **Mark todo "Create skill directory structure" as in_progress.**
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
-mkdir -p "$CLAUDE_DIR/skills/Scraping"
-mkdir -p "$CLAUDE_DIR/skills/Scraping/BrightData/Workflows"
-mkdir -p "$CLAUDE_DIR/skills/Scraping/Apify/actors/social-media"
-mkdir -p "$CLAUDE_DIR/skills/Scraping/Apify/actors/business"
-mkdir -p "$CLAUDE_DIR/skills/Scraping/Apify/actors/ecommerce"
-mkdir -p "$CLAUDE_DIR/skills/Scraping/Apify/actors/web"
-mkdir -p "$CLAUDE_DIR/skills/Scraping/Apify/types"
-mkdir -p "$CLAUDE_DIR/skills/Scraping/Apify/skills"
-mkdir -p "$CLAUDE_DIR/skills/Scraping/Apify/examples"
-mkdir -p "$CLAUDE_DIR/skills/Scraping/Apify/Workflows"
+ENGINE_DIR="$HOME/.codex"
+mkdir -p "$ENGINE_DIR/skills/Scraping"
+mkdir -p "$ENGINE_DIR/skills/Scraping/BrightData/Workflows"
+mkdir -p "$ENGINE_DIR/skills/Scraping/Apify/actors/social-media"
+mkdir -p "$ENGINE_DIR/skills/Scraping/Apify/actors/business"
+mkdir -p "$ENGINE_DIR/skills/Scraping/Apify/actors/ecommerce"
+mkdir -p "$ENGINE_DIR/skills/Scraping/Apify/actors/web"
+mkdir -p "$ENGINE_DIR/skills/Scraping/Apify/types"
+mkdir -p "$ENGINE_DIR/skills/Scraping/Apify/skills"
+mkdir -p "$ENGINE_DIR/skills/Scraping/Apify/examples"
+mkdir -p "$ENGINE_DIR/skills/Scraping/Apify/Workflows"
 echo "Directory structure created"
 ```
 
@@ -273,16 +273,16 @@ echo "Directory structure created"
 
 ```bash
 PACK_DIR="$(pwd)"
-CLAUDE_DIR="$HOME/.codex"
+ENGINE_DIR="$HOME/.codex"
 
 # Copy top-level SKILL.md
-cp "$PACK_DIR/src/SKILL.md" "$CLAUDE_DIR/skills/Scraping/SKILL.md"
+cp "$PACK_DIR/src/SKILL.md" "$ENGINE_DIR/skills/Scraping/SKILL.md"
 
 # Copy BrightData subsystem
-cp -R "$PACK_DIR/src/BrightData/." "$CLAUDE_DIR/skills/Scraping/BrightData/"
+cp -R "$PACK_DIR/src/BrightData/." "$ENGINE_DIR/skills/Scraping/BrightData/"
 
 # Copy Apify subsystem
-cp -R "$PACK_DIR/src/Apify/." "$CLAUDE_DIR/skills/Scraping/Apify/"
+cp -R "$PACK_DIR/src/Apify/." "$ENGINE_DIR/skills/Scraping/Apify/"
 
 echo "All skill files copied"
 ```
@@ -297,11 +297,11 @@ echo "All skill files copied"
 **Mark todo "Install Apify dependencies" as in_progress.**
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
+ENGINE_DIR="$HOME/.codex"
 
 # Install Apify dependencies (if Apify subsystem was installed)
-if [ -f "$CLAUDE_DIR/skills/Scraping/Apify/package.json" ]; then
-  cd "$CLAUDE_DIR/skills/Scraping/Apify" && bun install
+if [ -f "$ENGINE_DIR/skills/Scraping/Apify/package.json" ]; then
+  cd "$ENGINE_DIR/skills/Scraping/Apify" && bun install
   echo "Apify dependencies installed"
 else
   echo "SKIP Apify not installed, skipping dependency install"
@@ -319,36 +319,36 @@ fi
 **Execute all checks from VERIFY.md:**
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
+ENGINE_DIR="$HOME/.codex"
 
 echo "=== Scraping Skill Verification ==="
 
 # Check SKILL.md exists
 echo "Checking skill files..."
-[ -f "$CLAUDE_DIR/skills/Scraping/SKILL.md" ] && echo "OK Scraping SKILL.md installed" || echo "ERROR Scraping SKILL.md missing"
-[ -f "$CLAUDE_DIR/skills/Scraping/BrightData/SKILL.md" ] && echo "OK BrightData SKILL.md installed" || echo "SKIP BrightData not installed"
-[ -f "$CLAUDE_DIR/skills/Scraping/Apify/SKILL.md" ] && echo "OK Apify SKILL.md installed" || echo "SKIP Apify not installed"
+[ -f "$ENGINE_DIR/skills/Scraping/SKILL.md" ] && echo "OK Scraping SKILL.md installed" || echo "ERROR Scraping SKILL.md missing"
+[ -f "$ENGINE_DIR/skills/Scraping/BrightData/SKILL.md" ] && echo "OK BrightData SKILL.md installed" || echo "SKIP BrightData not installed"
+[ -f "$ENGINE_DIR/skills/Scraping/Apify/SKILL.md" ] && echo "OK Apify SKILL.md installed" || echo "SKIP Apify not installed"
 
 # Check subdirectories
 echo "Checking directories..."
-[ -d "$CLAUDE_DIR/skills/Scraping/BrightData/Workflows" ] && echo "OK BrightData/Workflows exists" || echo "SKIP BrightData/Workflows"
-[ -d "$CLAUDE_DIR/skills/Scraping/Apify/actors" ] && echo "OK Apify/actors exists" || echo "SKIP Apify/actors"
-[ -d "$CLAUDE_DIR/skills/Scraping/Apify/types" ] && echo "OK Apify/types exists" || echo "SKIP Apify/types"
+[ -d "$ENGINE_DIR/skills/Scraping/BrightData/Workflows" ] && echo "OK BrightData/Workflows exists" || echo "SKIP BrightData/Workflows"
+[ -d "$ENGINE_DIR/skills/Scraping/Apify/actors" ] && echo "OK Apify/actors exists" || echo "SKIP Apify/actors"
+[ -d "$ENGINE_DIR/skills/Scraping/Apify/types" ] && echo "OK Apify/types exists" || echo "SKIP Apify/types"
 
 # Check frontmatter
 echo "Checking frontmatter..."
-head -1 "$CLAUDE_DIR/skills/Scraping/SKILL.md" | grep -q "^---" && echo "OK SKILL.md has valid frontmatter" || echo "ERROR SKILL.md missing frontmatter"
+head -1 "$ENGINE_DIR/skills/Scraping/SKILL.md" | grep -q "^---" && echo "OK SKILL.md has valid frontmatter" || echo "ERROR SKILL.md missing frontmatter"
 
 # Check BrightData workflows
-if [ -d "$CLAUDE_DIR/skills/Scraping/BrightData/Workflows" ]; then
-  [ -f "$CLAUDE_DIR/skills/Scraping/BrightData/Workflows/FourTierScrape.md" ] && echo "OK FourTierScrape.md present" || echo "ERROR FourTierScrape.md missing"
-  [ -f "$CLAUDE_DIR/skills/Scraping/BrightData/Workflows/Crawl.md" ] && echo "OK Crawl.md present" || echo "ERROR Crawl.md missing"
+if [ -d "$ENGINE_DIR/skills/Scraping/BrightData/Workflows" ]; then
+  [ -f "$ENGINE_DIR/skills/Scraping/BrightData/Workflows/FourTierScrape.md" ] && echo "OK FourTierScrape.md present" || echo "ERROR FourTierScrape.md missing"
+  [ -f "$ENGINE_DIR/skills/Scraping/BrightData/Workflows/Crawl.md" ] && echo "OK Crawl.md present" || echo "ERROR Crawl.md missing"
 fi
 
 # Check Apify actor directories
-if [ -d "$CLAUDE_DIR/skills/Scraping/Apify/actors" ]; then
+if [ -d "$ENGINE_DIR/skills/Scraping/Apify/actors" ]; then
   for platform in social-media business ecommerce web; do
-    [ -d "$CLAUDE_DIR/skills/Scraping/Apify/actors/$platform" ] && echo "OK actors/$platform present" || echo "ERROR actors/$platform missing"
+    [ -d "$ENGINE_DIR/skills/Scraping/Apify/actors/$platform" ] && echo "OK actors/$platform present" || echo "ERROR actors/$platform missing"
   done
 fi
 

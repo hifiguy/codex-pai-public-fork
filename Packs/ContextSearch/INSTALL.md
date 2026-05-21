@@ -36,56 +36,56 @@ Let me analyze your system and guide you through installation."
 
 ```bash
 # Check for ChatGPT Codex commands directory
-CLAUDE_DIR="$HOME/.codex"
-echo "Claude directory: $CLAUDE_DIR"
+ENGINE_DIR="$HOME/.codex"
+echo "Engine directory: $ENGINE_DIR"
 
 # Check if commands directory exists
-if [ -d "$CLAUDE_DIR/commands" ]; then
-  echo "OK Commands directory exists at: $CLAUDE_DIR/commands"
-  ls -la "$CLAUDE_DIR/commands/" 2>/dev/null
+if [ -d "$ENGINE_DIR/commands" ]; then
+  echo "OK Commands directory exists at: $ENGINE_DIR/commands"
+  ls -la "$ENGINE_DIR/commands/" 2>/dev/null
 else
   echo "INFO Commands directory does not exist (will be created)"
 fi
 
 # Check for existing context-search.md or cs.md commands
-if [ -f "$CLAUDE_DIR/commands/context-search.md" ]; then
-  echo "WARNING Existing /context-search command found at: $CLAUDE_DIR/commands/context-search.md"
+if [ -f "$ENGINE_DIR/commands/context-search.md" ]; then
+  echo "WARNING Existing /context-search command found at: $ENGINE_DIR/commands/context-search.md"
 else
   echo "OK No existing /context-search command (clean install)"
 fi
 
-if [ -f "$CLAUDE_DIR/commands/cs.md" ]; then
-  echo "WARNING Existing /cs command found at: $CLAUDE_DIR/commands/cs.md"
+if [ -f "$ENGINE_DIR/commands/cs.md" ]; then
+  echo "WARNING Existing /cs command found at: $ENGINE_DIR/commands/cs.md"
 else
   echo "OK No existing /cs command (clean install)"
 fi
 
 # Check for legacy /w and /work commands (from prior version)
-if [ -f "$CLAUDE_DIR/commands/w.md" ] || [ -f "$CLAUDE_DIR/commands/work.md" ]; then
+if [ -f "$ENGINE_DIR/commands/w.md" ] || [ -f "$ENGINE_DIR/commands/work.md" ]; then
   echo "INFO Legacy /w or /work commands found (from Work Command v1.0.0)"
 fi
 
 # Check for PAI MEMORY structure (optional, enhances results)
-if [ -d "$CLAUDE_DIR/MEMORY/WORK" ]; then
+if [ -d "$ENGINE_DIR/MEMORY/WORK" ]; then
   echo "OK PAI MEMORY/WORK directory exists (full functionality available)"
 else
   echo "INFO PAI MEMORY/WORK not found (command will work but may return fewer results)"
 fi
 
-if [ -f "$CLAUDE_DIR/MEMORY/STATE/work.json" ]; then
+if [ -f "$ENGINE_DIR/MEMORY/STATE/work.json" ]; then
   echo "OK work.json session registry exists"
 else
   echo "INFO work.json not found (session registry search will be skipped)"
 fi
 
-if [ -f "$CLAUDE_DIR/MEMORY/STATE/session-names.json" ]; then
+if [ -f "$ENGINE_DIR/MEMORY/STATE/session-names.json" ]; then
   echo "OK session-names.json exists"
 else
   echo "INFO session-names.json not found (session name search will be skipped)"
 fi
 
 # Check if ~/.codex is a git repo (for git history search)
-if [ -d "$CLAUDE_DIR/.git" ]; then
+if [ -d "$ENGINE_DIR/.git" ]; then
   echo "OK ~/.codex is a git repository (git history search available)"
 else
   echo "INFO ~/.codex is not a git repository (git history search will be skipped)"
@@ -197,13 +197,13 @@ Then re-ask the final confirmation question.
 **Only execute if user chose "Backup and Replace":**
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
-BACKUP_DIR="$CLAUDE_DIR/Backups/context-search-$(date +%Y%m%d-%H%M%S)"
+ENGINE_DIR="$HOME/.codex"
+BACKUP_DIR="$ENGINE_DIR/Backups/context-search-$(date +%Y%m%d-%H%M%S)"
 mkdir -p "$BACKUP_DIR"
 
 # Backup existing commands
-[ -f "$CLAUDE_DIR/commands/context-search.md" ] && cp "$CLAUDE_DIR/commands/context-search.md" "$BACKUP_DIR/context-search.md" && echo "Backed up context-search.md"
-[ -f "$CLAUDE_DIR/commands/cs.md" ] && cp "$CLAUDE_DIR/commands/cs.md" "$BACKUP_DIR/cs.md" && echo "Backed up cs.md"
+[ -f "$ENGINE_DIR/commands/context-search.md" ] && cp "$ENGINE_DIR/commands/context-search.md" "$BACKUP_DIR/context-search.md" && echo "Backed up context-search.md"
+[ -f "$ENGINE_DIR/commands/cs.md" ] && cp "$ENGINE_DIR/commands/cs.md" "$BACKUP_DIR/cs.md" && echo "Backed up cs.md"
 
 echo "Backup created at: $BACKUP_DIR"
 ```
@@ -229,8 +229,8 @@ echo "Backup created at: $BACKUP_DIR"
 **Mark todo "Create commands directory" as in_progress.**
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
-mkdir -p "$CLAUDE_DIR/commands"
+ENGINE_DIR="$HOME/.codex"
+mkdir -p "$ENGINE_DIR/commands"
 ```
 
 **Mark todo as completed.**
@@ -244,25 +244,25 @@ mkdir -p "$CLAUDE_DIR/commands"
 **For "Both /context-search and /cs" (default):**
 ```bash
 PACK_DIR="$(pwd)"
-CLAUDE_DIR="$HOME/.codex"
-cp "$PACK_DIR/src/commands/context-search.md" "$CLAUDE_DIR/commands/context-search.md"
-cp "$PACK_DIR/src/commands/cs.md" "$CLAUDE_DIR/commands/cs.md"
+ENGINE_DIR="$HOME/.codex"
+cp "$PACK_DIR/src/commands/context-search.md" "$ENGINE_DIR/commands/context-search.md"
+cp "$PACK_DIR/src/commands/cs.md" "$ENGINE_DIR/commands/cs.md"
 echo "Installed /context-search and /cs commands"
 ```
 
 **For "Only /context-search":**
 ```bash
 PACK_DIR="$(pwd)"
-CLAUDE_DIR="$HOME/.codex"
-cp "$PACK_DIR/src/commands/context-search.md" "$CLAUDE_DIR/commands/context-search.md"
+ENGINE_DIR="$HOME/.codex"
+cp "$PACK_DIR/src/commands/context-search.md" "$ENGINE_DIR/commands/context-search.md"
 echo "Installed /context-search command"
 ```
 
 **For "Only /cs":**
 ```bash
 PACK_DIR="$(pwd)"
-CLAUDE_DIR="$HOME/.codex"
-cp "$PACK_DIR/src/commands/cs.md" "$CLAUDE_DIR/commands/cs.md"
+ENGINE_DIR="$HOME/.codex"
+cp "$PACK_DIR/src/commands/cs.md" "$ENGINE_DIR/commands/cs.md"
 echo "Installed /cs command"
 ```
 
@@ -277,38 +277,38 @@ echo "Installed /cs command"
 **Execute all checks from VERIFY.md:**
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
+ENGINE_DIR="$HOME/.codex"
 
 echo "=== Context Search Verification ==="
 
 # Check command files exist
 echo "Checking command files..."
-[ -f "$CLAUDE_DIR/commands/context-search.md" ] && echo "OK /context-search command installed" || echo "SKIP /context-search not installed (user chose /cs only)"
-[ -f "$CLAUDE_DIR/commands/cs.md" ] && echo "OK /cs command installed" || echo "SKIP /cs not installed (user chose /context-search only)"
+[ -f "$ENGINE_DIR/commands/context-search.md" ] && echo "OK /context-search command installed" || echo "SKIP /context-search not installed (user chose /cs only)"
+[ -f "$ENGINE_DIR/commands/cs.md" ] && echo "OK /cs command installed" || echo "SKIP /cs not installed (user chose /context-search only)"
 
 # Check frontmatter is valid
 echo "Checking frontmatter..."
-if [ -f "$CLAUDE_DIR/commands/context-search.md" ]; then
-  head -1 "$CLAUDE_DIR/commands/context-search.md" | grep -q "^---" && echo "OK context-search.md has valid frontmatter" || echo "ERROR context-search.md missing frontmatter"
+if [ -f "$ENGINE_DIR/commands/context-search.md" ]; then
+  head -1 "$ENGINE_DIR/commands/context-search.md" | grep -q "^---" && echo "OK context-search.md has valid frontmatter" || echo "ERROR context-search.md missing frontmatter"
 fi
-if [ -f "$CLAUDE_DIR/commands/cs.md" ]; then
-  head -1 "$CLAUDE_DIR/commands/cs.md" | grep -q "^---" && echo "OK cs.md has valid frontmatter" || echo "ERROR cs.md missing frontmatter"
+if [ -f "$ENGINE_DIR/commands/cs.md" ]; then
+  head -1 "$ENGINE_DIR/commands/cs.md" | grep -q "^---" && echo "OK cs.md has valid frontmatter" || echo "ERROR cs.md missing frontmatter"
 fi
 
 # Check file contents are complete
 echo "Checking file contents..."
-if [ -f "$CLAUDE_DIR/commands/context-search.md" ]; then
-  grep -q "CONTEXT SEARCH" "$CLAUDE_DIR/commands/context-search.md" && echo "OK context-search.md contains context search template" || echo "ERROR context-search.md incomplete"
-  grep -q "work.json" "$CLAUDE_DIR/commands/context-search.md" && echo "OK context-search.md references session registry" || echo "ERROR context-search.md missing search sources"
+if [ -f "$ENGINE_DIR/commands/context-search.md" ]; then
+  grep -q "CONTEXT SEARCH" "$ENGINE_DIR/commands/context-search.md" && echo "OK context-search.md contains context search template" || echo "ERROR context-search.md incomplete"
+  grep -q "work.json" "$ENGINE_DIR/commands/context-search.md" && echo "OK context-search.md references session registry" || echo "ERROR context-search.md missing search sources"
 fi
 
 # Check data sources (informational, not blocking)
 echo ""
 echo "Data source availability (informational):"
-[ -f "$CLAUDE_DIR/MEMORY/STATE/work.json" ] && echo "  OK work.json — session registry available" || echo "  INFO work.json — not found (install PAI for this feature)"
-[ -d "$CLAUDE_DIR/MEMORY/WORK" ] && echo "  OK MEMORY/WORK — PRD directory available" || echo "  INFO MEMORY/WORK — not found (install PAI for this feature)"
-[ -f "$CLAUDE_DIR/MEMORY/STATE/session-names.json" ] && echo "  OK session-names.json — session names available" || echo "  INFO session-names.json — not found (install PAI for this feature)"
-[ -d "$CLAUDE_DIR/.git" ] && echo "  OK .git — git history available" || echo "  INFO .git — not found (git history search unavailable)"
+[ -f "$ENGINE_DIR/MEMORY/STATE/work.json" ] && echo "  OK work.json — session registry available" || echo "  INFO work.json — not found (install PAI for this feature)"
+[ -d "$ENGINE_DIR/MEMORY/WORK" ] && echo "  OK MEMORY/WORK — PRD directory available" || echo "  INFO MEMORY/WORK — not found (install PAI for this feature)"
+[ -f "$ENGINE_DIR/MEMORY/STATE/session-names.json" ] && echo "  OK session-names.json — session names available" || echo "  INFO session-names.json — not found (install PAI for this feature)"
+[ -d "$ENGINE_DIR/.git" ] && echo "  OK .git — git history available" || echo "  INFO .git — not found (git history search unavailable)"
 
 echo ""
 echo "=== Verification Complete ==="

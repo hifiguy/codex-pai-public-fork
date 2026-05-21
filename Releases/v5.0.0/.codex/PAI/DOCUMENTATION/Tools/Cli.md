@@ -102,7 +102,7 @@ Interactive mode launches a full `codex` session with the ISA context pre-loaded
 bun ~/.codex/PAI/TOOLS/algorithm.ts -m interactive -p ISA-20260213-feature.md
 ```
 
-This opens an interactive Claude session with:
+This opens an interactive Codex session with:
 - The ISA path and title
 - Current progress (passing/total)
 - List of failing criteria

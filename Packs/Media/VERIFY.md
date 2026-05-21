@@ -9,10 +9,10 @@
 ### Check SKILL.md exists at target
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
-[ -f "$CLAUDE_DIR/skills/Media/SKILL.md" ] && echo "OK Media SKILL.md" || echo "MISSING Media SKILL.md"
-[ -f "$CLAUDE_DIR/skills/Media/Art/SKILL.md" ] && echo "OK Art SKILL.md" || echo "MISSING Art SKILL.md"
-[ -f "$CLAUDE_DIR/skills/Media/Remotion/SKILL.md" ] && echo "OK Remotion SKILL.md" || echo "MISSING Remotion SKILL.md"
+ENGINE_DIR="$HOME/.codex"
+[ -f "$ENGINE_DIR/skills/Media/SKILL.md" ] && echo "OK Media SKILL.md" || echo "MISSING Media SKILL.md"
+[ -f "$ENGINE_DIR/skills/Media/Art/SKILL.md" ] && echo "OK Art SKILL.md" || echo "MISSING Art SKILL.md"
+[ -f "$ENGINE_DIR/skills/Media/Remotion/SKILL.md" ] && echo "OK Remotion SKILL.md" || echo "MISSING Remotion SKILL.md"
 ```
 
 **Expected:** All three SKILL.md files present (or two if user chose a single subsystem).
@@ -20,17 +20,17 @@ CLAUDE_DIR="$HOME/.codex"
 ### Check subdirectories exist
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
+ENGINE_DIR="$HOME/.codex"
 
 echo "Art subdirectories:"
-[ -d "$CLAUDE_DIR/skills/Media/Art/Workflows" ] && echo "  OK Art/Workflows" || echo "  MISSING Art/Workflows"
-[ -d "$CLAUDE_DIR/skills/Media/Art/Tools" ] && echo "  OK Art/Tools" || echo "  MISSING Art/Tools"
-[ -d "$CLAUDE_DIR/skills/Media/Art/Lib" ] && echo "  OK Art/Lib" || echo "  MISSING Art/Lib"
-[ -d "$CLAUDE_DIR/skills/Media/Art/Examples" ] && echo "  OK Art/Examples" || echo "  MISSING Art/Examples"
+[ -d "$ENGINE_DIR/skills/Media/Art/Workflows" ] && echo "  OK Art/Workflows" || echo "  MISSING Art/Workflows"
+[ -d "$ENGINE_DIR/skills/Media/Art/Tools" ] && echo "  OK Art/Tools" || echo "  MISSING Art/Tools"
+[ -d "$ENGINE_DIR/skills/Media/Art/Lib" ] && echo "  OK Art/Lib" || echo "  MISSING Art/Lib"
+[ -d "$ENGINE_DIR/skills/Media/Art/Examples" ] && echo "  OK Art/Examples" || echo "  MISSING Art/Examples"
 
 echo "Remotion subdirectories:"
-[ -d "$CLAUDE_DIR/skills/Media/Remotion/Tools" ] && echo "  OK Remotion/Tools" || echo "  MISSING Remotion/Tools"
-[ -d "$CLAUDE_DIR/skills/Media/Remotion/Workflows" ] && echo "  OK Remotion/Workflows" || echo "  MISSING Remotion/Workflows"
+[ -d "$ENGINE_DIR/skills/Media/Remotion/Tools" ] && echo "  OK Remotion/Tools" || echo "  MISSING Remotion/Tools"
+[ -d "$ENGINE_DIR/skills/Media/Remotion/Workflows" ] && echo "  OK Remotion/Workflows" || echo "  MISSING Remotion/Workflows"
 ```
 
 **Expected:** All directories present for installed subsystems.
@@ -38,13 +38,13 @@ echo "Remotion subdirectories:"
 ### Check frontmatter validity
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
+ENGINE_DIR="$HOME/.codex"
 for skill_file in \
-  "$CLAUDE_DIR/skills/Media/SKILL.md" \
-  "$CLAUDE_DIR/skills/Media/Art/SKILL.md" \
-  "$CLAUDE_DIR/skills/Media/Remotion/SKILL.md"; do
+  "$ENGINE_DIR/skills/Media/SKILL.md" \
+  "$ENGINE_DIR/skills/Media/Art/SKILL.md" \
+  "$ENGINE_DIR/skills/Media/Remotion/SKILL.md"; do
   if [ -f "$skill_file" ]; then
-    basename_dir=$(echo "$skill_file" | sed "s|$CLAUDE_DIR/skills/Media/||")
+    basename_dir=$(echo "$skill_file" | sed "s|$ENGINE_DIR/skills/Media/||")
     head -1 "$skill_file" | grep -q "^---" && echo "OK $basename_dir frontmatter" || echo "ERROR $basename_dir missing frontmatter"
     grep -q "^name:" "$skill_file" && echo "OK $basename_dir has name field" || echo "ERROR $basename_dir missing name field"
     grep -q "^description:" "$skill_file" && echo "OK $basename_dir has description" || echo "ERROR $basename_dir missing description"
@@ -57,22 +57,22 @@ done
 ### Check key workflow files
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
+ENGINE_DIR="$HOME/.codex"
 
 echo "Art workflows:"
 for wf in Essay.md Mermaid.md TechnicalDiagrams.md Comparisons.md Visualize.md Timelines.md; do
-  [ -f "$CLAUDE_DIR/skills/Media/Art/Workflows/$wf" ] && echo "  OK $wf" || echo "  MISSING $wf"
+  [ -f "$ENGINE_DIR/skills/Media/Art/Workflows/$wf" ] && echo "  OK $wf" || echo "  MISSING $wf"
 done
 
 echo "Art tools:"
 for tool in Generate.ts ComposeThumbnail.ts GeneratePrompt.ts; do
-  [ -f "$CLAUDE_DIR/skills/Media/Art/Tools/$tool" ] && echo "  OK $tool" || echo "  MISSING $tool"
+  [ -f "$ENGINE_DIR/skills/Media/Art/Tools/$tool" ] && echo "  OK $tool" || echo "  MISSING $tool"
 done
 
 echo "Remotion files:"
-[ -f "$CLAUDE_DIR/skills/Media/Remotion/Tools/Render.ts" ] && echo "  OK Render.ts" || echo "  MISSING Render.ts"
-[ -f "$CLAUDE_DIR/skills/Media/Remotion/Tools/Theme.ts" ] && echo "  OK Theme.ts" || echo "  MISSING Theme.ts"
-[ -f "$CLAUDE_DIR/skills/Media/Remotion/Workflows/ContentToAnimation.md" ] && echo "  OK ContentToAnimation.md" || echo "  MISSING ContentToAnimation.md"
+[ -f "$ENGINE_DIR/skills/Media/Remotion/Tools/Render.ts" ] && echo "  OK Render.ts" || echo "  MISSING Render.ts"
+[ -f "$ENGINE_DIR/skills/Media/Remotion/Tools/Theme.ts" ] && echo "  OK Theme.ts" || echo "  MISSING Theme.ts"
+[ -f "$ENGINE_DIR/skills/Media/Remotion/Workflows/ContentToAnimation.md" ] && echo "  OK ContentToAnimation.md" || echo "  MISSING ContentToAnimation.md"
 ```
 
 **Expected:** All key files present for installed subsystems.
@@ -102,22 +102,22 @@ else
 fi
 
 # Node modules for Art tools
-CLAUDE_DIR="$HOME/.codex"
-if [ -d "$CLAUDE_DIR/skills/Media/Art/Tools/node_modules" ]; then
+ENGINE_DIR="$HOME/.codex"
+if [ -d "$ENGINE_DIR/skills/Media/Art/Tools/node_modules" ]; then
   echo "  AVAILABLE Art tool dependencies installed"
 else
   echo "  UNAVAILABLE Art tool dependencies (run: cd ~/.codex/skills/Media/Art/Tools && bun install)"
 fi
 
 # Node modules for Remotion tools
-if [ -d "$CLAUDE_DIR/skills/Media/Remotion/Tools/node_modules" ]; then
+if [ -d "$ENGINE_DIR/skills/Media/Remotion/Tools/node_modules" ]; then
   echo "  AVAILABLE Remotion tool dependencies installed"
 else
   echo "  UNAVAILABLE Remotion tool dependencies (run: cd ~/.codex/skills/Media/Remotion/Tools && bun install)"
 fi
 
 # User customizations
-if [ -d "$CLAUDE_DIR/PAI/USER/SKILLCUSTOMIZATIONS/Art" ]; then
+if [ -d "$ENGINE_DIR/PAI/USER/SKILLCUSTOMIZATIONS/Art" ]; then
   echo "  AVAILABLE Art customizations"
 else
   echo "  INFO No Art customizations (defaults will be used)"

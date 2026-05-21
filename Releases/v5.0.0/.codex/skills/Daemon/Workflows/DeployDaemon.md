@@ -21,7 +21,7 @@ Pre-commit hook runs automatically and blocks sensitive data. Cloudflare Pages a
 ### Step 2: Sync Data to MCP KV Store
 
 ```bash
-cd ${CLAUDE_SKILL_DIR}/Mcp && bun install && bun update-daemon
+cd ${ENGINE_SKILL_DIR}/Mcp && bun install && bun update-daemon
 ```
 
 This runs the existing pipeline: sync integrations, aggregate daemon.md + integrations, validate with Zod, upload to Cloudflare KV.

@@ -382,7 +382,7 @@ function confidenceIcon(c: number): string {
   return "\u{1F534}";                  // red circle
 }
 
-const HARVEST_QUEUE_DIR = path.join(CLAUDE_DIR, "PAI", "MEMORY", "KNOWLEDGE", "_harvest-queue");
+const HARVEST_QUEUE_DIR = path.join(ENGINE_DIR, "PAI", "MEMORY", "KNOWLEDGE", "_harvest-queue");
 
 function writeToQueue(mem: MinedMemory): string {
   if (!fs.existsSync(HARVEST_QUEUE_DIR)) {

@@ -736,7 +736,7 @@ bun ~/.codex/PAI/TOOLS/KnowledgeHarvester.ts index
 **Sources:**
 | Source | Flag | What It Scans |
 |--------|------|---------------|
-| memory | `--source memory` | Auto-memory files from Claude sessions |
+| memory | `--source memory` | Auto-memory files from engine sessions |
 | work | `--source work` | WORK/ directory ISAs and session artifacts |
 | reflections | `--source reflections` | Learning/reflection documents |
 | research | `--source research` | RESEARCH/ directory content |

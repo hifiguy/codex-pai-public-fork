@@ -23,7 +23,7 @@ Everything interesting we found, ranked by how cool it is.
 | # | Discovery | Source | Why It's Interesting | PAI Relevance |
 |---|-----------|--------|---------------------|---------------|
 | 1 | PreToolUse hooks can inject reasoning context | codex v2.1.16 | Hooks can now return `additionalContext` that Claude reasons about before tool execution — this is a paradigm shift from binary block/allow to intelligent security | SecurityValidator could inject warnings instead of blocking, enabling context-aware security decisions |
-| 2 | Native ${CLAUDE_SESSION_ID} variable | codex v2.1.16 | Session IDs are now first-class environment variables everywhere — no more extraction hacks | Session documentation workflows can drop manual ID extraction code |
+| 2 | Native ${ENGINE_SESSION_ID} variable | codex v2.1.16 | Session IDs are now first-class environment variables everywhere — no more extraction hacks | Session documentation workflows can drop manual ID extraction code |
 | 3 | MCP auto mode enabled by default | codex v2.1.16 | MCP servers now auto-connect without explicit configuration | Already enabled — no action needed |
 
 ---
@@ -40,7 +40,7 @@ Everything interesting we found, ranked by how cool it is.
 
 | # | Recommendation | Prior Status | Evidence | PAI Relevance | Effort | Files Affected |
 |---|---------------|-------------|----------|---------------|--------|----------------|
-| 2 | Replace session ID hacks with native ${CLAUDE_SESSION_ID} | 🔶 PARTIAL | `skills/_PAI/Workflows/DocumentSession.md:15` uses extraction hack | Session documentation workflows have manual extraction workarounds — native variable eliminates fragile code | Low | `skills/_PAI/Workflows/DocumentSession.md` |
+| 2 | Replace session ID hacks with native ${ENGINE_SESSION_ID} | 🔶 PARTIAL | `skills/_PAI/Workflows/DocumentSession.md:15` uses extraction hack | Session documentation workflows have manual extraction workarounds — native variable eliminates fragile code | Low | `skills/_PAI/Workflows/DocumentSession.md` |
 
 (MEDIUM and LOW tiers omitted — no items.)
 
@@ -71,13 +71,13 @@ return { decision: "allow", additionalContext: "WARNING: Protected file." };
 **Source:** GitHub codex v2.1.16
 **Priority:** 🟠 HIGH
 
-**What It Is:** Native environment variable ${CLAUDE_SESSION_ID} is now available in all hooks and commands, eliminating the need for custom session ID extraction or workaround code.
+**What It Is:** Native environment variable ${ENGINE_SESSION_ID} is now available in all hooks and commands, eliminating the need for custom session ID extraction or workaround code.
 
 **How It Helps PAI:** Our session documentation workflows had manual session ID extraction hacks. Native substitution means cleaner code and reliable session tracking across all PAI workflows.
 
 **The Technique:**
 ```bash
-echo "Session: ${CLAUDE_SESSION_ID}"
+echo "Session: ${ENGINE_SESSION_ID}"
 ```
 
 **Applies To:** `skills/_PAI/Workflows/DocumentSession.md`

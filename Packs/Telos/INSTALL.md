@@ -38,43 +38,43 @@ Let me analyze your system and guide you through installation."
 
 ```bash
 # Check for ChatGPT Codex skills directory
-CLAUDE_DIR="$HOME/.codex"
-echo "Claude directory: $CLAUDE_DIR"
+ENGINE_DIR="$HOME/.codex"
+echo "Engine directory: $ENGINE_DIR"
 
 # Check if skills directory exists
-if [ -d "$CLAUDE_DIR/skills" ]; then
-  echo "OK Skills directory exists at: $CLAUDE_DIR/skills"
+if [ -d "$ENGINE_DIR/skills" ]; then
+  echo "OK Skills directory exists at: $ENGINE_DIR/skills"
 else
   echo "INFO Skills directory does not exist (will be created)"
 fi
 
 # Check for existing Telos skill
-if [ -d "$CLAUDE_DIR/skills/Telos" ]; then
-  echo "WARNING Existing Telos skill found at: $CLAUDE_DIR/skills/Telos"
+if [ -d "$ENGINE_DIR/skills/Telos" ]; then
+  echo "WARNING Existing Telos skill found at: $ENGINE_DIR/skills/Telos"
   echo "Contents:"
-  ls -la "$CLAUDE_DIR/skills/Telos/" 2>/dev/null
+  ls -la "$ENGINE_DIR/skills/Telos/" 2>/dev/null
 else
   echo "OK No existing Telos skill (clean install)"
 fi
 
 # Check for existing sub-directories
 for subdir in Workflows Tools DashboardTemplate ReportTemplate; do
-  if [ -d "$CLAUDE_DIR/skills/Telos/$subdir" ]; then
+  if [ -d "$ENGINE_DIR/skills/Telos/$subdir" ]; then
     echo "WARNING Existing directory found: Telos/$subdir"
   fi
 done
 
 # Check for PAI infrastructure
-if [ -d "$CLAUDE_DIR/PAI" ]; then
+if [ -d "$ENGINE_DIR/PAI" ]; then
   echo "OK PAI directory exists"
 else
   echo "INFO PAI directory not found (personal TELOS features will be limited)"
 fi
 
 # Check for personal TELOS files
-if [ -d "$CLAUDE_DIR/PAI/USER/TELOS" ]; then
-  echo "OK Personal TELOS directory exists at: $CLAUDE_DIR/PAI/USER/TELOS"
-  ls "$CLAUDE_DIR/PAI/USER/TELOS/"*.md 2>/dev/null | wc -l | xargs echo "  TELOS files found:"
+if [ -d "$ENGINE_DIR/PAI/USER/TELOS" ]; then
+  echo "OK Personal TELOS directory exists at: $ENGINE_DIR/PAI/USER/TELOS"
+  ls "$ENGINE_DIR/PAI/USER/TELOS/"*.md 2>/dev/null | wc -l | xargs echo "  TELOS files found:"
 else
   echo "INFO Personal TELOS directory not found (personal context features unavailable)"
   echo "  Personal TELOS is created during PAI setup, not by this skill pack"
@@ -88,7 +88,7 @@ else
 fi
 
 # Check for skill customizations directory
-if [ -d "$CLAUDE_DIR/PAI/USER/SKILLCUSTOMIZATIONS" ]; then
+if [ -d "$ENGINE_DIR/PAI/USER/SKILLCUSTOMIZATIONS" ]; then
   echo "OK Skill customizations directory exists"
 else
   echo "INFO No skill customizations directory (skill will use defaults)"
@@ -178,13 +178,13 @@ Then re-ask the final confirmation question.
 **Only execute if user chose "Backup and Replace":**
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
-BACKUP_DIR="$CLAUDE_DIR/Backups/telos-skill-$(date +%Y%m%d-%H%M%S)"
+ENGINE_DIR="$HOME/.codex"
+BACKUP_DIR="$ENGINE_DIR/Backups/telos-skill-$(date +%Y%m%d-%H%M%S)"
 mkdir -p "$BACKUP_DIR"
 
 # Backup existing Telos skill
-if [ -d "$CLAUDE_DIR/skills/Telos" ]; then
-  cp -r "$CLAUDE_DIR/skills/Telos" "$BACKUP_DIR/Telos"
+if [ -d "$ENGINE_DIR/skills/Telos" ]; then
+  cp -r "$ENGINE_DIR/skills/Telos" "$BACKUP_DIR/Telos"
   echo "Backed up Telos skill directory"
 fi
 
@@ -212,12 +212,12 @@ echo "Backup created at: $BACKUP_DIR"
 **Mark todo "Create skill directory structure" as in_progress.**
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
-mkdir -p "$CLAUDE_DIR/skills/Telos"
-mkdir -p "$CLAUDE_DIR/skills/Telos/Workflows"
-mkdir -p "$CLAUDE_DIR/skills/Telos/Tools"
-mkdir -p "$CLAUDE_DIR/skills/Telos/DashboardTemplate"
-mkdir -p "$CLAUDE_DIR/skills/Telos/ReportTemplate"
+ENGINE_DIR="$HOME/.codex"
+mkdir -p "$ENGINE_DIR/skills/Telos"
+mkdir -p "$ENGINE_DIR/skills/Telos/Workflows"
+mkdir -p "$ENGINE_DIR/skills/Telos/Tools"
+mkdir -p "$ENGINE_DIR/skills/Telos/DashboardTemplate"
+mkdir -p "$ENGINE_DIR/skills/Telos/ReportTemplate"
 echo "Created all skill directories"
 ```
 
@@ -229,14 +229,14 @@ echo "Created all skill directories"
 
 ```bash
 PACK_DIR="$(pwd)"
-CLAUDE_DIR="$HOME/.codex"
+ENGINE_DIR="$HOME/.codex"
 
 # Copy entire src/ contents to target
-cp -r "$PACK_DIR/src/"* "$CLAUDE_DIR/skills/Telos/"
+cp -r "$PACK_DIR/src/"* "$ENGINE_DIR/skills/Telos/"
 echo "Copied all Telos skill files"
 
 # Verify top-level SKILL.md
-[ -f "$CLAUDE_DIR/skills/Telos/SKILL.md" ] && echo "OK SKILL.md installed" || echo "ERROR SKILL.md missing"
+[ -f "$ENGINE_DIR/skills/Telos/SKILL.md" ] && echo "OK SKILL.md installed" || echo "ERROR SKILL.md missing"
 ```
 
 **Mark todo as completed.**
@@ -250,34 +250,34 @@ echo "Copied all Telos skill files"
 **Execute all checks from VERIFY.md:**
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
+ENGINE_DIR="$HOME/.codex"
 
 echo "=== Telos Skill Verification ==="
 
 # Check top-level SKILL.md
 echo "Checking skill file..."
-[ -f "$CLAUDE_DIR/skills/Telos/SKILL.md" ] && echo "OK SKILL.md" || echo "MISSING SKILL.md"
+[ -f "$ENGINE_DIR/skills/Telos/SKILL.md" ] && echo "OK SKILL.md" || echo "MISSING SKILL.md"
 
 # Check workflows
 echo "Checking workflows..."
 for wf in Update.md InterviewExtraction.md CreateNarrativePoints.md WriteReport.md; do
-  [ -f "$CLAUDE_DIR/skills/Telos/Workflows/$wf" ] && echo "OK Workflows/$wf" || echo "MISSING Workflows/$wf"
+  [ -f "$ENGINE_DIR/skills/Telos/Workflows/$wf" ] && echo "OK Workflows/$wf" || echo "MISSING Workflows/$wf"
 done
 
 # Check tools
 echo "Checking tools..."
-[ -f "$CLAUDE_DIR/skills/Telos/Tools/UpdateTelos.ts" ] && echo "OK Tools/UpdateTelos.ts" || echo "MISSING Tools/UpdateTelos.ts"
+[ -f "$ENGINE_DIR/skills/Telos/Tools/UpdateTelos.ts" ] && echo "OK Tools/UpdateTelos.ts" || echo "MISSING Tools/UpdateTelos.ts"
 
 # Check templates
 echo "Checking templates..."
-[ -d "$CLAUDE_DIR/skills/Telos/DashboardTemplate" ] && echo "OK DashboardTemplate/" || echo "MISSING DashboardTemplate/"
-[ -d "$CLAUDE_DIR/skills/Telos/ReportTemplate" ] && echo "OK ReportTemplate/" || echo "MISSING ReportTemplate/"
-[ -f "$CLAUDE_DIR/skills/Telos/DashboardTemplate/package.json" ] && echo "OK DashboardTemplate/package.json" || echo "MISSING DashboardTemplate/package.json"
-[ -f "$CLAUDE_DIR/skills/Telos/ReportTemplate/package.json" ] && echo "OK ReportTemplate/package.json" || echo "MISSING ReportTemplate/package.json"
+[ -d "$ENGINE_DIR/skills/Telos/DashboardTemplate" ] && echo "OK DashboardTemplate/" || echo "MISSING DashboardTemplate/"
+[ -d "$ENGINE_DIR/skills/Telos/ReportTemplate" ] && echo "OK ReportTemplate/" || echo "MISSING ReportTemplate/"
+[ -f "$ENGINE_DIR/skills/Telos/DashboardTemplate/package.json" ] && echo "OK DashboardTemplate/package.json" || echo "MISSING DashboardTemplate/package.json"
+[ -f "$ENGINE_DIR/skills/Telos/ReportTemplate/package.json" ] && echo "OK ReportTemplate/package.json" || echo "MISSING ReportTemplate/package.json"
 
 # Check frontmatter
 echo "Checking frontmatter..."
-head -1 "$CLAUDE_DIR/skills/Telos/SKILL.md" | grep -q "^---" && echo "OK SKILL.md has valid frontmatter" || echo "ERROR SKILL.md missing frontmatter"
+head -1 "$ENGINE_DIR/skills/Telos/SKILL.md" | grep -q "^---" && echo "OK SKILL.md has valid frontmatter" || echo "ERROR SKILL.md missing frontmatter"
 
 echo ""
 echo "=== Verification Complete ==="

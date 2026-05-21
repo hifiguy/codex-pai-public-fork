@@ -29,8 +29,8 @@ import { join, resolve, dirname, relative, extname, sep } from 'path';
 import { execSync } from 'child_process';
 
 const HOME = process.env.HOME || '';
-const CLAUDE_DIR = join(HOME, '.codex');
-const PAI_DIR = join(CLAUDE_DIR, 'PAI');
+const ENGINE_DIR = join(HOME, '.codex');
+const PAI_DIR = join(ENGINE_DIR, 'PAI');
 
 // ── Arg parsing (manual, zero deps) ──
 
@@ -65,7 +65,7 @@ const EXCLUDE_DIR_NAMES = new Set([
   'logs',
 ]);
 
-// Top-level path segments (relative to CLAUDE_DIR) that are entirely ignored.
+// Top-level path segments (relative to ENGINE_DIR) that are entirely ignored.
 const EXCLUDE_PATH_PREFIXES = [
   'PAI/MEMORY',
   'PAI/PULSE/Observability/.next',
@@ -130,7 +130,7 @@ let _latestAlgVersionCache: string | null = null;
 function getLatestAlgorithmVersion(): string {
   if (_latestAlgVersionCache !== null) return _latestAlgVersionCache;
   try {
-    const algDir = join(CLAUDE_DIR, 'PAI', 'ALGORITHM');
+    const algDir = join(ENGINE_DIR, 'PAI', 'ALGORITHM');
     const versions = readdirSync(algDir)
       .map(f => f.match(/^v(\d+\.\d+\.\d+)\.md$/)?.[1])
       .filter((v): v is string => !!v)
@@ -171,7 +171,7 @@ const EXCLUDE_FILE_NAMES = new Set([
 function isExcludedDir(absPath: string): boolean {
   const base = absPath.split(sep).pop() || '';
   if (EXCLUDE_DIR_NAMES.has(base)) return true;
-  const rel = relative(CLAUDE_DIR, absPath);
+  const rel = relative(ENGINE_DIR, absPath);
   if (rel.startsWith('..')) return true;
   for (const pref of EXCLUDE_PATH_PREFIXES) {
     if (rel === pref || rel.startsWith(pref + sep)) return true;
@@ -196,7 +196,7 @@ function isScannableFile(absPath: string): boolean {
   for (const sub of EXCLUDE_SUBSTRINGS) {
     if (absPath.includes(sub)) return false;
   }
-  const rel = relative(CLAUDE_DIR, absPath);
+  const rel = relative(ENGINE_DIR, absPath);
   if (isArchivedAlgorithmVersion(rel)) return false;
   const ext = extname(absPath);
   return ext === '.md' || ext === '.ts' || ext === '.tsx' || ext === '.json';
@@ -400,8 +400,8 @@ function extractRefs(content: string, referringFile: string): RefHit[] {
       } else if (raw.startsWith('./') || raw.startsWith('../')) {
         candidates.push(resolve(refDir, raw));
       } else {
-        // Try CLAUDE_DIR-relative, PAI_DIR-relative, referring-dir-relative.
-        candidates.push(resolve(CLAUDE_DIR, raw));
+        // Try ENGINE_DIR-relative, PAI_DIR-relative, referring-dir-relative.
+        candidates.push(resolve(ENGINE_DIR, raw));
         candidates.push(resolve(PAI_DIR, raw));
         candidates.push(resolve(refDir, raw));
         // Skill-internal refs: when file lives in skills/X/Workflows/ or skills/X/Tools/,
@@ -413,7 +413,7 @@ function extractRefs(content: string, referringFile: string): RefHit[] {
         // intentional convention used by AGENTS.md routing entries.
         if (sectionRoots) {
           const sectionRoot = getSectionRootAt(sectionRoots, m.index);
-          if (sectionRoot) candidates.push(resolve(CLAUDE_DIR, sectionRoot, raw));
+          if (sectionRoot) candidates.push(resolve(ENGINE_DIR, sectionRoot, raw));
         }
       }
       for (const cand of candidates) {
@@ -465,9 +465,9 @@ function getChangedFiles(): Set<string> {
   try {
     const diff = execSync(
       'git diff --name-only HEAD 2>/dev/null; git diff --cached --name-only 2>/dev/null',
-      { cwd: CLAUDE_DIR, encoding: 'utf-8' }
+      { cwd: ENGINE_DIR, encoding: 'utf-8' }
     );
-    return new Set(diff.split('\n').filter(Boolean).map(f => resolve(CLAUDE_DIR, f)));
+    return new Set(diff.split('\n').filter(Boolean).map(f => resolve(ENGINE_DIR, f)));
   } catch {
     return new Set();
   }
@@ -477,7 +477,7 @@ function getChangedFiles(): Set<string> {
 
 interface Finding {
   type: 'missing' | 'stale' | 'orphan';
-  file: string;   // relative to CLAUDE_DIR
+  file: string;   // relative to ENGINE_DIR
   line: number | null;
   ref: string | null;
   resolved: string;
@@ -493,7 +493,7 @@ let scannedRefs = 0;
 
 let allFiles: string[];
 try {
-  allFiles = walk(CLAUDE_DIR);
+  allFiles = walk(ENGINE_DIR);
 } catch (e: any) {
   console.error(`ReferenceCheck: scan error — ${e?.message || e}`);
   process.exit(2);
@@ -534,7 +534,7 @@ const filesToReport = changed
 for (const [file, refs] of fileRefs) {
   if (filesToReport && !filesToReport.has(file)) continue;
   let refMtimeCache: number | null = null;
-  const relFile = relative(CLAUDE_DIR, file);
+  const relFile = relative(ENGINE_DIR, file);
 
   for (const r of refs) {
     if (!r.exists) {
@@ -579,7 +579,7 @@ for (const [file, refs] of fileRefs) {
 // Skill SKILL.md files are auto-discovered by ChatGPT Codex harness via frontmatter.
 if (includeOrphans) {
   for (const file of allFiles) {
-    const rel = relative(CLAUDE_DIR, file);
+    const rel = relative(ENGINE_DIR, file);
     const isPaiTopMd = /^PAI\/[^/]+\.md$/.test(rel);
     if (!isPaiTopMd) continue;
     if (!referenced.has(file)) {

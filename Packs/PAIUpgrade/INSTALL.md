@@ -23,8 +23,8 @@ Let me check your system and install."
 ## Phase 1: System Analysis
 
 ```bash
-CLAUDE_DIR="$HOME/.codex"
-SKILL_DIR="$CLAUDE_DIR/skills/PAIUpgrade"
+CODEX_DIR="$HOME/.codex"
+SKILL_DIR="$CODEX_DIR/skills/PAIUpgrade"
 
 if [ -d "$SKILL_DIR" ]; then
   echo "EXISTING PAIUpgrade skill found at $SKILL_DIR — will back up before install"
@@ -59,7 +59,7 @@ fi
 ## Phase 4: Install
 
 ```bash
-mkdir -p "$CLAUDE_DIR/skills"
+mkdir -p "$CODEX_DIR/skills"
 cp -R src/ "$SKILL_DIR/"
 echo "Installed to $SKILL_DIR"
 ```

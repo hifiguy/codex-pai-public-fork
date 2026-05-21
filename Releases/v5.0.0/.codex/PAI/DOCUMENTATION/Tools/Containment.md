@@ -69,7 +69,7 @@ The concrete patterns live in `hooks/ContainmentGuard.hook.ts` (`IDENTITY_PATTER
 
 ### I am writing a new file and it needs to reference the principal
 
-Use `${HOME}`, `${PAI_DIR}`, `${CLAUDE_PROJECT_DIR}`, or a configurable placeholder. Never hard-code absolute paths containing the principal's username in a public file.
+Use `${HOME}`, `${PAI_DIR}`, `${CODEX_PROJECT_DIR}`, or a configurable placeholder. Never hard-code absolute paths containing the principal's username in a public file.
 
 ### I am writing a new file and it needs secrets
 
@@ -146,7 +146,7 @@ Populated by the audit. Updated as files are sanitized or relocated.
 | `skills/Daemon/Docs/SecurityClassification.md` | Documents the exact path patterns the Daemon filter should scrub | **KEEP** — legitimate exception |
 | `skills/Daemon/Tools/SecurityFilter.ts` | Pattern inspector test cases embed the patterns they filter | **KEEP** — legitimate exception |
 | `skills/CreateSkill/Workflows/ValidateSkill.md` | Lists example patterns a skill author should NOT hardcode | **KEEP** — legitimate exception |
-| `PAI/TOOLS/SessionHarvester.ts` | Comment references derivation, not literal path | **KEEP** — uses `CLAUDE_DIR.replace(...)` dynamically |
+| `PAI/TOOLS/SessionHarvester.ts` | Comment references derivation, not literal path | **KEEP** — uses `ENGINE_DIR.replace(...)` dynamically |
 | `PAI/TOOLS/gmail.ts` | Uses `homedir()` at runtime, not a literal path | **KEEP** — dynamic resolution |
 | `PAI/PULSE/checks/health.ts` | Hardcoded site list for health monitoring | **TODO-REFACTOR** — move site list to `PAI_CONFIG.yaml`, read at startup |
 | `agents/<agent>.md` | Write-permission path literals in agent definitions | **TODO-REFACTOR** — verify env-expansion support in ChatGPT Codex agent spec, then replace with `${HOME}/.codex/...` |

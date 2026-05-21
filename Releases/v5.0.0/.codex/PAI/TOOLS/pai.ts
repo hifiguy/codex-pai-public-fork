@@ -11,7 +11,8 @@
  *   pai -m bd,ap         Launch with multiple MCPs
  *   pai -r / --resume    Resume last session
  *   pai --local          Stay in current directory (don't cd to ~/.codex)
- *   pai update           Update ChatGPT Codex
+ *   pai update           Update ChatGPT Codex CLI
+ *   pai upgrade          Check for PAI system upgrade recommendations
  *   pai version          Show version info
  *   pai profiles         List available profiles
  *   pai mcp list         List available MCPs
@@ -28,10 +29,10 @@ import { join, basename } from "path";
 // Configuration
 // ============================================================================
 
-const CLAUDE_DIR = join(homedir(), ".codex");
-const MCP_DIR = join(CLAUDE_DIR, "MCPs");
-const ACTIVE_MCP = join(CLAUDE_DIR, ".mcp.json");
-const BANNER_SCRIPT = join(homedir(), ".codex", "PAI", "Tools", "Banner.ts");
+const ENGINE_DIR = join(homedir(), ".codex");
+const MCP_DIR = join(ENGINE_DIR, "MCPs");
+const ACTIVE_MCP = join(ENGINE_DIR, ".mcp.json");
+const BANNER_SCRIPT = join(ENGINE_DIR, "PAI", "TOOLS", "Banner.ts");
 const VOICE_SERVER = "http://localhost:31337/notify/personality";
 const WALLPAPER_DIR = join(homedir(), "Projects", "Wallpaper");
 // Note: RAW archiving removed - ChatGPT Codex handles its own cleanup (30-day retention in projects/)
@@ -123,6 +124,24 @@ function displayBanner() {
   if (existsSync(BANNER_SCRIPT)) {
     spawnSync(["bun", BANNER_SCRIPT], { stdin: "inherit", stdout: "inherit", stderr: "inherit" });
   }
+}
+
+function buildPaiBootstrapPrompt(systemPromptFile: string, userPrompt?: string): string | null {
+  if (!existsSync(systemPromptFile)) {
+    return userPrompt ?? null;
+  }
+
+  const paiInstructions = readFileSync(systemPromptFile, "utf-8").trim();
+  const sections = [
+    "Load and follow these PAI operating instructions for this session:",
+    paiInstructions,
+  ];
+
+  if (userPrompt?.trim()) {
+    sections.push("Initial user request:", userPrompt.trim());
+  }
+
+  return sections.join("\n\n");
 }
 
 function getCurrentVersion(): string | null {
@@ -355,8 +374,8 @@ function cmdWallpaper(args: string[]) {
       console.log(`  ${i + 1}. ${getWallpaperName(w)}`);
     });
     console.log();
-    log("Usage: k -w <name>", "💡");
-    log("Example: k -w circuit-board", "💡");
+    log("Usage: pai -w <name>", "💡");
+    log("Example: pai -w circuit-board", "💡");
     return;
   }
 
@@ -396,11 +415,12 @@ async function cmdLaunch(options: { mcp?: string; resume?: boolean; skipPerms?: 
   displayBanner();
   const args = ["codex"];
 
-  // PAI System Prompt — constitutional rules appended to ChatGPT Codex's system prompt
-  // These rules get highest instruction authority (system prompt layer > AGENTS.md layer)
-  const systemPromptFile = options.systemPrompt ?? join(CLAUDE_DIR, "PAI", "PAI_SYSTEM_PROMPT.md");
-  if (existsSync(systemPromptFile)) {
-    args.push("--append-system-prompt-file", systemPromptFile);
+  // PAI operating instructions are sent as the initial prompt. Current Codex
+  // does not expose a supported system-prompt-file launch flag.
+  const systemPromptFile = options.systemPrompt ?? join(ENGINE_DIR, "PAI", "PAI_SYSTEM_PROMPT.md");
+  const bootstrapPrompt = buildPaiBootstrapPrompt(systemPromptFile);
+  if (bootstrapPrompt) {
+    args.push(bootstrapPrompt);
   }
 
   // Handle MCP configuration
@@ -419,7 +439,7 @@ async function cmdLaunch(options: { mcp?: string; resume?: boolean; skipPerms?: 
 
   // Change to PAI directory unless --local flag is set
   if (!options.local) {
-    process.chdir(CLAUDE_DIR);
+    process.chdir(ENGINE_DIR);
   }
 
   // Voice notification (using focused marker for calmer tone).
@@ -490,6 +510,18 @@ async function cmdUpdate() {
   }
 }
 
+async function cmdUpgrade(args: string[]) {
+  const details = args.join(" ").trim();
+  const prompt = [
+    "Run the PAIUpgrade skill in review-only mode.",
+    "Check for PAI system upgrade recommendations without modifying files, memory, settings, hooks, skills, or USER data.",
+    "Preserve Codex-native behavior and flag any recommendation that would reintroduce source-engine runtime dependencies, legacy engine-home paths, or source-engine tool syntax.",
+    details ? `User context: ${details}` : "",
+  ].filter(Boolean).join("\n");
+
+  await cmdPrompt(prompt);
+}
+
 async function cmdVersion() {
   log("Checking versions...", "🔍");
 
@@ -507,7 +539,7 @@ async function cmdVersion() {
     if (cmp >= 0) {
       log("Up to date", "✅");
     } else {
-      log("Update available (run 'k update')", "⚠️");
+      log("Update available (run 'pai update')", "⚠️");
     }
   } else {
     log("Could not fetch latest version", "⚠️");
@@ -531,7 +563,7 @@ function cmdProfiles() {
   }
 
   console.log();
-  log("Usage: k mcp set <profile>", "💡");
+  log("Usage: pai mcp set <profile>", "💡");
 }
 
 function cmdMcpList() {
@@ -550,7 +582,7 @@ function cmdMcpList() {
   }
 
   console.log();
-  log("Profiles (use with 'k mcp set'):", "📁");
+  log("Profiles (use with 'pai mcp set'):", "📁");
   const profiles = getMcpProfiles();
   for (const profile of profiles) {
     const desc = PROFILE_DESCRIPTIONS[profile] || "";
@@ -559,9 +591,9 @@ function cmdMcpList() {
 
   console.log();
   log("Examples:", "💡");
-  console.log("  k -m bd          # Bright Data only");
-  console.log("  k -m bd,ap       # Bright Data + Apify");
-  console.log("  k mcp set research  # Full research profile");
+  console.log("  pai -m bd          # Bright Data only");
+  console.log("  pai -m bd,ap       # Bright Data + Apify");
+  console.log("  pai mcp set research  # Full research profile");
 }
 
 async function cmdPrompt(prompt: string) {
@@ -570,16 +602,18 @@ async function cmdPrompt(prompt: string) {
   // BILLING: subscription, not API. Removed --bare (forces OPENAI_API_KEY),
   // strip the key from inherited env.
   const workspace = process.env.PAI_CODEX_WORKSPACE || process.cwd();
+  const systemPromptFile = join(ENGINE_DIR, "PAI", "PAI_SYSTEM_PROMPT.md");
+  const fullPrompt = buildPaiBootstrapPrompt(systemPromptFile, prompt) ?? prompt;
   const args = [
     "codex",
     "exec",
     "--cd",
     workspace,
     "--ephemeral",
-    prompt,
+    fullPrompt,
   ];
 
-  process.chdir(CLAUDE_DIR);
+  process.chdir(ENGINE_DIR);
 
   const env: Record<string, string> = { ...process.env } as Record<string, string>;
   delete env.OPENAI_API_KEY;
@@ -594,25 +628,26 @@ async function cmdPrompt(prompt: string) {
 
 function cmdHelp() {
   console.log(`
-pai - Personal AI CLI Tool (v2.0.0)
+	pai - Personal AI CLI Tool (v2.0.0)
 
-USAGE:
-  k                        Launch ChatGPT Codex (no MCPs, max performance)
-  k -m <mcp>               Launch with specific MCP(s)
-  k -m bd,ap               Launch with multiple MCPs
-  k -r, --resume           Resume last session
-  k -s, --system-prompt    System prompt file to append (default: PAI_SYSTEM_PROMPT.md)
-  k -l, --local            Stay in current directory (don't cd to ~/.codex)
+	USAGE:
+	  pai                      Launch ChatGPT Codex (no MCPs, max performance)
+	  pai -m <mcp>             Launch with specific MCP(s)
+	  pai -m bd,ap             Launch with multiple MCPs
+	  pai -r, --resume         Resume last session
+	  pai -s, --system-prompt  PAI operating prompt file to load (default: PAI_SYSTEM_PROMPT.md)
+	  pai -l, --local          Stay in current directory (don't cd to ~/.codex)
 
-COMMANDS:
-  k update                 Update ChatGPT Codex to latest version
-  k version, -v            Show version information
-  k profiles               List available MCP profiles
-  k mcp list               List all available MCPs
-  k mcp set <profile>      Set MCP profile permanently
-  k prompt "<text>"        One-shot prompt execution
-  k -w, --wallpaper        List/switch wallpapers (Kitty + macOS)
-  k help, -h               Show this help
+	COMMANDS:
+	  pai update               Update ChatGPT Codex CLI to latest version
+	  pai upgrade [topic]      Check PAI upgrade recommendations (review-only)
+	  pai version, -v          Show version information
+	  pai profiles             List available MCP profiles
+	  pai mcp list             List all available MCPs
+	  pai mcp set <profile>    Set MCP profile permanently
+	  pai prompt "<text>"      One-shot prompt execution
+	  pai -w, --wallpaper      List/switch wallpapers (Kitty + macOS)
+	  pai help, -h             Show this help
 
 MCP SHORTCUTS:
   bd, brightdata           Bright Data scraping
@@ -625,16 +660,17 @@ MCP SHORTCUTS:
   min, minimal             Essential MCPs only
   none                     No MCPs
 
-EXAMPLES:
-  k                        Start with current profile
-  k -m bd                  Start with Bright Data
-  k -m bd,ap               Start with multiple MCPs
-  k -r                     Resume last session
-  k mcp set research       Switch to research profile
-  k update                 Update ChatGPT Codex
-  k prompt "What time is it?"   One-shot prompt
-  k -w                     List available wallpapers
-  k -w circuit-board       Switch wallpaper (Kitty + macOS)
+	EXAMPLES:
+	  pai                      Start with current profile
+	  pai -m bd                Start with Bright Data
+	  pai -m bd,ap             Start with multiple MCPs
+	  pai -r                   Resume last session
+	  pai mcp set research     Switch to research profile
+	  pai update               Update ChatGPT Codex CLI
+	  pai upgrade hooks        Check PAI upgrade recommendations for hooks
+	  pai prompt "What time is it?"   One-shot prompt
+	  pai -w                   List available wallpapers
+	  pai -w circuit-board     Switch wallpaper (Kitty + macOS)
 `);
 }
 
@@ -661,6 +697,7 @@ async function main() {
   let subCommand: string | undefined;
   let subArg: string | undefined;
   let promptText: string | undefined;
+  let upgradeArgs: string[] = [];
   let wallpaperArgs: string[] = [];
 
   for (let i = 0; i < args.length; i++) {
@@ -706,6 +743,12 @@ async function main() {
       case "update":
         command = "update";
         break;
+      case "upgrade":
+      case "--upgrade":
+        command = "upgrade";
+        upgradeArgs = args.slice(i + 1);
+        i = args.length;
+        break;
       case "profiles":
         command = "profiles";
         break;
@@ -729,7 +772,7 @@ async function main() {
       default:
         if (!arg.startsWith("-")) {
           // Might be an unknown command
-          error(`Unknown command: ${arg}. Use 'k help' for usage.`);
+          error(`Unknown command: ${arg}. Use 'pai help' for usage.`);
         }
     }
   }
@@ -745,6 +788,9 @@ async function main() {
     case "update":
       await cmdUpdate();
       break;
+    case "upgrade":
+      await cmdUpgrade(upgradeArgs);
+      break;
     case "profiles":
       cmdProfiles();
       break;
@@ -754,12 +800,12 @@ async function main() {
       } else if (subCommand === "set" && subArg) {
         setMcpProfile(subArg);
       } else {
-        error("Usage: k mcp list | k mcp set <profile>");
+        error("Usage: pai mcp list | pai mcp set <profile>");
       }
       break;
     case "prompt":
       if (!promptText) {
-        error("Usage: k prompt \"your prompt here\"");
+        error("Usage: pai prompt \"your prompt here\"");
       }
       await cmdPrompt(promptText);
       break;

@@ -68,11 +68,11 @@ Output: cleaned MP3/WAV
 
 | Tool | Command | Purpose |
 |------|---------|---------|
-| **Transcribe** | `bun ${CLAUDE_SKILL_DIR}/Tools/Transcribe.ts <file>` | Word-level transcription via Whisper |
-| **Analyze** | `bun ${CLAUDE_SKILL_DIR}/Tools/Analyze.ts <transcript.json>` | LLM-powered edit classification |
-| **Edit** | `bun ${CLAUDE_SKILL_DIR}/Tools/Edit.ts <file> <edits.json>` | Execute cuts with crossfades + room tone |
-| **Polish** | `bun ${CLAUDE_SKILL_DIR}/Tools/Polish.ts <file>` | Cleanvoice API cloud polish |
-| **Pipeline** | `bun ${CLAUDE_SKILL_DIR}/Tools/Pipeline.ts <file> [--polish]` | Full end-to-end pipeline |
+| **Transcribe** | `bun ${ENGINE_SKILL_DIR}/Tools/Transcribe.ts <file>` | Word-level transcription via Whisper |
+| **Analyze** | `bun ${ENGINE_SKILL_DIR}/Tools/Analyze.ts <transcript.json>` | LLM-powered edit classification |
+| **Edit** | `bun ${ENGINE_SKILL_DIR}/Tools/Edit.ts <file> <edits.json>` | Execute cuts with crossfades + room tone |
+| **Polish** | `bun ${ENGINE_SKILL_DIR}/Tools/Polish.ts <file>` | Cleanvoice API cloud polish |
+| **Pipeline** | `bun ${ENGINE_SKILL_DIR}/Tools/Pipeline.ts <file> [--polish]` | Full end-to-end pipeline |
 
 ## API Keys Required
 

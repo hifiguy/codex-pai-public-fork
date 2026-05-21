@@ -500,7 +500,7 @@ function slugify(name: string): string {
 /**
  * Save a composed agent to ~/.codex/custom-agents/{slug}.md
  *
- * Produces a CLAUDE CODE COMPATIBLE agent file that can be:
+ * Produces a Codex-compatible agent file that can be:
  * 1. Copied to ~/.codex/agents/ and used as a built-in agent
  * 2. Loaded via --load for re-composition with a new task
  *
