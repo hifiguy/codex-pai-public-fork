@@ -14,6 +14,14 @@ does not quietly imply completion where only the engine path has been proven.
 - Codex skill descriptions in `Releases/v5.0.0/.codex/skills` satisfy the
   current 1024-character description limit.
 - `pai prompt` uses `codex exec`, not the obsolete profile-flag prompt form.
+- A local Codex TUI patch has been validated for a native, reserved, multiline
+  PAI footer. The patch adds `tui.static_footer`,
+  `tui.static_footer_command`, and `tui.static_footer_refresh_interval`,
+  renders the footer inside the normal TUI layout instead of with a terminal
+  overlay, and feeds the footer command a status JSON payload on stdin so the
+  renderer can show context and rate-limit data. This is not part of stock
+  Codex yet; installers should treat it as an optional patched-Codex
+  integration until upstream support exists.
 
 ## Fixed In This Fork
 
@@ -21,11 +29,21 @@ does not quietly imply completion where only the engine path has been proven.
 - `kai-agents-tools` was renamed to `pai-agents-tools`.
 - `settings.json` no longer documents loop mode with obsolete Codex prompt flags.
 - No `rules/default.rules` file exists in this repo snapshot.
+- `pai` launcher behavior can preserve the startup banner and voice/catchphrase
+  while using a patched Codex binary for the native footer. The persistent PAI
+  status belongs in the native reserved footer; the startup banner remains a
+  normal pre-TUI terminal banner and may scroll off.
 
 ## Open Migration Work
 
-No open migration work remains from the six-item Claude-to-Codex audit in this
-snapshot. Keep this section for future gaps found during live install testing.
+- Upstream Codex does not currently ship native support for the multiline PAI
+  footer described above. Until that support is upstreamed or packaged, the
+  public fork should document the footer as a patched-binary capability rather
+  than a guaranteed stock Codex feature.
+- The Codex footer payload should stay generic: workspace path, model/version,
+  context-window usage, and rate-limit snapshots are sufficient. Do not place
+  private identity, vault paths, credentials, transcript text, or personal
+  catchphrases in public docs, default config, or example payloads.
 
 ## Resolved
 
