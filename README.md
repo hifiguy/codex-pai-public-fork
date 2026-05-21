@@ -65,9 +65,9 @@
 </div>
 
 > [!IMPORTANT]
-> **PAI v5.0.0 — Life Operating System** — the biggest release in PAI history. PAI is no longer "AI scaffolding" — it's a **Life Operating System** with the unified **Pulse** daemon (Life Dashboard at `localhost:31337`), a **DA** (Digital Assistant) identity layer, **Algorithm v6.3.0** (Current State → Ideal State, seven phases, classifier-driven mode + tier), the **ISA** primitive (universal "ideal state" articulation), 45 skills, 171 workflows, 37 hooks, and structural privacy via containment zones.
->
 > **Codex port notice:** This fork is the Codex-native PAI v5 port. Do **not** use upstream one-line installers, upstream upgrade commands, or installer URLs from `ourpai.ai`; those target the upstream distribution and can overwrite this fork's Codex adapter or reintroduce non-Codex runtime assumptions.
+>
+> **PAI v5.0.0 — Life Operating System** — the biggest release in PAI history. PAI is no longer "AI scaffolding" — it's a **Life Operating System** with the unified **Pulse** daemon (Life Dashboard at `localhost:31337`), a **DA** (Digital Assistant) identity layer, **Algorithm v6.3.0** (Current State → Ideal State, seven phases, classifier-driven mode + tier), the **ISA** primitive (universal "ideal state" articulation), 45 skills, 171 workflows, 37 hooks, and structural privacy via containment zones.
 >
 > **[v5.0.0 release notes →](Releases/v5.0.0/README.md)** | **[All releases →](Releases/)**
 >
