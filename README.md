@@ -177,9 +177,8 @@ We very much believe in AI-based installation and modification of PAI. Once you 
 
 ```bash
 git clone https://github.com/hifiguy/codex-pai-public-fork.git
-cd codex-pai-public-fork/Releases/v5.0.0
-cp -R .codex ~/
-cd ~/.codex && ./install.sh
+cd codex-pai-public-fork
+./Releases/v5.0.0/.codex/install.sh
 ```
 
 Do not use the upstream hosted installer for this fork. The local installer in this repository is the Codex-port installer and is the only supported install path until this fork publishes its own validated release endpoint.
@@ -220,8 +219,7 @@ cp -R ~/.codex ~/.codex.backup-$(date +%Y%m%d)
 
 # 2. Install this Codex port from the local clone
 cd codex-pai-public-fork/Releases/v5.0.0
-cp -R .codex ~/
-cd ~/.codex && ./install.sh
+./.codex/install.sh
 
 # 3. Open the Life Dashboard and run the interview
 open http://localhost:31337

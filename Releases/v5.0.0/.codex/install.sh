@@ -270,7 +270,9 @@ INSTALL_EXIT=$?
 #    nothing happened (the bug Daniel hit on server.baylander.lan).
 if [ "$INSTALL_EXIT" -eq 0 ]; then
   echo ""
-  if [ -r /dev/tty ]; then
+  if [ "${PAI_TEST_AUTOMATED:-}" = "1" ]; then
+    info "Install complete. To start pai, run:  ${BOLD}source ~/.zshrc && pai${RESET}"
+  elif [ -r /dev/tty ] && { : < /dev/tty; } 2>/dev/null; then
     info "Launching pai..."
     exec zsh -i -c 'source ~/.zshrc && pai' < /dev/tty
   else

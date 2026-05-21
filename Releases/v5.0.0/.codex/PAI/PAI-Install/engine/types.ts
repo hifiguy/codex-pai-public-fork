@@ -171,6 +171,10 @@ export interface InstallState {
 
   // Results
   installType: "fresh" | "upgrade" | null;
+  pulse?: {
+    installAttempted: boolean;
+    installSucceeded: boolean;
+  };
   errors: StepError[];
 }
 

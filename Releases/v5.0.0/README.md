@@ -30,9 +30,8 @@
 
 ```bash
 git clone https://github.com/hifiguy/codex-pai-public-fork.git
-cd codex-pai-public-fork/Releases/v5.0.0
-cp -R .codex ~/
-cd ~/.codex && ./install.sh
+cd codex-pai-public-fork
+./Releases/v5.0.0/.codex/install.sh
 ```
 
 The installer wizard handles Bun, Git, ChatGPT Codex verification, ElevenLabs key (optional), DA identity setup, voice picker, Pulse launchd registration, Codex `config.toml` generation, and validation. Existing `~/.codex/` is auto-backed-up to `~/.codex.backup-{TIMESTAMP}` before anything is overwritten.
@@ -288,8 +287,7 @@ If you have personal content in `~/.codex/` from v4.x — custom skills, MEMORY,
 ```bash
 git clone https://github.com/hifiguy/codex-pai-public-fork.git
 cd codex-pai-public-fork/Releases/v5.0.0
-cp -R .codex ~/
-cd ~/.codex && ./install.sh
+./.codex/install.sh
 ```
 
 The installer will:

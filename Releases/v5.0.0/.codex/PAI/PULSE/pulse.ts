@@ -527,8 +527,11 @@ async function main() {
     const elapsed = Date.now() - tickStart
     const sleepMs = Math.max(MIN_SLEEP_MS, Math.min(nextDueMs - elapsed, MAX_SLEEP_MS))
 
-    if (!shuttingDown) {
-      await Bun.sleep(sleepMs)
+    let sleptMs = 0
+    while (!shuttingDown && sleptMs < sleepMs) {
+      const chunkMs = Math.min(250, sleepMs - sleptMs)
+      await Bun.sleep(chunkMs)
+      sleptMs += chunkMs
     }
   }
 
@@ -540,6 +543,7 @@ async function main() {
   if (syslogModule) await syslogModule.stop?.()
   await writeState(STATE_PATH, state).catch(() => {})
   log("info", "PAI Pulse stopped", { uptimeMs: Date.now() - state.startedAt })
+  process.exit(0)
 }
 
 main().catch((err) => {

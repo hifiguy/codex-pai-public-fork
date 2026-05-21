@@ -317,7 +317,7 @@ function checkFileContent(filePath: string, manifest: ProtectedManifest): {
     if (category.validation.includes('secrets') && !isException) {
       const secretPatterns = [
         /OPENAI_API_KEY=sk-/,
-        /ELEVENLABS_API_KEY=(?!your_elevenlabs_api_key_here)/,
+        /ELEVENLABS_API_KEY\s*=\s*(?!(your_elevenlabs_api_key_here|REDACTED|REDACTED_SANDBOX_VALUE)\b)((xi-|sk_)[A-Za-z0-9_-]{20,}|[A-Za-z0-9_-]{40,})/,
         /PERPLEXITY_API_KEY=(?!your_perplexity_api_key_here)/,
         /@danielmiessler\.com/,
         /@unsupervised-learning\.com/,

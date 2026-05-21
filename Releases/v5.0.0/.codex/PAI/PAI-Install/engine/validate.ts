@@ -222,15 +222,21 @@ export async function runValidation(state: InstallState, emit?: EngineEventHandl
     critical: false,
   });
 
-  // 7. Pulse running — embeds voice + dashboard + observability (PAI 5.0)
-  const pulseHealthy = await checkPulseHealth();
+  // 7. Pulse running — embeds voice + dashboard + observability (PAI 5.0).
+  // If this installer already failed to verify its own launchd install, do not
+  // let an unrelated live Pulse process on localhost:31337 mask the failure.
+  const pulseInstallFailed =
+    state.pulse?.installAttempted === true && state.pulse.installSucceeded !== true;
+  const pulseHealthy = pulseInstallFailed ? false : await checkPulseHealth();
 
   checks.push({
     name: "Pulse (voice + dashboard)",
     passed: pulseHealthy,
-    detail: pulseHealthy
-      ? "Running on localhost:31337"
-      : "Not reachable — install via: bash ~/.codex/PAI/PULSE/manage.sh install",
+    detail: pulseInstallFailed
+      ? "Install command did not verify this Pulse launch"
+      : pulseHealthy
+        ? "Running on localhost:31337"
+        : "Not reachable — install via: bash ~/.codex/PAI/PULSE/manage.sh install",
     critical: false,
   });
 

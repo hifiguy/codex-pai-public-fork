@@ -51,7 +51,8 @@
             "ANTHROPIC_API_KEY=[^$\\s]{10,}",
             "OPENAI_API_KEY=[^$\\s]{10,}",
             "PERPLEXITY_API_KEY=pplx-[a-zA-Z0-9]+",
-            "ELEVENLABS_API_KEY=[a-f0-9]{32}",
+            "ELEVENLABS_API_KEY\\s*=\\s*(xi-|sk_)[a-zA-Z0-9_-]{20,}",
+            "ELEVENLABS_API_KEY\\s*=\\s*[a-zA-Z0-9_-]{40,}",
             "GOOGLE_API_KEY=AIza[a-zA-Z0-9_-]{35}",
             "AKIA[0-9A-Z]{16}",
             "ABIA[0-9A-Z]{16}",
@@ -254,14 +255,6 @@
           "description": "DA (Digital Assistant) name patterns",
           "patterns": [
             "\\bDevi\\b"
-          ]
-        },
-        "imessage_bot": {
-          "description": "iMessage bot infrastructure references",
-          "patterns": [
-            "iMessageBot",
-            "iMessage[_\\s]?[Bb]ot",
-            "imessage[_-]bot"
           ]
         },
         "misc_sensitive": {

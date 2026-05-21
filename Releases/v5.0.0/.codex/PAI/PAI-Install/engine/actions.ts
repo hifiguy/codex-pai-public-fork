@@ -1882,6 +1882,10 @@ export async function runVoiceSetup(
   } else {
     await emit({ event: "message", content: "Pulse skipped. Voice not enabled — install later via: bash ~/.codex/PAI/PULSE/manage.sh install" });
   }
+  state.pulse = {
+    installAttempted: installPulseChoice === "yes",
+    installSucceeded: voiceServerReady,
+  };
 
   // ── Optional menu bar app (Y/n) — separate launchd plist + .app bundle ──
   if (voiceServerReady) {
@@ -2275,7 +2279,7 @@ export async function runTelegramSetup(
       "telegram-bot-token",
       "Paste your Telegram bot token (from @BotFather):",
       "key",
-      "1234567890:ABCdefGHI..."
+      "TELEGRAM_BOT_TOKEN"
     );
     const trimmed = entered.trim();
     if (!trimmed) {

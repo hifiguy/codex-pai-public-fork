@@ -88,6 +88,68 @@ function parseScalar(value: string): unknown {
   return trimmed;
 }
 
+function bracketsBalanced(value: string): boolean {
+  let inSingle = false;
+  let inDouble = false;
+  let escaped = false;
+  let depth = 0;
+
+  for (let i = 0; i < value.length; i++) {
+    const ch = value[i];
+
+    if (escaped) {
+      escaped = false;
+      continue;
+    }
+    if (ch === "\\" && inDouble) {
+      escaped = true;
+      continue;
+    }
+    if (ch === "'" && !inDouble) inSingle = !inSingle;
+    else if (ch === '"' && !inSingle) inDouble = !inDouble;
+    else if (!inSingle && !inDouble) {
+      if (ch === "[") depth++;
+      else if (ch === "]") depth--;
+    }
+  }
+
+  return depth <= 0;
+}
+
+function logicalLines(content: string): string[] {
+  const lines: string[] = [];
+  let pending = "";
+
+  for (const rawLine of content.split("\n")) {
+    const line = stripComment(rawLine);
+    if (!line) continue;
+
+    if (pending) {
+      pending += ` ${line}`;
+      const value = pending.slice(pending.indexOf("=") + 1).trim();
+      if (bracketsBalanced(value)) {
+        lines.push(pending);
+        pending = "";
+      }
+      continue;
+    }
+
+    const eqIndex = line.indexOf("=");
+    if (eqIndex !== -1) {
+      const value = line.slice(eqIndex + 1).trim();
+      if (value.startsWith("[") && !bracketsBalanced(value)) {
+        pending = line;
+        continue;
+      }
+    }
+
+    lines.push(line);
+  }
+
+  if (pending) throw new Error(`Unclosed TOML array: ${pending}`);
+  return lines;
+}
+
 function targetFor(root: TomlObject, path: string): TomlObject {
   return path.split(".").reduce<TomlObject>((target, part) => {
     const existing = target[part];
@@ -102,10 +164,7 @@ export function parseToml(content: string): TomlObject {
   const root: TomlObject = {};
   let current: TomlObject = root;
 
-  for (const rawLine of content.split("\n")) {
-    const line = stripComment(rawLine);
-    if (!line) continue;
-
+  for (const line of logicalLines(content)) {
     const arrayTableMatch = line.match(/^\[\[([A-Za-z0-9_.-]+)\]\]$/);
     if (arrayTableMatch) {
       const path = arrayTableMatch[1].split(".");
