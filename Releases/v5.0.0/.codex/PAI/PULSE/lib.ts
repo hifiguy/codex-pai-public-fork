@@ -266,12 +266,12 @@ export async function spawnScript(command: string, timeoutMs = 60_000): Promise<
 
 export async function spawnInference(prompt: string, opts: { model?: string; timeoutMs?: number }): Promise<string> {
   const timeoutMs = opts.timeoutMs ?? 300_000
-  const level = opts.model === "haiku" || opts.model === "fast"
+  const level = opts.model === "fast"
     ? "fast"
-    : opts.model === "opus" || opts.model === "smart"
+    : opts.model === "smart"
       ? "smart"
       : "standard"
-  const model = ["fast", "standard", "smart", "haiku", "sonnet", "opus"].includes(opts.model ?? "")
+  const model = ["fast", "standard", "smart"].includes(opts.model ?? "")
     ? undefined
     : opts.model
   let timeout: ReturnType<typeof setTimeout> | undefined

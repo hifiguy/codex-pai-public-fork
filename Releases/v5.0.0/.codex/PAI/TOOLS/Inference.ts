@@ -32,10 +32,10 @@
  *   --timeout <ms>                 Custom timeout (default varies by level)
  *
  * DEFAULTS BY LEVEL:
- *   fast:     model=haiku,   timeout=15s
- *   standard: backend default model, timeout=30s
- *   smart:    model=opus,    timeout=90s
- *   advisor:  model=opus,    timeout=120s
+ *   fast:     backend fast model, timeout=15s
+ *   standard: backend standard model, timeout=30s
+ *   smart:    backend smart model, timeout=90s
+ *   advisor:  backend smart model, timeout=120s
  *
  * CONFIG:
  *   PAI_INFERENCE_BACKEND=codex|claude-code|openai|openai-compatible|anthropic|ollama|lmstudio
@@ -46,15 +46,15 @@
  *   PAI_INFERENCE_API_KEY=<key>              # generic fallback
  *
  * ADVISOR PATTERN (v3.24 Verification Doctrine — see PAI/ALGORITHM/v3.24.0.md):
- *   The advisor() function implements the Sonnet→Opus escalation checkpoint rule
- *   from R Amjad's Anthropic Advisor tool writeup. Call at commitment boundaries:
+ *   The advisor() function implements a standard→smart escalation checkpoint rule.
+ *   Call at commitment boundaries:
  *   - Before committing to an approach
  *   - When stuck or diverging
  *   - Once after a durable deliverable, before declaring done
  *   Skip for short reactive tasks (measured: <4 min AND <2 files — v3.24 P2).
  *   On Extended+ ISAs, phase:complete transition = MANDATORY advisor call (v3.24 P4).
  *
- *   Unlike Anthropic's native Advisor which receives the full CC session, this
+ *   Unlike assistant-native review features that receive the full session, this
  *   function takes explicit (task, state, question) parameters. The caller may
  *   supply state manually OR set autoSynthesize: true to have the helper read
  *   the current ISA + recent activity automatically (v3.24 P5 — closes the
@@ -584,7 +584,7 @@ export async function synthesizeAdvisorState(): Promise<string> {
 /**
  * Advisor escalation — v3.24 Verification Doctrine.
  *
- * Calls smart tier (Opus) framed as a reviewer. Caller may supply explicit state
+ * Calls the smart tier framed as a reviewer. Caller may supply explicit state
  * OR set autoSynthesize: true to have the helper read the current ISA automatically
  * (v3.24 P5 — closes state-gaming escape hatch).
  *

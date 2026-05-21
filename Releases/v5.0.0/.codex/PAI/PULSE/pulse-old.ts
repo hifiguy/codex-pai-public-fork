@@ -64,7 +64,7 @@ const hookStats = {
 
 const BLOCKED_SKILLS = ["keybindings-help"]
 const FAST_AGENT_TYPES = ["Explore"]
-const FAST_MODELS = ["fast", "haiku"]
+const FAST_MODELS = ["fast"]
 
 function handleSkillGuard(body: { tool_input?: { skill?: string } }): Response {
   hookStats.requests++

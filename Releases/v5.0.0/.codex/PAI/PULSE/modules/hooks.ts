@@ -28,7 +28,7 @@ const stats: HookStats = {
 
 let blockedSkills = ["keybindings-help"]
 const FAST_AGENT_TYPES = ["Explore"]
-const FAST_MODELS = ["fast", "haiku"]
+const FAST_MODELS = ["fast"]
 
 // ── Init ──
 
