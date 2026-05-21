@@ -37,12 +37,11 @@ Codex-native port of PAI v5.
 
 ```bash
 # 1. Clone the repo
-git clone <your-fork-url>
-cd <repo>/Releases/v5.0.0
+git clone https://github.com/hifiguy/codex-pai-public-fork.git
+cd codex-pai-public-fork
 
-# 2. Copy the release and run the installer
-cp -R .codex ~/
-cd ~/.codex/PAI
+# 2. Run the release installer
+./Releases/v5.0.0/.codex/install.sh
 ```
 
 See the v5 README for installer and configuration details.
