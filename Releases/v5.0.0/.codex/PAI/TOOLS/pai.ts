@@ -245,8 +245,6 @@ async function spawnCodexWithPersistentStatus(args: string[], env: Record<string
   };
 
   process.stdout.write("\x1b[2J\x1b[H\x1b[?25l");
-  repaint();
-  const timer = setInterval(repaint, 2000);
 
   const proc = spawn(["expect", expectPath, String(topRows), String(size.cols), "--", ...args], {
     stdio: ["inherit", "inherit", "inherit"],
@@ -256,9 +254,12 @@ async function spawnCodexWithPersistentStatus(args: string[], env: Record<string
       COLUMNS: String(size.cols),
     },
   });
+  const firstPaint = setTimeout(repaint, 500);
+  const timer = setInterval(repaint, 2000);
 
   const exitCode = await proc.exited;
   closed = true;
+  clearTimeout(firstPaint);
   clearInterval(timer);
   process.stdout.write("\x1b[?25h");
   try { rmSync(tmp, { recursive: true, force: true }); } catch {}
@@ -551,9 +552,6 @@ async function cmdLaunch(options: { mcp?: string; resume?: boolean; skipPerms?: 
   // Algorithm spec is loaded on-demand when Algorithm mode triggers.
   // (InstantiatePAI.ts is retired — kept for reference only)
 
-  if (!canAttemptPersistentStatus()) {
-    displayBanner();
-  }
   const args = ["codex"];
 
   // PAI operating instructions are sent as the initial prompt. Current Codex
