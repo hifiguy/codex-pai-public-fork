@@ -60,7 +60,7 @@ Each `*Context.md` file follows this simple structure:
 # [AgentType] Agent Context
 
 **Role**: [One-line role description]
-**Model**: opus|sonnet|haiku
+**Model**: smart|standard|fast
 
 ---
 
@@ -184,7 +184,7 @@ To add a new agent type:
 1. Create `[AgentType]Context.md` in `~/.codex/skills/Agents/`
 2. Follow the context file format above
 3. Reference relevant Skills (don't duplicate content)
-4. Specify model preference (opus/sonnet/haiku)
+4. Specify model preference (smart/standard/fast)
 5. Done!
 
 The loader automatically discovers new context files.

@@ -22,7 +22,7 @@ import { parseToml } from "./toml"
 
 const HOME = process.env.HOME ?? "~"
 const PAI_DIR = join(HOME, ".codex", "PAI")
-const PULSE_DIR = join(PAI_DIR, "Pulse")
+const PULSE_DIR = join(PAI_DIR, "PULSE")
 
 const envPath = join(HOME, ".codex", ".env")
 try {

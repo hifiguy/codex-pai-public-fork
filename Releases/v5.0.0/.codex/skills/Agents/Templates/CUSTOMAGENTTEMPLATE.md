@@ -18,7 +18,7 @@
 # === Identity ===
 name: ""                    # Agent type name (e.g., "Engineer", "SecurityAnalyst")
 description: ""             # One-line functional description
-model: opus                 # opus | sonnet | haiku
+model: smart                 # smart | standard | fast
 color: ""                   # Hex color for terminal output (e.g., "#9B59B6")
 
 # === Voice Profile (matches settings.json daidentity.voices schema) ===

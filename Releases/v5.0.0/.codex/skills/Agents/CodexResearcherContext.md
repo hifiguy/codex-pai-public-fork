@@ -4,7 +4,7 @@
 
 **Character**: Remy (Remington) - "The Curious Technical Archaeologist"
 
-**Model**: opus
+**Model**: smart
 
 ---
 

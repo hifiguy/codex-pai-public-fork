@@ -47,7 +47,7 @@ Parse {PRINCIPAL.NAME}'s request:
 - Which team? (Match by name or domain)
 - What's the task? (The work to be done)
 - Subset? (Specific members requested, or full team)
-- Model preference? (Default: sonnet for most, opus for architecture/strategy)
+- Model preference? (Default: standard for most, smart for architecture/strategy)
 
 ### Step 2: Load Team Config
 
@@ -132,14 +132,14 @@ Task({
   description: "Engineering: Senior Engineer - auth refactor",
   prompt: <senior_engineer_enhanced_prompt>,
   subagent_type: "general-purpose",
-  model: "sonnet",
+  model: "standard",
   run_in_background: true
 })
 Task({
   description: "Engineering: QA Lead - auth refactor",
   prompt: <qa_lead_enhanced_prompt>,
   subagent_type: "general-purpose",
-  model: "sonnet",
+  model: "standard",
   run_in_background: true
 })
 // ... remaining members
@@ -193,16 +193,16 @@ Parse member names case-insensitively. Match on role name or reasonable abbrevia
 
 | Team | Default Model | Reasoning |
 |------|--------------|-----------|
-| Engineering | sonnet | Balanced speed/quality for code work |
-| Architecture | opus | Deep reasoning for system design |
-| Marketing | sonnet | Creative + analytical balance |
-| Design | sonnet | Creative work, fast iteration |
-| Security | sonnet | Technical analysis, good enough for most |
-| Research | sonnet | Research speed, upgrade to opus for deep dives |
-| Content | sonnet | Writing quality, fast turnaround |
-| Strategy | opus | Complex multi-factor decisions |
+| Engineering | standard | Balanced speed/quality for code work |
+| Architecture | smart | Deep reasoning for system design |
+| Marketing | standard | Creative + analytical balance |
+| Design | standard | Creative work, fast iteration |
+| Security | standard | Technical analysis, good enough for most |
+| Research | standard | Research speed, upgrade to smart for deep dives |
+| Content | standard | Writing quality, fast turnaround |
+| Strategy | smart | Complex multi-factor decisions |
 
-Override with: "Use opus for the engineering team on this" or "haiku is fine for this research."
+Override with: "Use smart for the engineering team on this" or "fast is fine for this research."
 
 ## Example Executions
 
@@ -215,7 +215,7 @@ Override with: "Use opus for the engineering team on this" or "haiku is fine for
 2. Load expertise from `~/.codex/`
 3. Compose each: Senior Engineer (technical,pragmatic,systematic), QA Lead (technical,skeptical,thorough), Performance Engineer (technical,analytical,systematic), DevOps (technical,cautious,consultative)
 4. Enhance prompts with role context + task
-5. Launch 4 agents in parallel on sonnet
+5. Launch 4 agents in parallel on standard
 6. Collect: Senior Engineer's refactor plan, QA Lead's test concerns, Performance Engineer's hotspot analysis, DevOps' deploy considerations
 7. Synthesize: Unified refactor plan with test coverage requirements, performance benchmarks, and deploy strategy
 8. Deliver
@@ -240,7 +240,7 @@ Override with: "Use opus for the engineering team on this" or "haiku is fine for
 1. Load `strategy.yaml` — 5 members
 2. Ask for structured brief if not provided (Situation/Stakes/Constraints/Key Question)
 3. Compose all 5 with enhanced role prompts
-4. Launch on opus (strategy decisions need deep reasoning)
+4. Launch on smart (strategy decisions need deep reasoning)
 5. Collect positions from all 5, noting Contrarian's challenge to consensus
 6. Synthesize: Ranked recommendation with dissent documented
 7. Deliver

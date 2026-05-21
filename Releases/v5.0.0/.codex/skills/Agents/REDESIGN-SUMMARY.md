@@ -62,7 +62,7 @@ Example: `ArchitectContext.md`
 # Architect Agent Context
 
 **Role**: Software architecture specialist
-**Model**: opus
+**Model**: smart
 
 ## Required Knowledge (Pre-load from Skills)
 - **PAI/CONSTITUTION.md** - Foundational principles
@@ -83,7 +83,7 @@ const { prompt, model } = loader.generateEnrichedPrompt(
 );
 
 // prompt = context file + task description
-// model = opus (from context file)
+// model = smart (from context file)
 ```
 
 ### 3. Spawn Agent with Enriched Prompt

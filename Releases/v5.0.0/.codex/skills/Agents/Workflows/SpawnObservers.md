@@ -6,7 +6,7 @@ Spawn a read-only observer team that watches a primary agent's tool activity in 
 
 ## Use ONLY when BOTH conditions hold
 
-1. **Time is not a constraint.** Observers add 30-second voting cycles and roughly $0.10/primary-hour at Sonnet tier. They are a deliberate speed-for-safety trade.
+1. **Time is not a constraint.** Observers add 30-second voting cycles and roughly $0.10/primary-hour at Standard level tier. They are a deliberate speed-for-safety trade.
 2. **Auditability is the primary requirement.** The goal is a defensible, reviewable trail of what the primary actually did — not fast turnaround. If the user needs the task done quickly, do NOT spawn observers.
 
 ## Typical fit
@@ -84,7 +84,7 @@ Any ESCALATE → the user gets Pulse notification with full context bundle.
 
 ### 4. Cost check
 
-Observer swarm costs tokens continuously. Rough budget: ~$0.10 per primary-hour at Sonnet tier. Surface cost in final report.
+Observer swarm costs tokens continuously. Rough budget: ~$0.10 per primary-hour at Standard level tier. Surface cost in final report.
 
 ### 5. Output to Pulse
 

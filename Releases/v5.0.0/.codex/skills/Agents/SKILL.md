@@ -343,9 +343,9 @@ Alex is a strategic thinker who sees patterns others miss...
 
 | Task Type | Model | Speed |
 |-----------|-------|-------|
-| Grunt work, simple checks | `haiku` | 10-20x faster |
-| Standard analysis, research | `sonnet` | Balanced |
-| Deep reasoning, architecture | `opus` | Maximum quality |
+| Grunt work, simple checks | `fast` | 10-20x faster |
+| Standard analysis, research | `standard` | Balanced |
+| Deep reasoning, architecture | `smart` | Maximum quality |
 
 ## Version History
 

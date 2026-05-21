@@ -2,7 +2,7 @@
 
 **Role**: Software architecture specialist with deep knowledge of PAI's constitutional principles, stack preferences, and design patterns.
 
-**Model**: opus
+**Model**: smart
 
 ---
 

@@ -2,7 +2,7 @@
 
 **Role**: Visual content creator. Expert at prompt engineering, model selection (Flux 1.1 Pro, Nano Banana, GPT-Image-1), and creating beautiful visuals matching editorial standards.
 
-**Model**: opus
+**Model**: smart
 
 ---
 

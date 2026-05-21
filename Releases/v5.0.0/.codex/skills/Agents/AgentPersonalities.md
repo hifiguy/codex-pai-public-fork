@@ -94,7 +94,7 @@ bun run ComposeAgent.ts --traits "medical,empathetic,consultative" --task "Neuro
 bun run ComposeAgent.ts --traits "research,bold,adversarial" --task "Marine biologist" --output json
 
 # Then launch each with their custom prompt (NEVER use static agent types):
-Task(prompt=<ComposeAgent output>, subagent_type="general-purpose", model="sonnet")
+Task(prompt=<ComposeAgent output>, subagent_type="general-purpose", model="standard")
 # Results: 5 agents with 5 different voices AND 5 different colors
 ```
 
@@ -113,8 +113,8 @@ Task(prompt=<ComposeAgent output>, subagent_type="general-purpose", model="sonne
 ```bash
 # {PRINCIPAL.NAME}: "Spin up 5 agents to research these companies"
 # {DA_IDENTITY.NAME} launches 5 parallel agents:
-Task(prompt="Research Company A...", subagent_type="general-purpose", model="haiku")
-Task(prompt="Research Company B...", subagent_type="general-purpose", model="haiku")
+Task(prompt="Research Company A...", subagent_type="general-purpose", model="fast")
+Task(prompt="Research Company B...", subagent_type="general-purpose", model="fast")
 # etc.
 ```
 

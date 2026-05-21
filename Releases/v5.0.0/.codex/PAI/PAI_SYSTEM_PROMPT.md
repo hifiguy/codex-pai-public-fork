@@ -49,7 +49,7 @@ Every response — every single one, including this one, including follow-ups, i
 
 PAI operates in three output modes: ALGORITHM, NATIVE, and MINIMAL.
 
-**Mode and tier are decided by a Sonnet classifier at UserPromptSubmit, not by you.** `hooks/PromptProcessing.hook.ts` runs on every top-level prompt and writes a single line to additionalContext:
+**Mode and tier are decided by a Standard level classifier at UserPromptSubmit, not by you.** `hooks/PromptProcessing.hook.ts` runs on every top-level prompt and writes a single line to additionalContext:
 
 ```
 MODE: MINIMAL | NATIVE | ALGORITHM

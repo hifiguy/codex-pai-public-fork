@@ -80,19 +80,19 @@ Task({
   description: "Research Company A",
   prompt: agent1Prompt,
   subagent_type: "general-purpose",
-  model: "haiku"  // or "sonnet" depending on complexity
+  model: "fast"  // or "standard" depending on complexity
 })
 Task({
   description: "Research Company B",
   prompt: agent2Prompt,
   subagent_type: "general-purpose",
-  model: "haiku"
+  model: "fast"
 })
 Task({
   description: "Research Company C",
   prompt: agent3Prompt,
   subagent_type: "general-purpose",
-  model: "haiku"
+  model: "fast"
 })
 // ... up to N agents
 ```
@@ -120,7 +120,7 @@ Check for:
 
 Provide a brief assessment and any issues found.`,
   subagent_type: "general-purpose",
-  model: "haiku"
+  model: "fast"
 })
 ```
 
@@ -130,19 +130,19 @@ Provide a brief assessment and any issues found.`,
 
 | Timing | Model | Scope |
 |--------|-------|-------|
-| `fast` | `haiku` | Under 500 words, direct answer only |
-| `standard` | `sonnet` | Focused work, under 1500 words |
-| `deep` | `opus` | Comprehensive analysis, no limit |
+| `fast` | `fast` | Under 500 words, direct answer only |
+| `standard` | `standard` | Focused work, under 1500 words |
+| `deep` | `smart` | Comprehensive analysis, no limit |
 
 **Choose model based on timing tier AND task complexity:**
 
 | Task Type | Model | Reason |
 |-----------|-------|--------|
-| Simple checks (URL validation, file existence, basic lookups) | `haiku` | 10-20x faster, more than sufficient |
-| Standard research/analysis (company research, code review) | `sonnet` | Balanced capability and speed |
-| Deep reasoning (strategic analysis, architectural decisions) | `opus` | Maximum intelligence required |
+| Simple checks (URL validation, file existence, basic lookups) | `fast` | 10-20x faster, more than sufficient |
+| Standard research/analysis (company research, code review) | `standard` | Balanced capability and speed |
+| Deep reasoning (strategic analysis, architectural decisions) | `smart` | Maximum intelligence required |
 
-**Parallel execution especially benefits from `haiku` - spawning 10 haiku agents is both faster AND cheaper than 1 opus agent doing sequential work.**
+**Parallel execution especially benefits from `fast` - spawning 10 fast agents is both faster AND cheaper than 1 smart agent doing sequential work.**
 
 ## Example: Research 5 Companies
 
@@ -155,31 +155,31 @@ Task({
   description: "Research Acme AI Security",
   prompt: "Research Acme AI Security Corp: products, market, partnerships, tech stack",
   subagent_type: "general-purpose",
-  model: "sonnet"
+  model: "standard"
 })
 Task({
   description: "Research Bolt Security AI",
   prompt: "Research Bolt Security AI: products, market, partnerships, tech stack",
   subagent_type: "general-purpose",
-  model: "sonnet"
+  model: "standard"
 })
 Task({
   description: "Research Cipher AI Defense",
   prompt: "Research Cipher AI Defense: products, market, partnerships, tech stack",
   subagent_type: "general-purpose",
-  model: "sonnet"
+  model: "standard"
 })
 Task({
   description: "Research Delta Threat Intel",
   prompt: "Research Delta Threat Intelligence: products, market, partnerships, tech stack",
   subagent_type: "general-purpose",
-  model: "sonnet"
+  model: "standard"
 })
 Task({
   description: "Research Echo AI Protection",
   prompt: "Research Echo AI Protection Systems: products, market, partnerships, tech stack",
   subagent_type: "general-purpose",
-  model: "sonnet"
+  model: "standard"
 })
 
 // After results return, spotcheck:
@@ -187,7 +187,7 @@ Task({
   description: "Spotcheck company research",
   prompt: "Review these 5 company research results for consistency and gaps: [results]",
   subagent_type: "general-purpose",
-  model: "haiku"
+  model: "fast"
 })
 ```
 
@@ -199,7 +199,7 @@ Task({
 
 **Input:** List of items (companies, files, URLs, people)
 **Action:** Create one agent per item, identical task structure
-**Model:** `haiku` for simple tasks, `sonnet` for analysis
+**Model:** `fast` for simple tasks, `standard` for analysis
 
 ```typescript
 const items = ["Item1", "Item2", "Item3", "Item4", "Item5"];
@@ -210,7 +210,7 @@ items.forEach(item => {
     description: `Process ${item}`,
     prompt: `Analyze ${item} for: [criteria]`,
     subagent_type: "general-purpose",
-    model: "haiku"
+    model: "fast"
   });
 });
 ```
@@ -219,7 +219,7 @@ items.forEach(item => {
 
 **Input:** Multiple files to analyze
 **Action:** One agent per file, same analysis criteria
-**Model:** `sonnet` for code analysis, `haiku` for simple checks
+**Model:** `standard` for code analysis, `fast` for simple checks
 
 ```typescript
 const files = ["src/auth.ts", "src/db.ts", "src/api.ts"];
@@ -230,7 +230,7 @@ files.forEach(file => {
     description: `Analyze ${file}`,
     prompt: `Review ${file} for security issues, focusing on: [checklist]`,
     subagent_type: "general-purpose",
-    model: "sonnet"
+    model: "standard"
   });
 });
 ```
@@ -239,7 +239,7 @@ files.forEach(file => {
 
 **Input:** Multiple data points/questions
 **Action:** One agent per question, independent research
-**Model:** `sonnet` for research, `haiku` for fact-checking
+**Model:** `standard` for research, `fast` for fact-checking
 
 ```typescript
 const questions = [
@@ -256,7 +256,7 @@ questions.forEach(q => {
     description: `Research: ${q}`,
     prompt: `Find reliable answer to: ${q}. Include sources.`,
     subagent_type: "general-purpose",
-    model: "haiku"
+    model: "fast"
   });
 });
 ```
@@ -285,7 +285,7 @@ Verify:
 
 Flag any issues for follow-up.`,
   subagent_type: "general-purpose",
-  model: "haiku"  // Fast spotcheck
+  model: "fast"  // Fast spotcheck
 })
 ```
 
@@ -315,7 +315,7 @@ Task({
   description: "Research X",
   prompt: "Research X and report findings",
   subagent_type: "Intern",  // DOES NOT EXIST — removed from system
-  model: "haiku"
+  model: "fast"
 })
 ```
 
@@ -326,7 +326,7 @@ Task({
   description: "Research X",
   prompt: "Research X and report findings",
   subagent_type: "general-purpose",
-  model: "haiku"
+  model: "fast"
 })
 // For specialized parallel work, compose a custom agent first via ComposeAgent
 // or use a specialized type like "Engineer", "Architect", etc.
@@ -346,20 +346,20 @@ Task({
 // THEN report as complete
 ```
 
-**❌ WRONG: Using opus for simple parallel tasks**
+**❌ WRONG: Using smart for simple parallel tasks**
 ```typescript
-// Each agent uses opus = slow + expensive
-Task({ ..., model: "opus" })
-Task({ ..., model: "opus" })
-Task({ ..., model: "opus" })
+// Each agent uses smart = slow + expensive
+Task({ ..., model: "smart" })
+Task({ ..., model: "smart" })
+Task({ ..., model: "smart" })
 ```
 
-**✅ RIGHT: Use haiku for grunt work**
+**✅ RIGHT: Use fast for grunt work**
 ```typescript
 // 10-20x faster, sufficient for simple tasks
-Task({ ..., model: "haiku" })
-Task({ ..., model: "haiku" })
-Task({ ..., model: "haiku" })
+Task({ ..., model: "fast" })
+Task({ ..., model: "fast" })
+Task({ ..., model: "fast" })
 ```
 
 ## Voice Output

@@ -4,7 +4,7 @@
 
 **Character**: Ava Sterling - "The Strategic Sophisticate"
 
-**Model**: opus
+**Model**: smart
 
 ---
 

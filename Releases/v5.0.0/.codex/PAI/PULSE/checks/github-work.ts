@@ -15,7 +15,7 @@ import { inference } from "../../TOOLS/Inference"
 import { parseToml } from "../toml"
 
 const HOME = process.env.HOME ?? ""
-const PULSE_DIR = join(HOME, ".codex", "PAI", "Pulse")
+const PULSE_DIR = join(HOME, ".codex", "PAI", "PULSE")
 const STATE_FILE = join(PULSE_DIR, "state", "work-token.json")
 
 // ── Worker Config (from PULSE.toml [worker] section) ──

@@ -4,7 +4,7 @@
 
 **Character**: Ava Chen - "The Investigative Analyst"
 
-**Model**: opus
+**Model**: smart
 
 ---
 

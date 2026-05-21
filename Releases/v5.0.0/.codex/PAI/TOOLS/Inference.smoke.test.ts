@@ -160,7 +160,7 @@ describe("PAI inference gateway smoke tests", () => {
     }
   });
 
-  test("Pulse spawnInference maps legacy Claude model labels to provider-neutral levels", async () => {
+  test("Pulse spawnInference uses provider-neutral model levels", async () => {
     const mock = await startMockServer(async (req, records) => {
       const body = await req.json();
       records.push({
@@ -182,7 +182,7 @@ describe("PAI inference gateway smoke tests", () => {
         PAI_INFERENCE_MODEL_STANDARD: "standard-model",
       });
 
-      const output = await spawnInference("Pulse prompt", { model: "sonnet", timeoutMs: 2_000 });
+      const output = await spawnInference("Pulse prompt", { model: "standard", timeoutMs: 2_000 });
 
       expect(output).toBe("pulse-ok");
       expect(mock.records).toHaveLength(1);

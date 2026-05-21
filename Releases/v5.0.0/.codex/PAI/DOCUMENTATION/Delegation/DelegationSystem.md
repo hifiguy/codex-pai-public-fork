@@ -21,38 +21,38 @@ extracted_from: SKILL.md lines 535-627
 
 **Resuming agents:** To continue a previously spawned agent, use `SendMessage({to: agentId})`. This auto-resumes stopped background agents. Do NOT use `Agent(resume=...)` — the `resume` parameter no longer exists.
 
-Agents default to inheriting the parent model (often Opus). This is SLOW for simple tasks. Each inference with 30K+ context takes 5-15 seconds on Opus. A simple 10-tool-call task = 1-2+ minutes of pure thinking time.
+Agents default to inheriting the parent model (often Smart level). This is SLOW for simple tasks. Each inference with 30K+ context takes 5-15 seconds on Smart level. A simple 10-tool-call task = 1-2+ minutes of pure thinking time.
 
 **Model Selection Matrix:**
 
 | Task Type | Model | Why |
 |-----------|-------|-----|
-| Deep reasoning, complex architecture, strategic decisions | `opus` | Maximum intelligence needed |
-| Standard implementation, moderate complexity, most coding | `sonnet` | Good balance of speed + capability |
-| Simple lookups, file reads, quick checks, parallel grunt work | `haiku` | 10-20x faster, sufficient intelligence |
+| Deep reasoning, complex architecture, strategic decisions | `smart` | Maximum intelligence needed |
+| Standard implementation, moderate complexity, most coding | `standard` | Good balance of speed + capability |
+| Simple lookups, file reads, quick checks, parallel grunt work | `fast` | 10-20x faster, sufficient intelligence |
 
 **Examples:**
 
 ```typescript
-// WRONG - defaults to Opus, takes minutes
+// WRONG - defaults to Smart level, takes minutes
 Agent({ prompt: "Check if blue bar exists on website", subagent_type: "general-purpose" })
 
-// RIGHT - Haiku for simple visual check
-Agent({ prompt: "Check if blue bar exists on website", subagent_type: "general-purpose", model: "haiku" })
+// RIGHT - Fast level for simple visual check
+Agent({ prompt: "Check if blue bar exists on website", subagent_type: "general-purpose", model: "fast" })
 
-// RIGHT - Sonnet for standard coding task
-Agent({ prompt: "Implement the login form validation", subagent_type: "Engineer", model: "sonnet" })
+// RIGHT - Standard level for standard coding task
+Agent({ prompt: "Implement the login form validation", subagent_type: "Engineer", model: "standard" })
 
-// RIGHT - Opus for complex architectural planning
-Agent({ prompt: "Design the distributed caching strategy", subagent_type: "Architect", model: "opus" })
+// RIGHT - Smart level for complex architectural planning
+Agent({ prompt: "Design the distributed caching strategy", subagent_type: "Architect", model: "smart" })
 ```
 
 **Rule of Thumb:**
-- If it's grunt work or verification → `haiku`
-- If it's implementation or research → `sonnet`
-- If it requires deep strategic thinking → `opus` (or let it default)
+- If it's grunt work or verification → `fast`
+- If it's implementation or research → `standard`
+- If it requires deep strategic thinking → `smart` (or let it default)
 
-**Parallel tasks especially benefit from haiku** - launching 5 haiku agents is faster AND cheaper than 1 Opus agent doing sequential work.
+**Parallel tasks especially benefit from fast** - launching 5 fast agents is faster AND cheaper than 1 Smart level agent doing sequential work.
 
 ### Agent Types
 
@@ -124,14 +124,14 @@ Every agent prompt MUST include a `## Scope` section that matches the validated 
 
 | Timing | Model | Agent Output | Example |
 |--------|-------|-------------|---------|
-| **fast** | `haiku` | <500 words, direct answer | "Check if server is running" |
-| **standard** | `sonnet` | <1500 words, focused work | "Implement login validation" |
-| **deep** | `opus` | No limit, thorough analysis | "Comprehensive security audit" |
+| **fast** | `fast` | <500 words, direct answer | "Check if server is running" |
+| **standard** | `standard` | <1500 words, focused work | "Implement login validation" |
+| **deep** | `smart` | No limit, thorough analysis | "Comprehensive security audit" |
 
 **Examples:**
 
 ```typescript
-// FAST — simple check, haiku model, minimal output
+// FAST — simple check, fast model, minimal output
 Agent({
   prompt: `Check if the auth middleware exports are correct.
 ## Scope
@@ -139,7 +139,7 @@ Timing: FAST — direct answer only.
 - Under 500 words
 - Answer the question, report the result, done`,
   subagent_type: "Explore",
-  model: "haiku"
+  model: "fast"
 })
 
 // STANDARD — typical implementation work
@@ -150,7 +150,7 @@ Timing: STANDARD — focused implementation.
 - Under 1500 words
 - Stay on task, deliver the work, verify it works`,
   subagent_type: "Engineer",
-  model: "sonnet"
+  model: "standard"
 })
 
 // DEEP — comprehensive analysis
@@ -162,7 +162,7 @@ Timing: DEEP — comprehensive analysis.
 - Explore alternatives, consider edge cases
 - Thorough verification and documentation`,
   subagent_type: "Silas",
-  model: "opus"
+  model: "smart"
 })
 ```
 

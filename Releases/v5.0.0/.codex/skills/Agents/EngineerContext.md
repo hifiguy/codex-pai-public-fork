@@ -2,7 +2,7 @@
 
 **Role**: Senior engineering leader for strategic implementation work. Emphasizes TDD, comprehensive planning, and constitutional compliance.
 
-**Model**: opus
+**Model**: smart
 
 ---
 

@@ -28,8 +28,20 @@ else
   BUN_PATH="$(command -v bun || echo "$HOME/.bun/bin/bun")"
 fi
 
+ensure_observability_dashboard() {
+  OBS_DIR="$PULSE_DIR/Observability"
+  if [ ! -f "$OBS_DIR/out/index.html" ] && [ -f "$OBS_DIR/package.json" ]; then
+    echo "Building Pulse Observability dashboard..."
+    (cd "$OBS_DIR" && "$BUN_PATH" install --frozen-lockfile && "$BUN_PATH" run build) || {
+      echo "ERROR: Pulse Observability dashboard build failed." >&2
+      exit 1
+    }
+  fi
+}
+
 case "$1" in
   start)
+    ensure_observability_dashboard
     if [ ! -f "$PLIST_DST" ]; then
       # Substitute __HOME__ + __BUN_PATH__ placeholders (public template);
       # no-op on plists that already have literal paths.
@@ -85,6 +97,7 @@ case "$1" in
 
   install)
     mkdir -p "$PULSE_DIR/state" "$PULSE_DIR/logs"
+    ensure_observability_dashboard
 
     # Cleanup any prior pulse before installing fresh — prevents the stale-PID
     # / unbound-port half-dead state where a previous launchd-managed pulse is

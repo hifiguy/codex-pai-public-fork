@@ -157,11 +157,11 @@ v5.5.0 is the **third BPE compaction round on the ISC tagging system**, applied 
 **Surface format before / after:**
 
 ```
-v5.4.0:  - [ ] ISC-1: Haiku exists and JSON schema validates
+v5.4.0:  - [ ] ISC-1: Fast level exists and JSON schema validates
          - [ ] ISC-A-1: Anti: bun build does not error
          - [ ] ISC-7: Antecedent: novel juxtaposition of metric + sketch
 
-v5.5.0:  - [ ] ISC-1: Haiku exists and JSON schema validates
+v5.5.0:  - [ ] ISC-1: Fast level exists and JSON schema validates
          - [ ] ISC-2: Anti: bun build does not error              (sequential numbering)
          - [ ] ISC-7: Antecedent: novel juxtaposition of metric + sketch
 ```
@@ -195,10 +195,10 @@ v5.3.0 is a **BPE compaction release on the ISC category tag system**. Audit dri
 **Surface format before / after:**
 
 ```
-v5.2.0:  - [ ] ISC-1 [F]: Haiku exists and JSON schema validates
+v5.2.0:  - [ ] ISC-1 [F]: Fast level exists and JSON schema validates
          - [ ] ISC-A-1 [N]: Anti: bun build does not error
 
-v5.3.0:  - [ ] ISC-1: Haiku exists and JSON schema validates
+v5.3.0:  - [ ] ISC-1: Fast level exists and JSON schema validates
          - [ ] ISC-A-1: Anti: bun build does not error
          - [ ] ISC-7: Antecedent: novel juxtaposition of metric + sketch    (when experiential)
 ```

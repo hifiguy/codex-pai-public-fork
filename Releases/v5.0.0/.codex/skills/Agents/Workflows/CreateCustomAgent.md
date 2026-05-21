@@ -88,19 +88,19 @@ Task({
   description: "Research agent 1 - enthusiastic",
   prompt: <agent1_full_prompt>,
   subagent_type: "general-purpose",
-  model: "sonnet"  // or "haiku" for speed
+  model: "standard"  // or "fast" for speed
 })
 Task({
   description: "Research agent 2 - skeptical",
   prompt: <agent2_full_prompt>,
   subagent_type: "general-purpose",
-  model: "sonnet"
+  model: "standard"
 })
 Task({
   description: "Research agent 3 - analytical",
   prompt: <agent3_full_prompt>,
   subagent_type: "general-purpose",
-  model: "sonnet"
+  model: "standard"
 })
 ```
 
@@ -131,7 +131,7 @@ Task({
   description: "Spotcheck custom agent results",
   prompt: "Review these results for consistency and completeness: [results]",
   subagent_type: "general-purpose",
-  model: "haiku"
+  model: "fast"
 })
 ```
 
@@ -170,11 +170,11 @@ If `--timing` is omitted, agents get no scope section (backward compatible).
 
 | Timing | Model | Agent Output |
 |--------|-------|-------------|
-| `fast` | `haiku` | Under 500 words, direct answer |
-| `standard` | `sonnet` | Focused work, under 1500 words |
-| `deep` | `opus` | Comprehensive analysis, no limit |
+| `fast` | `fast` | Under 500 words, direct answer |
+| `standard` | `standard` | Focused work, under 1500 words |
+| `deep` | `smart` | Comprehensive analysis, no limit |
 
-**Parallel custom agents benefit from `sonnet` or `haiku` for speed.**
+**Parallel custom agents benefit from `standard` or `fast` for speed.**
 
 ## Example Execution
 

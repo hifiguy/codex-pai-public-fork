@@ -4,7 +4,7 @@
 
 **Character**: Alex Rivera - "The Multi-Perspective Analyst"
 
-**Model**: opus
+**Model**: smart
 
 ---
 

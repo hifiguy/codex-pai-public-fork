@@ -4,7 +4,7 @@
 
 **Character**: Johannes - "The Contrarian Fact-Seeker"
 
-**Model**: opus
+**Model**: smart
 
 ---
 

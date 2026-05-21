@@ -60,6 +60,18 @@ type = "command"
 command = "$HOME/.codex/hooks/SecurityPipeline.hook.ts"
 
 [[hooks.pre_tool_use]]
+matcher = "Skill"
+[[hooks.pre_tool_use.hooks]]
+type = "http"
+url = "http://localhost:31337/hooks/skill-guard"
+
+[[hooks.pre_tool_use]]
+matcher = "Agent"
+[[hooks.pre_tool_use.hooks]]
+type = "http"
+url = "http://localhost:31337/hooks/agent-guard"
+
+[[hooks.pre_tool_use]]
 matcher = "AskUserQuestion"
 [[hooks.pre_tool_use.hooks]]
 type = "command"
@@ -157,3 +169,41 @@ type = "command"
 command = "$HOME/.codex/hooks/SatisfactionCapture.hook.ts"
 timeout = 20
 async = true
+
+[[hooks.session_end]]
+[[hooks.session_end.hooks]]
+type = "command"
+command = "$HOME/.codex/hooks/WorkCompletionLearning.hook.ts"
+[[hooks.session_end.hooks]]
+type = "command"
+command = "$HOME/.codex/hooks/SessionCleanup.hook.ts"
+[[hooks.session_end.hooks]]
+type = "command"
+command = "$HOME/.codex/hooks/RelationshipMemory.hook.ts"
+[[hooks.session_end.hooks]]
+type = "command"
+command = "$HOME/.codex/hooks/UpdateCounts.hook.ts"
+[[hooks.session_end.hooks]]
+type = "command"
+command = "$HOME/.codex/hooks/IntegrityCheck.hook.ts"
+[[hooks.session_end.hooks]]
+type = "command"
+command = "$HOME/.codex/hooks/KVSync.hook.ts"
+
+[[hooks.stop]]
+[[hooks.stop.hooks]]
+type = "command"
+command = "$HOME/.codex/hooks/LastResponseCache.hook.ts"
+timeout = 30
+[[hooks.stop.hooks]]
+type = "command"
+command = "$HOME/.codex/hooks/ResponseTabReset.hook.ts"
+timeout = 10
+[[hooks.stop.hooks]]
+type = "command"
+command = "$HOME/.codex/hooks/VoiceCompletion.hook.ts"
+timeout = 120
+[[hooks.stop.hooks]]
+type = "command"
+command = "$HOME/.codex/hooks/DocIntegrity.hook.ts"
+timeout = 30

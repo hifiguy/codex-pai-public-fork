@@ -17,16 +17,16 @@ import { homedir } from "os";
 interface AgentContext {
   agentType: string;
   contextContent: string;
-  model: "opus" | "sonnet" | "haiku";
+  model: "fast" | "standard" | "smart";
 }
 
 export class AgentContextLoader {
-  private claudeHome: string;
+  private codexHome: string;
   private agentsDir: string;
 
   constructor() {
     this.codexHome = join(homedir(), ".codex");
-    this.agentsDir = join(this.codexHome, "Skills", "Agents");
+    this.agentsDir = join(this.codexHome, "skills", "Agents");
   }
 
   /**
@@ -43,9 +43,9 @@ export class AgentContextLoader {
 
     const contextContent = readFileSync(contextPath, "utf-8");
 
-    // Extract model preference from context file (defaults to opus)
-    const modelMatch = contextContent.match(/\*\*Model\*\*:\s*(opus|sonnet|haiku)/i);
-    const model = (modelMatch?.[1].toLowerCase() as "opus" | "sonnet" | "haiku") || "opus";
+    // Extract provider-neutral model preference from context file.
+    const modelMatch = contextContent.match(/\*\*Model\*\*:\s*(fast|standard|smart)/i);
+    const model = (modelMatch?.[1].toLowerCase() as "fast" | "standard" | "smart") || "smart";
 
     return {
       agentType,
@@ -74,7 +74,7 @@ export class AgentContextLoader {
    */
   generateEnrichedPrompt(agentType: string, taskDescription: string): {
     prompt: string;
-    model: "opus" | "sonnet" | "haiku";
+    model: "fast" | "standard" | "smart";
   } {
     const context = this.loadContext(agentType);
 

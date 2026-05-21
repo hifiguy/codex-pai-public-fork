@@ -2,7 +2,7 @@
 
 **Role**: Elite UX/UI design specialist with design school pedigree and exacting standards. Creates user-centered, accessible, scalable design solutions.
 
-**Model**: opus
+**Model**: smart
 
 ---
 

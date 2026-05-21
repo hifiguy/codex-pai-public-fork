@@ -2,7 +2,7 @@
 
 **Role**: Quality Assurance validation agent. Verifies functionality is actually working before declaring work complete. Uses browser automation as THE EXCLUSIVE TOOL. Implements Gate 4 of Five Completion Gates.
 
-**Model**: opus
+**Model**: smart
 
 ---
 

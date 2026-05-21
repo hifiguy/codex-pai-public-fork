@@ -33,7 +33,7 @@ Each subsystem runs in its own crash-isolated loop within the single Pulse proce
 
 ## Architecture
 
-Pulse is a single Bun process managed by launchd on port 31337. On startup, it initializes all enabled subsystem modules (voice, hooks, observability, telegram, imessage), starts the HTTP server, launches the menu bar app, then enters the cron heartbeat loop. It reads job definitions from `PULSE.toml`, evaluates cron schedules, executes due jobs (either shell scripts or Claude CLI invocations), and routes output through internal dispatch (voice is now an in-process function call, not a separate HTTP request). There is no queue, no AI triage layer, no channel abstraction -- just run jobs and route output.
+Pulse is a single Bun process managed by launchd on port 31337. On startup, it initializes all enabled subsystem modules (voice, hooks, observability, telegram, imessage), starts the HTTP server, launches the menu bar app, then enters the cron heartbeat loop. It reads job definitions from `PULSE.toml`, evaluates cron schedules, executes due jobs (either shell scripts or Codex inference gateway invocations), and routes output through internal dispatch (voice is now an in-process function call, not a separate HTTP request). There is no queue, no AI triage layer, no channel abstraction -- just run jobs and route output.
 
 ```
 launchd (com.pai.pulse)
@@ -114,8 +114,8 @@ All jobs are defined in a single TOML file. Each job is a `[[job]]` table array 
 | `schedule` | string | yes | -- | 5-field cron expression |
 | `type` | `"script"` or `"codex"` | no | `"script"` | Execution method |
 | `command` | string | for script | -- | Shell command to run (supports `${ENV_VAR}` expansion) |
-| `prompt` | string | for codex | -- | Prompt text sent to Claude CLI |
-| `model` | string | no | `"sonnet"` | Claude model for codex-type jobs |
+| `prompt` | string | for codex | -- | Prompt text sent to Codex inference gateway |
+| `model` | string | no | `"standard"` | provider-neutral model level for codex-type jobs |
 | `output` | `"voice"` / `"telegram"` / `"ntfy"` / `"log"` | no | `"log"` | Dispatch target for non-sentinel output |
 | `enabled` | boolean | no | `true` | Whether the job runs |
 
@@ -163,7 +163,7 @@ name = "morning-brief"
 schedule = "0 7 * * *"
 type = "codex"
 prompt = "Prepare a morning brief: today's calendar events..."
-model = "sonnet"
+model = "standard"
 output = "voice"
 enabled = true
 ```
@@ -180,13 +180,13 @@ Cost: $0. All computation is local or uses free APIs.
 
 Script jobs are the default and should be preferred. Most checks follow a pattern: call an API, parse the response, output a notification string or a sentinel.
 
-### Claude Jobs (`type = "codex"`)
+### Codex Jobs (`type = "codex"`)
 
 Spawn `codex` headless via the `PAI/TOOLS/Inference.ts` flag pattern (`--print --model X --tools '' --output-format text --setting-sources '' --system-prompt ''`) with `OPENAI_API_KEY` and `OPENAI_AUTH_TOKEN` deleted from the subprocess env so OAuth/keychain billing applies. The prompt is piped via stdin. Output format is plain text. The process has a 5-minute timeout. **NEVER use `codex --bare`** — the `--bare` flag forces `OPENAI_API_KEY` auth and bypasses OAuth/keychain (per the constitutional rule in `PAI_SYSTEM_PROMPT.md` "Operational Rules" — a real billing incident drove this rule).
 
-Cost: Token-dependent. A Haiku job costs fractions of a cent. A Sonnet job processing a morning brief costs roughly $0.01-0.03.
+Cost: Token-dependent. A Fast level job costs fractions of a cent. A Standard level job processing a morning brief costs roughly $0.01-0.03.
 
-Claude jobs are for tasks that require reasoning: urgency assessment, summarization, pattern detection. Use them sparingly -- most checks should be script jobs with optional AI triage as a second layer.
+Codex jobs are for tasks that require reasoning: urgency assessment, summarization, pattern detection. Use them sparingly -- most checks should be script jobs with optional AI triage as a second layer.
 
 ---
 
@@ -390,11 +390,11 @@ Set `enabled = false` in `PULSE.toml` and restart. The job's state is preserved 
 
 **Schedule:** Every 5 minutes
 **Output:** voice
-**Cost:** $0 when no new emails; ~$0.001 per triage (Haiku)
+**Cost:** $0 when no new emails; ~$0.001 per triage (Fast level)
 
 Two-layer design:
 1. **Layer 1 (free):** Fetches unread emails via the `_INBOX` skill's `Manage.ts` tool. Deduplicates against a seen list (`state/email-seen.json`, max 200 entries). If no new emails, outputs `NO_URGENT`.
-2. **Layer 2 (cheap):** Sends new email subjects/senders to Haiku for urgency assessment. Only flags genuinely urgent items: security incidents, 24-hour deadlines, explicit ASAP requests, financial/medical alerts. Newsletters, meeting invites, and routine updates are not urgent.
+2. **Layer 2 (cheap):** Sends new email subjects/senders to Fast level for urgency assessment. Only flags genuinely urgent items: security incidents, 24-hour deadlines, explicit ASAP requests, financial/medical alerts. Newsletters, meeting invites, and routine updates are not urgent.
 
 ### calendar.ts -- Calendar Reminders
 
@@ -466,15 +466,15 @@ As of v2.0, Pulse also absorbed four previously standalone services into its mod
 
 Email, calendar, GitHub, and health checks use free APIs (Gmail, Google Calendar, GitHub REST, HTTP HEAD). The only cost is local compute (negligible).
 
-The email check has an optional AI layer (Haiku urgency triage) that fires only when new emails arrive. Cost: ~$0.001 per invocation.
+The email check has an optional AI layer (Fast level urgency triage) that fires only when new emails arrive. Cost: ~$0.001 per invocation.
 
-### Claude Jobs: Token Cost
+### Codex Jobs: Token Cost
 
 | Job | Model | Schedule | Est. Cost/Run | Est. Cost/Day |
 |-----|-------|----------|---------------|---------------|
-| morning-brief | Sonnet | 1x daily (7 AM) | ~$0.02 | ~$0.02 |
-| memory-consolidation | Sonnet | 1x daily (3 AM) | ~$0.03 | ~$0.03 |
-| proactive-suggestions | Haiku | 3x daily (disabled) | ~$0.005 | ~$0.015 |
+| morning-brief | Standard level | 1x daily (7 AM) | ~$0.02 | ~$0.02 |
+| memory-consolidation | Standard level | 1x daily (3 AM) | ~$0.03 | ~$0.03 |
+| proactive-suggestions | Fast level | 3x daily (disabled) | ~$0.005 | ~$0.015 |
 
 **Total estimated daily cost with current enabled jobs:** ~$0.05/day + negligible email triage costs.
 
@@ -545,7 +545,7 @@ bun run checks/github.ts
 │   ├── cron.ts               # Cron expression parser and schedule evaluation
 │   ├── dispatch.ts           # Output routing (voice, telegram, ntfy, log)
 │   ├── state.ts              # Atomic state persistence
-│   └── spawn.ts              # Script and Claude process spawning
+│   └── spawn.ts              # Script and Codex process spawning
 ├── modules/
 │   ├── hooks.ts              # Skill-guard + agent-guard validation
 │   ├── telegram.ts           # grammY polling bot + codex-agent-sdk sessions
@@ -562,7 +562,7 @@ bun run checks/github.ts
 │   ├── src/                  # Next.js 15.5 dashboard source
 │   └── out/                  # Static export served by Pulse
 ├── checks/
-│   ├── email.ts              # Email triage -- Gmail API + Haiku urgency
+│   ├── email.ts              # Email triage -- Gmail API + Fast level urgency
 │   ├── calendar.ts           # Calendar reminders -- Google Calendar API
 │   ├── github.ts             # GitHub PR monitor -- REST API + dedup
 │   ├── github-work.ts        # GitHub Issues work polling for PAI Workers (optional)
@@ -737,7 +737,7 @@ The DA module formalizes how Pulse instantiates, manages, and evolves a Digital 
 The DA module adds four capabilities to Pulse:
 
 1. **Identity Registry** -- Structured YAML identity per DA with personality traits, voice config, writing style, autonomy rules
-2. **Heartbeat** -- Proactive "should I do something?" evaluation every 30 minutes (2-layer: free context + cheap Haiku eval, ~$0.05/day)
+2. **Heartbeat** -- Proactive "should I do something?" evaluation every 30 minutes (2-layer: free context + cheap Fast level eval, ~$0.05/day)
 3. **Scheduled Tasks** -- JSONL-based task store with natural language creation, persistent across restarts
 4. **Growth Engine** -- Daily diary, weekly opinion formation, bounded identity evolution
 
@@ -748,7 +748,7 @@ The DA module adds four capabilities to Pulse:
 enabled = true
 primary = "your-da"
 heartbeat_schedule = "*/30 * * * *"
-heartbeat_model = "haiku"
+heartbeat_model = "fast"
 heartbeat_cost_ceiling = 0.01
 diary_schedule = "0 23 * * *"
 growth_schedule = "0 4 * * 0"
@@ -782,7 +782,7 @@ The DA_IDENTITY.yaml schema covers: core identity (name, role, color), voice con
 
 Two-layer architecture:
 - **Layer 1 ($0):** Deterministic context gathering -- calendar, email, active work, pending tasks, recent ratings
-- **Layer 2 (~$0.001):** Single Haiku evaluation -- should I notify, remind, create a task, or stay silent?
+- **Layer 2 (~$0.001):** Single Fast level evaluation -- should I notify, remind, create a task, or stay silent?
 
 Most evaluations return NO_ACTION. Cost: ~$0.05/day ($1.50/month).
 

@@ -3,7 +3,7 @@
  *
  * Walks ~/.codex/PAI/USER/, parses frontmatter + body of every .md file,
  * computes derived fields (staleness, completeness, item_count, preview),
- * and writes a typed JSON index at Pulse/state/user-index.json.
+ * and writes a typed JSON index at PULSE/state/user-index.json.
  *
  * Consumed by Pulse dashboard (/life, /health, /finances, ...), Daemon
  * aggregator (via publish_feed), and Interview skill (via interview_gaps).
@@ -25,7 +25,7 @@ import { join, relative, basename, dirname } from "path"
 const HOME = process.env.HOME ?? ""
 const PAI_DIR = process.env.PAI_DIR || join(HOME, ".codex", "PAI")
 const USER_DIR = join(PAI_DIR, "USER")
-const STATE_DIR = join(PAI_DIR, "Pulse", "state")
+const STATE_DIR = join(PAI_DIR, "PULSE", "state")
 const INDEX_PATH = join(STATE_DIR, "user-index.json")
 const MODULE_NAME = "user-index"
 

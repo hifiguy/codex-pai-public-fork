@@ -36,7 +36,7 @@ Use after code changes or before PR creation.
 
 | Capability | When | Invoke |
 |------------|------|--------|
-| **Forge (code producer)** | **MANDATORY at E3/E4/E5 for any coding task (implement, refactor, debug, build). Also invoke whenever {{PRINCIPAL_NAME}} names "Forge" at any tier. OpenAI-family coder — GPT-5.4 via `codex exec` at `model_reasoning_effort=high`. Specialization: quality + completeness. Distinct from Engineer (Claude-family) and Cato (auditor, read-only). DO NOT invoke at E1/E2 — cost/latency prohibitive.** | `Agent(subagent_type="Forge", prompt="...")` |
+| **Forge (code producer)** | **MANDATORY at E3/E4/E5 for any coding task (implement, refactor, debug, build). Also invoke whenever {{PRINCIPAL_NAME}} names "Forge" at any tier. OpenAI-family coder — GPT-5.4 via `codex exec` at `model_reasoning_effort=high`. Specialization: quality + completeness. Distinct from Engineer (provider-specific) and Cato (auditor, read-only). DO NOT invoke at E1/E2 — cost/latency prohibitive.** | `Agent(subagent_type="Forge", prompt="...")` |
 | **Anvil (Kimi K2.6 code producer)** | **Sibling to Forge, Moonshot-family.** Runs `kimi-k2.6` (reasoning model, Moonshot enforces temperature=1) via `PAI/TOOLS/AnvilProgress.ts` with Moonshot's 256K context. Pick Anvil over Forge when the task benefits from whole-project context breadth — cross-file refactors, architecture-fitting changes, long-range reasoning. Always invoke when {{PRINCIPAL_NAME}} names "Anvil" (name-match overrides tier gate). At E3/E4/E5, Forge remains the default producer; Anvil is chosen instead of or in parallel with Forge. Skip at E1/E2 unless {{PRINCIPAL_NAME}} named him. | `Agent(subagent_type="Anvil", prompt="...")` |
 | /simplify | After code changes | `Skill("simplify")` |
 | /batch | 3+ files with similar changes | `Skill("batch", "instruction")` |
@@ -55,7 +55,7 @@ Use after code changes or before PR creation.
 
 **Parallel with Engineer:** At E4/E5 where duplicate perspectives earn their cost, Forge and Engineer may both be spawned on the same task for cross-vendor code production. Each works in its own worktree; {{DA_NAME}} merges or picks the stronger diff in VERIFY.
 
-**What this gate prevents:** E3+ coding work silently routed through Claude-family only, repeating the same-family blind spot pattern that Cato addresses on the review side.
+**What this gate prevents:** E3+ coding work silently routed through provider-specific only, repeating the same-family blind spot pattern that Cato addresses on the review side.
 
 ### Anvil invocation binding (E3-E5 long-context coding tasks)
 

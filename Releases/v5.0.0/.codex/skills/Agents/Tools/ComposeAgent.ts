@@ -546,7 +546,7 @@ function saveAgent(agent: ComposedAgent): string {
   const content = `---
 name: "${agent.name}"
 description: "${description.replace(/"/g, '\\"')}"
-model: opus
+model: smart
 color: "${agent.color}"
 voiceId: "${agent.voiceId}"
 voice:

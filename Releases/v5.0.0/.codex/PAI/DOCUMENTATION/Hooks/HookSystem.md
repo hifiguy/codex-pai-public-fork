@@ -134,7 +134,7 @@ ChatGPT Codex supports the following hook events:
 ---
 
 ### 3. **UserPromptSubmit**
-**When:** User submits a new prompt to Claude
+**When:** User submits a new prompt to Codex
 **Use Cases:**
 - Update UI indicators
 - Pre-process user input
@@ -193,15 +193,15 @@ ChatGPT Codex supports the following hook events:
 
 **PromptProcessing.hook.ts** - Unified Prompt Analysis (Rating + Tab + Naming + Mode + Tier)
 - Consolidated replacement for the former SessionAnalysis + ModeClassifier + ClassifierTelemetry split (and earlier RatingCapture + UpdateTabTitle + SessionAutoName trio)
-- **One process, one Sonnet call, five outputs** — sentiment rating, tab title, session name, MODE classification (MINIMAL/NATIVE/ALGORITHM), TIER (E1–E5 when ALGORITHM)
+- **One process, one Standard level call, five outputs** — sentiment rating, tab title, session name, MODE classification (MINIMAL/NATIVE/ALGORITHM), TIER (E1–E5 when ALGORITHM)
 - Fast paths (no inference): explicit ratings ("8 - great"), positive praise ("nice work"), system text
 - Deterministic tab title set immediately (purple/thinking state)
-- Deterministic session name on first prompt (background Sonnet upgrade follows)
-- Sonnet inference returns the five outputs as a single JSON line written into additionalContext
+- Deterministic session name on first prompt (background Standard level upgrade follows)
+- Standard level inference returns the five outputs as a single JSON line written into additionalContext
 - Sets tab to orange/working state with inferred title + voice announcement
 - Low ratings (<5) auto-capture as learning opportunities
 - Writes to: `ratings.jsonl`, `session-names.json`, `work.json`, tab state, voice server, `MEMORY/OBSERVABILITY/mode-classifier.jsonl`
-- **Inference:** `import { inference } from "~/.codex/PAI/TOOLS/Inference.ts"` → Sonnet level
+- **Inference:** `import { inference } from "~/.codex/PAI/TOOLS/Inference.ts"` → standard level
 - **Performance:** Fast paths <50ms, inference path ~3-8s (deliberate cost of better mode/tier judgment than regex could provide)
 - **Failsafe:** any classifier error path (timeout 25s, non-zero exit, unparseable JSON) defaults to ALGORITHM E3 with `SOURCE: fail-safe`
 - **Naming-context isolation (2026-04-19):** `getRecentContext()` strips Assistant turns when `isFirstPrompt` is true. Session names are permanent, so Algorithm scaffolding in assistant output — phase headers, agent names, SUMMARY lines — must never reach the naming prompt.
@@ -264,7 +264,7 @@ Each Stop hook is a self-contained `.hook.ts` file that reads stdin via shared `
 ---
 
 ### 5. **PreToolUse**
-**When:** Before Claude executes any tool
+**When:** Before Codex executes any tool
 **Use Cases:**
 - Voice curl gating (prevent background agents from speaking)
 - Security validation across file operations (Bash, Edit, Write, Read, MultiEdit) — SecurityPipeline (Pattern → Egress → Rules inspectors) blocks dangerous commands, protects credentials, enforces path tiers
@@ -320,7 +320,7 @@ Each Stop hook is a self-contained `.hook.ts` file that reads stdin via shared `
 ---
 
 ### 6. **PostToolUse**
-**When:** After Claude executes any tool
+**When:** After Codex executes any tool
 **Status:** Active - Algorithm state tracking
 
 **Current Hooks:**
@@ -469,7 +469,7 @@ Each Stop hook is a self-contained `.hook.ts` file that reads stdin via shared `
 ---
 
 ### 10. **PreCompact**
-**When:** Before Claude compacts context (long conversations)
+**When:** Before Codex compacts context (long conversations)
 **Status:** Active — `PreCompact.hook.ts`
 **Matcher:** `"*"` (both auto and manual compaction)
 
@@ -503,7 +503,7 @@ ChatGPT Codex's built-in auto-memory system writes learnings to `~/.codex/projec
 ---
 
 ### 11. **PostCompact**
-**When:** After Claude compacts context
+**When:** After Codex compacts context
 **Status:** Active — `RestoreContext.hook.ts`
 
 **Current Hooks:**
@@ -643,7 +643,7 @@ ChatGPT Codex's built-in auto-memory system writes learnings to `~/.codex/projec
 ---
 
 ### 16. **FileChanged**
-**When:** A file is changed on disk (external to Claude)
+**When:** A file is changed on disk (external to Codex)
 **Status:** Active — `FileChanged.hook.ts`
 
 **Current Hooks:**
@@ -937,7 +937,7 @@ else if (hookData.cwd && hookData.cwd.includes('/agents/')) {
 - **Instant visual feedback** - See state at a glance without reading
 - **Color-coded priority** - Teal tabs need attention, green tabs are done
 - **Suffix as state indicator** - Works even in narrow tab bars
-- **Haiku only on user input** - One AI call per prompt (not per tool)
+- **Fast level only on user input** - One AI call per prompt (not per tool)
 
 **State Detection (in Stop hook):**
 1. Check transcript for `AskUserQuestion` tool → `awaitingInput`
@@ -951,7 +951,7 @@ else if (hookData.cwd && hookData.cwd.includes('/agents/')) {
 **Active Tab Background:** Dark Blue `#002B80` (always - state colors only affect inactive tabs)
 
 **Tab Icons:**
-- 🧠 Brain - AI inference in progress (Haiku/Sonnet thinking)
+- 🧠 Brain - AI inference in progress (Fast level/Standard level thinking)
 - ⚙️ Gear - Processing/working state
 
 **Full Documentation:** See `~/.codex/PAI/DOCUMENTATION/Pulse/TerminalTabs.md`
@@ -967,7 +967,7 @@ else if (hookData.cwd && hookData.cwd.includes('/agents/')) {
 // Set immediate tab title (fast)
 execSync(`printf '\\033]0;${titleWithEmoji}\\007' >&2`);
 
-// Launch background process for Haiku summary (slow)
+// Launch background process for Fast level summary (slow)
 Bun.spawn(['bun', `${paiDir}/hooks/PromptProcessing.hook.ts`, prompt], {
   stdout: 'ignore',
   stderr: 'ignore',
@@ -1085,7 +1085,7 @@ Hooks are loaded at startup. Restart to apply changes.
 
 ### 1. **Fast Execution**
 - Hooks should complete in < 500ms
-- Use background processes for slow work (Haiku API calls, file processing)
+- Use background processes for slow work (Fast level API calls, file processing)
 - Exit immediately after launching background work
 
 ### 2. **Graceful Failure**
@@ -1446,7 +1446,7 @@ SESSION START (3 hooks):
 USER PROMPT SUBMIT (4 hooks):
   PromptGuard.hook.ts            Security: PromptInspector (injection/exfil/evasion)
   RepeatDetection.hook.ts        Detect repeated asks / repeat-request complaints
-  PromptProcessing.hook.ts        Unified: rating + tab title + session name (1 Haiku call)
+  PromptProcessing.hook.ts        Unified: rating + tab title + session name (1 Fast level call)
   SatisfactionCapture.hook.ts    User satisfaction signal capture
   # Browser-verify rule lives in PAI_SYSTEM_PROMPT.md ("Browser-verify all web
   # output" / "Reproduce before fixing"), not as a UserPromptSubmit hook.
@@ -1538,7 +1538,7 @@ KEY FILES:
 INFERENCE TOOL (for hooks needing AI):
 Path: ~/.codex/PAI/TOOLS/Inference.ts
 Import: import { inference } from '../../.codex/PAI/TOOLS/Inference'
-Levels: fast (haiku/15s) | standard (sonnet/30s) | smart (opus/90s)
+Levels: fast (15s) | standard (30s) | smart (90s)
 
 TAB STATE SYSTEM:
 Inference: 🧠…  Orange #B35A00  (AI thinking)
@@ -1612,14 +1612,14 @@ Unified AI inference with three run levels.
 ```typescript
 import { inference } from '../../.codex/PAI/TOOLS/Inference';
 
-// Fast (Haiku) - quick tasks, 15s timeout
+// Fast (Fast level) - quick tasks, 15s timeout
 const result = await inference({
   systemPrompt: 'Summarize in 3 words',
   userPrompt: text,
   level: 'fast',
 });
 
-// Standard (Sonnet) - balanced reasoning, 30s timeout
+// Standard (Standard level) - balanced reasoning, 30s timeout
 const result = await inference({
   systemPrompt: 'Analyze sentiment',
   userPrompt: text,
@@ -1627,7 +1627,7 @@ const result = await inference({
   expectJson: true,
 });
 
-// Smart (Opus) - deep reasoning, 90s timeout
+// Smart (Smart level) - deep reasoning, 90s timeout
 const result = await inference({
   systemPrompt: 'Strategic analysis',
   userPrompt: text,
