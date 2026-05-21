@@ -21,8 +21,8 @@
 
 import { spawn, spawnSync } from "bun";
 import { getIdentity, getStartupCatchphrase } from "../../../.codex/hooks/lib/identity";
-import { existsSync, readFileSync, writeFileSync, readdirSync, symlinkSync, unlinkSync, lstatSync } from "fs";
-import { homedir } from "os";
+import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync, readdirSync, symlinkSync, unlinkSync, lstatSync } from "fs";
+import { homedir, tmpdir } from "os";
 import { join, basename } from "path";
 
 // ============================================================================
@@ -33,6 +33,7 @@ const ENGINE_DIR = join(homedir(), ".codex");
 const MCP_DIR = join(ENGINE_DIR, "MCPs");
 const ACTIVE_MCP = join(ENGINE_DIR, ".mcp.json");
 const BANNER_SCRIPT = join(ENGINE_DIR, "PAI", "TOOLS", "Banner.ts");
+const STATUSLINE_SCRIPT = join(ENGINE_DIR, "PAI", "statusline-command.sh");
 const VOICE_SERVER = "http://localhost:31337/notify/personality";
 const WALLPAPER_DIR = join(homedir(), "Projects", "Wallpaper");
 // Note: RAW archiving removed - ChatGPT Codex handles its own cleanup (30-day retention in projects/)
@@ -124,6 +125,143 @@ function displayBanner() {
   if (existsSync(BANNER_SCRIPT)) {
     spawnSync(["bun", BANNER_SCRIPT], { stdin: "inherit", stdout: "inherit", stderr: "inherit" });
   }
+}
+
+function commandExists(command: string): boolean {
+  return spawnSync(["/usr/bin/env", "which", command], { stdout: "ignore", stderr: "ignore" }).exitCode === 0;
+}
+
+function getTerminalSize(): { rows: number; cols: number } | null {
+  const result = spawnSync(["/bin/sh", "-lc", "stty size < /dev/tty"], { stdout: "pipe", stderr: "ignore" });
+  if (result.exitCode !== 0) return null;
+  const [rowsRaw, colsRaw] = result.stdout.toString().trim().split(/\s+/);
+  const rows = Number(rowsRaw);
+  const cols = Number(colsRaw);
+  if (!Number.isFinite(rows) || !Number.isFinite(cols) || rows < 1 || cols < 1) return null;
+  return { rows, cols };
+}
+
+function codexVersion(): string {
+  const versionOutput = spawnSync(["codex", "--version"]).stdout.toString().trim();
+  const versionMatch = versionOutput.match(/([0-9]+\.[0-9]+\.[0-9]+)/);
+  return versionMatch ? versionMatch[1] : versionOutput;
+}
+
+function renderStatusBlock(currentDir: string, cols: number, maxRows?: number): string[] {
+  if (!existsSync(STATUSLINE_SCRIPT)) return [];
+  const payload = {
+    workspace: { current_dir: currentDir },
+    cwd: currentDir,
+    session_id: "pai-live-" + Date.now(),
+    model: { display_name: "codex" },
+    version: codexVersion(),
+    context_window: {
+      context_window_size: 200000,
+      used_percentage: 0,
+      total_input_tokens: 0,
+    },
+  };
+
+  const result = spawnSync(["bash", STATUSLINE_SCRIPT], {
+    stdin: Buffer.from(JSON.stringify(payload)),
+    stdout: "pipe",
+    stderr: "ignore",
+    env: {
+      ...process.env,
+      COLUMNS: String(cols),
+      PAI_DIR: join(ENGINE_DIR, "PAI"),
+    },
+  });
+  if (result.exitCode !== 0) return [];
+  const lines = result.stdout.toString().replace(/\s+$/g, "").split(/\r?\n/);
+  return typeof maxRows === "number" ? lines.slice(0, maxRows) : lines;
+}
+
+function paintStatusBlock(lines: string[], topRows: number, reservedRows: number) {
+  const out: string[] = ["\x1b7"];
+  for (let i = 0; i < reservedRows; i++) {
+    out.push(`\x1b[${topRows + i + 1};1H\x1b[2K`);
+    if (lines[i]) out.push(lines[i]);
+  }
+  out.push("\x1b8");
+  process.stdout.write(out.join(""));
+}
+
+async function spawnCodex(args: string[], env: Record<string, string | undefined>, cwd: string) {
+  const proc = spawn(args, {
+    stdio: ["inherit", "inherit", "inherit"],
+    env,
+  });
+  return await proc.exited;
+}
+
+async function spawnCodexWithPersistentStatus(args: string[], env: Record<string, string | undefined>, cwd: string) {
+  const term = process.env.TERM ?? "";
+  if (
+    process.env.PAI_PERSISTENT_STATUS === "0" ||
+    !process.stdin.isTTY ||
+    !process.stdout.isTTY ||
+    !process.stderr.isTTY ||
+    term === "" ||
+    term === "dumb" ||
+    !commandExists("expect")
+  ) {
+    return await spawnCodex(args, env, cwd);
+  }
+
+  const size = getTerminalSize();
+  if (!size) return await spawnCodex(args, env, cwd);
+
+  const initialLines = renderStatusBlock(cwd, size.cols);
+  if (initialLines.length === 0) return await spawnCodex(args, env, cwd);
+
+  const minCodexRows = 12;
+  const reservedRows = Math.min(initialLines.length, Math.max(0, size.rows - minCodexRows));
+  if (reservedRows < 4) return await spawnCodex(args, env, cwd);
+  const topRows = size.rows - reservedRows;
+
+  const tmp = mkdtempSync(join(tmpdir(), "pai-codex-pty-"));
+  const expectPath = join(tmp, "run.expect");
+  writeFileSync(expectPath, [
+    "set timeout -1",
+    "set top_rows [lindex $argv 0]",
+    "set cols [lindex $argv 1]",
+    "set cmd [lrange $argv 3 end]",
+    "spawn -noecho {*}$cmd",
+    "stty rows $top_rows columns $cols < $spawn_out(slave,name)",
+    "interact",
+    "set result [wait]",
+    "exit [lindex $result 3]",
+    "",
+  ].join("\n"));
+
+  let closed = false;
+  const repaint = () => {
+    if (closed) return;
+    const lines = renderStatusBlock(cwd, size.cols, reservedRows);
+    paintStatusBlock(lines.length ? lines : initialLines, topRows, reservedRows);
+  };
+
+  process.stdout.write("\x1b[?25l");
+  repaint();
+  const timer = setInterval(repaint, 2000);
+
+  const wrappedArgs = ["codex", "-c", "tui.status_line=[]", ...args.slice(1)];
+  const proc = spawn(["expect", expectPath, String(topRows), String(size.cols), "--", ...wrappedArgs], {
+    stdio: ["inherit", "inherit", "inherit"],
+    env: {
+      ...env,
+      LINES: String(topRows),
+      COLUMNS: String(size.cols),
+    },
+  });
+
+  const exitCode = await proc.exited;
+  closed = true;
+  clearInterval(timer);
+  process.stdout.write("\x1b[?25h");
+  try { rmSync(tmp, { recursive: true, force: true }); } catch {}
+  return exitCode;
 }
 
 function buildPaiBootstrapPrompt(systemPromptFile: string, userPrompt?: string): string | null {
@@ -454,13 +592,7 @@ async function cmdLaunch(options: { mcp?: string; resume?: boolean; skipPerms?: 
   // Mirrors the protection in cmdPrompt() — same hazard, same fix.
   const launchEnv = { ...process.env };
   delete launchEnv.OPENAI_API_KEY;
-  const proc = spawn(args, {
-    stdio: ["inherit", "inherit", "inherit"],
-    env: launchEnv,
-  });
-
-  // Wait for Codex to exit.
-  await proc.exited;
+  await spawnCodexWithPersistentStatus(args, launchEnv, process.cwd());
 }
 
 async function cmdUpdate() {
