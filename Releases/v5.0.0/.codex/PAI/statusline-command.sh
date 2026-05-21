@@ -393,8 +393,11 @@ detect_terminal_width() {
     local width=""
 
     # Tier 1: Kitty IPC (most accurate for Kitty panes)
-    if [ -n "$KITTY_WINDOW_ID" ] && command -v kitten >/dev/null 2>&1; then
-        width=$(kitten @ ls 2>/dev/null | jq -r --argjson wid "$KITTY_WINDOW_ID" \
+    # Require KITTY_LISTEN_ON and --to. Plain `kitten @ ...` falls back to
+    # escape-sequence IPC and leaks @kitty-cmd JSON into the Codex TUI when
+    # Kitty remote control is disabled.
+    if [ -n "$KITTY_LISTEN_ON" ] && [ -n "$KITTY_WINDOW_ID" ] && command -v kitten >/dev/null 2>&1; then
+        width=$(kitten @ --to "$KITTY_LISTEN_ON" ls 2>/dev/null | jq -r --argjson wid "$KITTY_WINDOW_ID" \
             '.[].tabs[].windows[] | select(.id == $wid) | .columns' 2>/dev/null)
     fi
 
