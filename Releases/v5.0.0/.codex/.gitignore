@@ -136,6 +136,8 @@ MEMORY/SECURITY/
 # Session transcripts (4.5GB+, regenerated)
 Projects/
 projects/
+!PAI/USER/PROJECTS/
+!PAI/USER/PROJECTS/**
 
 # Task files (runtime)
 tasks/

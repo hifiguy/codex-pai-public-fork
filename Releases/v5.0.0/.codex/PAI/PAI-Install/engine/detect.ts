@@ -239,6 +239,10 @@ function countProjectRows(projectsPath: string): number {
 }
 
 export function detectExistingUserContent(paiUserDir: string): ExistingUserContentDetection {
+  const canonicalProjectsPath = join(paiUserDir, "PROJECTS", "PROJECTS.md");
+  const legacyProjectsPath = join(paiUserDir, "PROJECTS.md");
+  const projectsIndexPath = existsSync(canonicalProjectsPath) ? canonicalProjectsPath : legacyProjectsPath;
+
   return {
     telos: {
       mission: fileExists(paiUserDir, "TELOS/MISSION.md"),
@@ -272,9 +276,9 @@ export function detectExistingUserContent(paiUserDir: string): ExistingUserConte
       opinions: fileExists(paiUserDir, "OPINIONS.md"),
     },
     projects: {
-      projectsIndex: fileExists(paiUserDir, "PROJECTS.md"),
+      projectsIndex: existsSync(projectsIndexPath),
       projectsDirectory: fileExists(paiUserDir, "PROJECTS"),
-      count: countProjectRows(join(paiUserDir, "PROJECTS.md")),
+      count: countProjectRows(projectsIndexPath),
     },
     business: {
       present: fileExists(paiUserDir, "BUSINESS") || fileExists(paiUserDir, "BUSINESS.md"),

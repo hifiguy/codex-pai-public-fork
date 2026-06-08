@@ -20,6 +20,10 @@ interface HookInput {
 
 const inspector = createInjectionInspector();
 
+function debug(...args: unknown[]): void {
+  if (process.env.PAI_HOOK_DEBUG === "1") console.error(...args);
+}
+
 async function main(): Promise<void> {
   let input: HookInput;
 
@@ -43,7 +47,7 @@ async function main(): Promise<void> {
 
   if (result.action === 'require_approval') {
     // PostToolUse cannot block — inject warning into context
-    console.error(`[ContentScanner] Injection detected in ${input.tool_name} output`);
+    debug(`[ContentScanner] Injection detected in ${input.tool_name} output`);
     console.log(JSON.stringify({
       hookSpecificOutput: [
         `SECURITY WARNING: Potential prompt injection detected in ${input.tool_name} output.`,

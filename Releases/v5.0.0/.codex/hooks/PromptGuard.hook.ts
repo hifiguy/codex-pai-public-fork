@@ -25,6 +25,10 @@ interface HookInput {
 
 const inspector = createPromptInspector();
 
+function debug(...args: unknown[]): void {
+  if (process.env.PAI_HOOK_DEBUG === "1") console.error(...args);
+}
+
 async function main(): Promise<void> {
   let input: HookInput;
 
@@ -62,7 +66,7 @@ async function main(): Promise<void> {
         findingId: result.findingId,
         actionTaken: 'Blocked prompt',
       });
-      console.error(`[PromptGuard] 🚨 BLOCKED: ${result.reason}`);
+      debug(`[PromptGuard] 🚨 BLOCKED: ${result.reason}`);
       console.log(JSON.stringify({ decision: 'block', reason: `[PAI SECURITY] Prompt blocked: ${result.reason}` }));
       break;
 
@@ -77,7 +81,7 @@ async function main(): Promise<void> {
         reason: result.reason,
         actionTaken: 'Alert injected into context',
       });
-      console.error(`[PromptGuard] ⚠️ WARNING: ${result.reason}`);
+      debug(`[PromptGuard] ⚠️ WARNING: ${result.reason}`);
       console.log(JSON.stringify({
         hookSpecificOutput: {
           hookEventName: 'UserPromptSubmit',
@@ -92,5 +96,5 @@ async function main(): Promise<void> {
 }
 
 main().catch((err) => {
-  console.error(`[PromptGuard] Fatal — allowing: ${err}`);
+  debug(`[PromptGuard] Fatal — allowing: ${err}`);
 });

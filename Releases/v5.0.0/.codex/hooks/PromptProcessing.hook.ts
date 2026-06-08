@@ -35,6 +35,10 @@ import { paiPath } from './lib/paths';
 import { updateSessionNameInWorkJson, upsertSession } from './lib/isa-utils';
 import { pushStateToTargets } from './lib/observability-transport';
 
+function debug(...args: unknown[]): void {
+  if (process.env.PAI_HOOK_DEBUG === "1") console.error(...args);
+}
+
 // ── Types ──
 
 interface HookInput {
@@ -600,13 +604,13 @@ function disambiguateLabel(sessionId: string, label: string, names: SessionNames
 
 function storeName(sessionId: string, label: string, source: string): void {
   const locked = acquireLock();
-  if (!locked) console.error('[PromptProcessing] Lock timeout — writing anyway');
+  if (!locked) debug('[PromptProcessing] Lock timeout — writing anyway');
   let finalLabel = label;
   try {
     const names = readSessionNames();
     finalLabel = disambiguateLabel(sessionId, label, names);
     if (finalLabel !== label) {
-      console.error(`[PromptProcessing] Disambiguated "${label}" → "${finalLabel}" (collision with another session)`);
+      debug(`[PromptProcessing] Disambiguated "${label}" → "${finalLabel}" (collision with another session)`);
     }
     names[sessionId] = finalLabel;
     writeSessionNames(names);
@@ -617,7 +621,7 @@ function storeName(sessionId: string, label: string, source: string): void {
   writeFileSync(paiPath('MEMORY', 'STATE', 'session-name-cache.sh'), cacheContent, 'utf-8');
   updateSessionNameInWorkJson(sessionId, finalLabel);
   syncNameToJsonl(sessionId, finalLabel);
-  console.error(`[PromptProcessing] Named session: "${finalLabel}" (${source})`);
+  debug(`[PromptProcessing] Named session: "${finalLabel}" (${source})`);
 }
 
 /** Find ChatGPT Codex's session JSONL path for a given session ID. */
@@ -814,7 +818,7 @@ function getRecentContext(transcriptPath: string, maxTurns: number = 6, includeA
 
 async function main() {
   try {
-    console.error('[PromptProcessing] Hook started');
+    debug('[PromptProcessing] Hook started');
     const input = await readStdinWithTimeout();
     const data: HookInput = JSON.parse(input);
     const prompt = data.prompt || data.user_prompt || '';
@@ -846,7 +850,7 @@ async function main() {
     if (isFirstPrompt && sanitizedPrompt) {
       pendingFallbackName = extractFallbackName(sanitizedPrompt);
       if (pendingFallbackName && !isValidSessionName(pendingFallbackName)) {
-        console.error(`[PromptProcessing] Rejected invalid fallback name: "${pendingFallbackName}"`);
+        debug(`[PromptProcessing] Rejected invalid fallback name: "${pendingFallbackName}"`);
         pendingFallbackName = null;
       }
       const sessionMode = isNativeMode(prompt) ? 'native' : 'starting';
@@ -870,7 +874,7 @@ async function main() {
 
     // ── FAST PATH: Ratings and praise — skip inference, emit MINIMAL ──
     if (isExplicitRating(prompt)) {
-      console.error('[PromptProcessing] Explicit rating — skipping inference, mode MINIMAL');
+      debug('[PromptProcessing] Explicit rating — skipping inference, mode MINIMAL');
       emitAdditionalContext('MINIMAL', null, 'explicit rating');
       appendPromptProcessingTelemetry({
         timestamp: new Date().toISOString(), session_id: sessionId,
@@ -885,7 +889,7 @@ async function main() {
     if (promptWords.length <= 2) {
       if (POSITIVE_PRAISE_WORDS.has(normalizedPrompt) || POSITIVE_PHRASES.has(normalizedPrompt)
           || (promptWords.length === 2 && promptWords.every(w => POSITIVE_PRAISE_WORDS.has(w)))) {
-        console.error('[PromptProcessing] Positive praise — skipping inference, mode MINIMAL');
+        debug('[PromptProcessing] Positive praise — skipping inference, mode MINIMAL');
         emitAdditionalContext('MINIMAL', null, 'positive praise / acknowledgment');
         appendPromptProcessingTelemetry({
           timestamp: new Date().toISOString(), session_id: sessionId,
@@ -898,12 +902,12 @@ async function main() {
 
     // ── FAST PATH: System text — no classification (system-injected, not user prompt) ──
     if (SYSTEM_TEXT_PATTERNS.some(re => re.test(prompt.trim()))) {
-      console.error('[PromptProcessing] System text detected, skipping');
+      debug('[PromptProcessing] System text detected, skipping');
       await kvPush; process.exit(0);
     }
 
     if (prompt.length < MIN_PROMPT_LENGTH) {
-      console.error('[PromptProcessing] Prompt too short, skipping inference, mode MINIMAL');
+      debug('[PromptProcessing] Prompt too short, skipping inference, mode MINIMAL');
       emitAdditionalContext('MINIMAL', null, 'prompt too short for classification');
       appendPromptProcessingTelemetry({
         timestamp: new Date().toISOString(), session_id: sessionId,
@@ -921,7 +925,7 @@ async function main() {
     setTabState({ title: `🧠 ${prefix}${thinkingTitle}`, state: 'thinking', sessionId });
 
     // ── INFERENCE: Tab title + session name ──
-    console.error('[PromptProcessing] Running inference (tab title' + (isFirstPrompt ? ' + session name)...' : ')...'));
+    debug('[PromptProcessing] Running inference (tab title' + (isFirstPrompt ? ' + session name)...' : ')...'));
 
     const cleanPrompt = prompt.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 1000);
     // Naming is permanent and first-prompt-only; exclude Assistant turns so Algorithm scaffolding
@@ -983,7 +987,7 @@ async function main() {
         let inferenceNameStored = false;
         if (isFirstPrompt && r.session_name) {
           if (/[*`<>{}[\]]/.test(r.session_name)) {
-            console.error('[PromptProcessing] Rejected session name with artifacts');
+            debug('[PromptProcessing] Rejected session name with artifacts');
           } else {
             const nameWords = r.session_name.trim().split(/\s+/).slice(0, 5);
             const label = nameWords.map(w => titleCase(w)).join(' ');
@@ -992,7 +996,7 @@ async function main() {
               storeName(sessionId, label, 'inference-haiku');
               inferenceNameStored = true;
             } else if (label) {
-              console.error(`[PromptProcessing] Rejected invalid session name: "${label}"`);
+              debug(`[PromptProcessing] Rejected invalid session name: "${label}"`);
             }
           }
         }
@@ -1025,7 +1029,7 @@ async function main() {
         });
 
       } else {
-        console.error(`[PromptProcessing] Inference failed: ${result.error}`);
+        debug(`[PromptProcessing] Inference failed: ${result.error}`);
         // Inference failed — store deterministic fallback name
         if (isFirstPrompt && pendingFallbackName) {
           storeName(sessionId, pendingFallbackName, 'deterministic-fallback');
@@ -1045,7 +1049,7 @@ async function main() {
         });
       }
     } catch (err) {
-      console.error(`[PromptProcessing] Inference error: ${err}`);
+      debug(`[PromptProcessing] Inference error: ${err}`);
       // Inference errored — store deterministic fallback name
       if (isFirstPrompt && pendingFallbackName) {
         storeName(sessionId, pendingFallbackName, 'deterministic-fallback');
@@ -1067,7 +1071,7 @@ async function main() {
 
     await kvPush; process.exit(0);
   } catch (err) {
-    console.error(`[PromptProcessing] Fatal error: ${err}`);
+    debug(`[PromptProcessing] Fatal error: ${err}`);
     await kvPush; process.exit(0);
   }
 }

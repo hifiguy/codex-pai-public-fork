@@ -5,7 +5,7 @@
  * PURPOSE:
  * Watches PAI system docs, hooks, Algorithm spec, Tools, user config, and security
  * policy for mtime changes. When any tracked file is newer than the current
- * DOCUMENTATION/ARCHITECTURE_SUMMARY.md, invokes Tools/ArchitectureSummaryGenerator.ts to
+ * DOCUMENTATION/ARCHITECTURE_SUMMARY.md, invokes TOOLS/ArchitectureSummaryGenerator.ts to
  * regenerate it.
  *
  * TRIGGER: called from DocIntegrity.hook.ts on Stop.
@@ -24,8 +24,8 @@ import { getPaiDir, getCodexDir } from "../lib/paths";
 export async function handleRebuildArchSummary(): Promise<void> {
   const paiDir = getPaiDir();
   const codexDir = getCodexDir();
-  const output = join(paiDir, "DOCUMENTATION", "PAI_ARCHITECTURE_SUMMARY.md");
-  const generator = join(paiDir, "Tools/ArchitectureSummaryGenerator.ts");
+  const output = join(paiDir, "DOCUMENTATION", "ARCHITECTURE_SUMMARY.md");
+  const generator = join(paiDir, "TOOLS", "ArchitectureSummaryGenerator.ts");
 
   if (!existsSync(generator)) return;
 

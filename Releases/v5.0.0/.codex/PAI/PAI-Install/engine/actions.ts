@@ -136,7 +136,7 @@ function summariseExistingUserContent(content: ExistingUserContentDetection): st
     const projectBits: string[] = [];
     if (content.projects.projectsIndex) {
       const projectCountSuffix = content.projects.count > 0 ? ` (${content.projects.count} entries)` : "";
-      projectBits.push(`PROJECTS.md ✓${projectCountSuffix}`);
+      projectBits.push(`PROJECTS/PROJECTS.md ✓${projectCountSuffix}`);
     }
     if (content.projects.projectsDirectory) projectBits.push("PROJECTS/ ✓");
     sections.push(`PROJECTS: ${projectBits.join(", ")}`);
@@ -565,6 +565,7 @@ export async function migrateUserContentFromBackup(
           const included = new Set<string>([
             ...USER_MIGRATION_IDENTITY_FILES,
             ...USER_MIGRATION_FULL_ENTRIES,
+            "PROJECTS.md",
           ]);
           return [
             ...USER_MIGRATION_IDENTITY_FILES,
@@ -593,6 +594,19 @@ export async function migrateUserContentFromBackup(
       await emit({ event: "message", content: label });
     } else if (result.failed > 0) {
       await emit({ event: "message", content: `Could not migrate ${entry} from backup.` });
+    }
+  }
+
+  const legacyProjectsPath = join(backupUserDir, "PROJECTS.md");
+  if (existsSync(legacyProjectsPath)) {
+    const canonicalProjectsPath = join(targetUserDir, "PROJECTS", "PROJECTS.md");
+    const result = copyMigrationEntry(legacyProjectsPath, canonicalProjectsPath);
+    totalCopied += result.copied;
+    totalFailed += result.failed;
+    if (result.copied > 0) {
+      await emit({ event: "message", content: "Migrated PROJECTS.md from backup to PROJECTS/PROJECTS.md." });
+    } else if (result.failed > 0) {
+      await emit({ event: "message", content: "Could not migrate PROJECTS.md from backup." });
     }
   }
 

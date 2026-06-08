@@ -9,10 +9,14 @@
 
 import { getObservabilityConfig } from './identity';
 import { readRegistry, writeRegistry, WORK_JSON } from './isa-utils';
-import { readFileSync, existsSync } from 'fs';
+import { readFileSync, existsSync, writeSync } from 'fs';
 import { join } from 'path';
 import type { ObservabilityTarget } from './identity';
 import { getEnvPath } from './paths';
+
+function debugStderr(message: string): void {
+  if (process.env.PAI_HOOK_DEBUG === "1") writeSync(2, message);
+}
 
 function readEnvOrPaiEnv(keys: readonly string[]): string {
   for (const k of keys) {
@@ -53,7 +57,7 @@ function getCFAccountId(): string {
   const value = readEnvOrPaiEnv(['CLOUDFLARE_ACCOUNT_ID', 'CF_ACCOUNT_ID'] as const);
   if (value) return value;
 
-  process.stderr.write(
+  debugStderr(
     '[observability-transport] CLOUDFLARE_ACCOUNT_ID / CF_ACCOUNT_ID missing; CF KV transport will be skipped\n'
   );
   return '';
@@ -63,7 +67,7 @@ function getCFNamespaceId(): string {
   const value = readEnvOrPaiEnv(['CLOUDFLARE_KV_NAMESPACE_ID', 'CF_KV_NAMESPACE_ID'] as const);
   if (value) return value;
 
-  process.stderr.write(
+  debugStderr(
     '[observability-transport] CLOUDFLARE_KV_NAMESPACE_ID / CF_KV_NAMESPACE_ID missing; CF KV transport will be skipped\n'
   );
   return '';
@@ -189,7 +193,7 @@ async function pushToCFKV(key: string, body: string): Promise<void> {
 
   const token = getCFToken();
   if (!token) {
-    process.stderr.write(
+    debugStderr(
       `[pushToCFKV] ${key}: no CF token resolved (set CLOUDFLARE_API_TOKEN or CLOUDFLARE_API_TOKEN_WORKERS_EDIT in ~/.codex/.env)\n`
     );
     return;
@@ -237,14 +241,14 @@ export async function pushStateToTargets(): Promise<void> {
         }
       } catch (err: unknown) {
         const msg = err instanceof Error ? err.message : String(err);
-        process.stderr.write(`[pushStateToTargets] ${target.name}: ${msg}\n`);
+        debugStderr(`[pushStateToTargets] ${target.name}: ${msg}\n`);
       }
     });
 
     await Promise.allSettled(promises);
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : String(err);
-    process.stderr.write(`[pushStateToTargets] Failed: ${msg}\n`);
+    debugStderr(`[pushStateToTargets] Failed: ${msg}\n`);
   }
 }
 
@@ -267,13 +271,13 @@ export async function pushEventsToTargets(): Promise<void> {
         }
       } catch (err: unknown) {
         const msg = err instanceof Error ? err.message : String(err);
-        process.stderr.write(`[pushEventsToTargets] ${target.name}: ${msg}\n`);
+        debugStderr(`[pushEventsToTargets] ${target.name}: ${msg}\n`);
       }
     });
 
     await Promise.allSettled(promises);
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : String(err);
-    process.stderr.write(`[pushEventsToTargets] Failed: ${msg}\n`);
+    debugStderr(`[pushEventsToTargets] Failed: ${msg}\n`);
   }
 }

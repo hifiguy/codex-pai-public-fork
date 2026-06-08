@@ -49,7 +49,7 @@ import {
 const PULSE_DIR = join(process.env.HOME ?? "~", ".codex", "PAI", "PULSE")
 const STATE_PATH = join(PULSE_DIR, "state", "state.json")
 const PID_PATH = join(PULSE_DIR, "state", "pulse.pid")
-const HOOK_PORT = parseInt(process.env.HOOK_SERVER_PORT || "8686", 10)
+const HOOK_PORT = parseInt(process.env.HOOK_SERVER_PORT || "31337", 10)
 const MAX_FAILURES = 3
 const MAX_SLEEP_MS = 60_000
 const MIN_SLEEP_MS = 1_000
@@ -159,7 +159,7 @@ async function main() {
   process.on("SIGTERM", shutdown)
   process.on("SIGINT", shutdown)
 
-  // ── Hook Validation Server (port 8686) ──
+  // ── Hook Validation Server (port 31337) ──
 
   const hookServer = Bun.serve({
     hostname: "127.0.0.1",

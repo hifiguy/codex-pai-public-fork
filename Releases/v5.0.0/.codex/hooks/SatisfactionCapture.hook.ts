@@ -32,6 +32,10 @@ import { getISOTimestamp, getPSTComponents } from './lib/time';
 import { captureFailure } from '../PAI/TOOLS/FailureCapture';
 import { addRatingPulse } from './lib/isa-utils';
 
+function debug(...args: unknown[]): void {
+  if (process.env.PAI_HOOK_DEBUG === "1") console.error(...args);
+}
+
 // ── Types ──
 
 interface HookInput {
@@ -160,7 +164,7 @@ function writeRating(entry: RatingEntry): void {
   // Strip lone UTF-16 surrogates that break jq parsing (e.g. truncated emoji at slice boundary)
   const json = JSON.stringify(entry).replace(/\\ud[89a-f][0-9a-f]{2}(?!\\ud[c-f][0-9a-f]{2})/gi, '');
   appendFileSync(RATINGS_FILE, json + '\n', 'utf-8');
-  console.error(`[SatisfactionCapture] Wrote ${entry.source} rating ${entry.rating}`);
+  debug(`[SatisfactionCapture] Wrote ${entry.source} rating ${entry.rating}`);
 }
 
 // ── Low Rating Learning Capture ──
@@ -221,7 +225,7 @@ This response was rated ${rating}/10 by ${getPrincipalName()}. Use this as an im
 `;
 
   writeFileSync(filepath, content, 'utf-8');
-  console.error(`[SatisfactionCapture] Captured low ${source} rating learning`);
+  debug(`[SatisfactionCapture] Captured low ${source} rating learning`);
 }
 
 // ── Inference Prompt ──
@@ -312,7 +316,7 @@ function getRecentContext(transcriptPath: string, maxTurns: number = 4): string 
 
 async function main() {
   try {
-    console.error('[SatisfactionCapture] Hook started');
+    debug('[SatisfactionCapture] Hook started');
     const input = await readStdinWithTimeout();
     const data: HookInput = JSON.parse(input);
     const prompt = data.prompt || data.user_prompt || '';
@@ -322,19 +326,19 @@ async function main() {
 
     // ── SKIP: System text ──
     if (SYSTEM_TEXT_PATTERNS.some(re => re.test(prompt.trim()))) {
-      console.error('[SatisfactionCapture] System text, skipping');
+      debug('[SatisfactionCapture] System text, skipping');
       process.exit(0);
     }
 
     if (prompt.length < MIN_PROMPT_LENGTH) {
-      console.error('[SatisfactionCapture] Prompt too short, skipping');
+      debug('[SatisfactionCapture] Prompt too short, skipping');
       process.exit(0);
     }
 
     // ── FAST PATH: Explicit rating ──
     const explicitResult = parseExplicitRating(prompt);
     if (explicitResult) {
-      console.error(`[SatisfactionCapture] Explicit rating: ${explicitResult.rating}`);
+      debug(`[SatisfactionCapture] Explicit rating: ${explicitResult.rating}`);
       const lastResponse = getLastResponse();
       const entry: RatingEntry = {
         timestamp: getISOTimestamp(),
@@ -361,7 +365,7 @@ async function main() {
             sentimentSummary: explicitResult.comment || `Explicit low rating: ${explicitResult.rating}/10`,
             detailedContext: lastResponse,
             sessionId,
-          }).catch((err) => console.error(`[SatisfactionCapture] Failure capture error: ${err}`));
+          }).catch((err) => debug(`[SatisfactionCapture] Failure capture error: ${err}`));
         }
       }
       process.exit(0);
@@ -373,7 +377,7 @@ async function main() {
     if (promptWords.length <= 2) {
       if (POSITIVE_PRAISE_WORDS.has(normalizedPrompt) || POSITIVE_PHRASES.has(normalizedPrompt)
           || (promptWords.length === 2 && promptWords.every(w => POSITIVE_PRAISE_WORDS.has(w)))) {
-        console.error(`[SatisfactionCapture] Positive praise fast-path: "${prompt.trim()}" → rating 8`);
+        debug(`[SatisfactionCapture] Positive praise fast-path: "${prompt.trim()}" → rating 8`);
         const cachedResponse = getLastResponse();
         writeRating({
           timestamp: getISOTimestamp(),
@@ -398,7 +402,7 @@ async function main() {
     // ── INFERENCE PATH: Implicit satisfaction analysis ──
     // Stagger 2s to avoid racing SessionAnalysis for the same codex --print slot
     await new Promise(resolve => setTimeout(resolve, 2000));
-    console.error('[SatisfactionCapture] Running satisfaction inference...');
+    debug('[SatisfactionCapture] Running satisfaction inference...');
 
     const cleanPrompt = prompt.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 1000);
     const lastResponse = getLastResponse();
@@ -428,7 +432,7 @@ async function main() {
         const rating = (r.rating != null && r.rating >= 1 && r.rating <= 10) ? r.rating : 5;
         const confidence = r.confidence || 0.5;
 
-        console.error(`[SatisfactionCapture] Implicit: ${rating}/10 (${confidence}) - ${r.summary || 'no summary'}`);
+        debug(`[SatisfactionCapture] Implicit: ${rating}/10 (${confidence}) - ${r.summary || 'no summary'}`);
 
         const cachedResponse = getLastResponse();
         writeRating({
@@ -456,13 +460,13 @@ async function main() {
               sentimentSummary: r.summary || '',
               detailedContext: r.detailed_context || '',
               sessionId,
-            }).catch((err) => console.error(`[SatisfactionCapture] Failure capture error: ${err}`));
+            }).catch((err) => debug(`[SatisfactionCapture] Failure capture error: ${err}`));
           }
         }
       } else {
         // Inference failed — default to 5 (neutral)
         const errorReason = result.error || 'unknown';
-        console.error(`[SatisfactionCapture] Inference failed: ${errorReason} — defaulting to 5`);
+        debug(`[SatisfactionCapture] Inference failed: ${errorReason} — defaulting to 5`);
         writeRating({
           timestamp: getISOTimestamp(),
           rating: 5,
@@ -475,7 +479,7 @@ async function main() {
     } catch (err) {
       // Inference errored — default to 5 (neutral)
       const errMsg = err instanceof Error ? err.message : String(err);
-      console.error(`[SatisfactionCapture] Inference error: ${errMsg} — defaulting to 5`);
+      debug(`[SatisfactionCapture] Inference error: ${errMsg} — defaulting to 5`);
       writeRating({
         timestamp: getISOTimestamp(),
         rating: 5,
@@ -488,7 +492,7 @@ async function main() {
 
     process.exit(0);
   } catch (err) {
-    console.error(`[SatisfactionCapture] Fatal error: ${err}`);
+    debug(`[SatisfactionCapture] Fatal error: ${err}`);
     process.exit(0);
   }
 }

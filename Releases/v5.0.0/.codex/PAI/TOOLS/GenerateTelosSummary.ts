@@ -5,8 +5,8 @@
  *
  * Usage: bun run ~/.codex/PAI/TOOLS/GenerateTelosSummary.ts
  *
- * Reads from: ~/.codex/PAI/USER/TELOS/*.md (source files)
- * Writes to:  ~/.codex/PAI/USER/TELOS/PRINCIPAL_TELOS.md
+ * Reads from: ${PAI_DIR:-~/.codex/PAI}/USER/TELOS/*.md (source files)
+ * Writes to:  ${PAI_DIR:-~/.codex/PAI}/USER/TELOS/PRINCIPAL_TELOS.md
  *
  * Design decisions (from Council debate 2026-03-26):
  * - Generated, never hand-authored (Reed's precondition)
@@ -18,7 +18,9 @@
 import { readFileSync, writeFileSync, existsSync } from 'fs';
 import { join } from 'path';
 
-const TELOS_DIR = join(process.env.HOME || '', '.codex/PAI/USER/TELOS');
+const HOME = process.env.HOME || '';
+const PAI_DIR = process.env.PAI_DIR || join(HOME, '.codex', 'PAI');
+const TELOS_DIR = join(PAI_DIR, 'USER', 'TELOS');
 const OUTPUT_PATH = join(TELOS_DIR, 'PRINCIPAL_TELOS.md');
 
 interface ParsedItem {

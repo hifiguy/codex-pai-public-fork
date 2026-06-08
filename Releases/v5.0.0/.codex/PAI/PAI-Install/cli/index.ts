@@ -306,7 +306,7 @@ export async function runCLI(): Promise<void> {
     print(`     ${c.bold}~/.codex/PAI/USER/README.md${c.reset}             ${c.gray}— full layout map${c.reset}`);
     print(`     ${c.bold}~/.codex/PAI/USER/TELOS/README.md${c.reset}       ${c.gray}— missions, goals, problems, strategies${c.reset}`);
     print(`     ${c.bold}~/.codex/PAI/USER/DA/README.md${c.reset}          ${c.gray}— your DA's identity, voice, personality${c.reset}`);
-    print(`     ${c.bold}~/.codex/PAI/USER/PROJECTS/README.md${c.reset}    ${c.gray}— project registry + routing aliases${c.reset}`);
+    print(`     ${c.bold}~/.codex/PAI/USER/PROJECTS/PROJECTS.md${c.reset} ${c.gray}— project registry + routing aliases${c.reset}`);
     print(`     ${c.bold}~/.codex/PAI/USER/SECURITY/README.md${c.reset}    ${c.gray}— bash/path rules (already has working defaults)${c.reset}`);
     print(`     ${c.bold}~/.codex/PAI/USER/Config/README.md${c.reset}      ${c.gray}— credentials and PAI config${c.reset}`);
     print("");

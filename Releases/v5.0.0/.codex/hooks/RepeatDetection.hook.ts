@@ -106,15 +106,25 @@ function main(): void {
 
   // Threshold: 0.6 (60%) similarity triggers warning
   if (similarity >= 0.6) {
-    // Output warning to stderr — this gets injected into model context
-    process.stderr.write(
-      `⚠️ REPEAT DETECTION: This message is ${Math.round(similarity * 100)}% similar to the previous message. ` +
-      `The user is likely REPEATING a request you missed. ` +
-      `STOP. Re-read their message carefully. Do NOT proceed with what you were doing before. ` +
-      `Address their ACTUAL request this time.`,
+    // Inject the warning into the model's context via the documented
+    // UserPromptSubmit mechanism: JSON `hookSpecificOutput.additionalContext`
+    // on stdout with exit 0. (stderr + exit 2 does NOT reach the model on
+    // UserPromptSubmit — it erases the user's prompt and shows stderr to the
+    // user only. Matches the PromptGuard/PromptProcessing sibling hooks.)
+    process.stdout.write(
+      JSON.stringify({
+        hookSpecificOutput: {
+          hookEventName: "UserPromptSubmit",
+          additionalContext:
+            `⚠️ REPEAT DETECTION: This message is ${Math.round(similarity * 100)}% similar to the previous message. ` +
+            `The user is likely REPEATING a request you missed. ` +
+            `STOP. Re-read their message carefully. Do NOT proceed with what you were doing before. ` +
+            `Address their ACTUAL request this time.`,
+        },
+      }),
     );
-    // Exit 2 = blocking error, stderr fed to Claude
-    process.exit(2);
+    // Exit 0 = allow the prompt through, with the warning added to context.
+    process.exit(0);
   }
 
   process.exit(0);

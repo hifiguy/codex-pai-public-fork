@@ -127,7 +127,7 @@ async function loadPulseConfig(): Promise<PulseConfig> {
   const daemonConfig = await loadConfig(PULSE_DIR)
 
   return {
-    port: (parsed.port as number) ?? parseInt(process.env.PULSE_PORT || "8686", 10),
+    port: (parsed.port as number) ?? parseInt(process.env.PULSE_PORT || "31337", 10),
     voice: (parsed.voice as PulseConfig["voice"]) ?? { enabled: true },
     telegram: (parsed.telegram as PulseConfig["telegram"]) ?? { enabled: false },
     imessage: (parsed.imessage as PulseConfig["imessage"]) ?? { enabled: false },
